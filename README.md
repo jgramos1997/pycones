@@ -1,0 +1,2 @@
+# pycones
+Itinerari PyConES
