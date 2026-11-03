@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GISCE-TI | PyConES 26</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PyConES26">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="Itinerari del viatge de GISCE-TI a la PyConES 2026">
+    
+    <!-- PWA Manifest Inline -->
+    <link id="manifest-link" rel="manifest" href="">
+    
+    <!-- Fonts: Inter i Plus Jakarta Sans en cursiva extra-negreta -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@1,800;1,900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#2974CA'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Suport per a marges segurs (Safe Areas) en PWA d'iOS / Android */
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+            .pb-safe {
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+        
+        /* Transicions suaus */
+        .fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Ocultar scrollbar per una millor experiència mòbil */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        /* Animació de sortida de la cortina */
+        .curtain-exit {
+            transform: translateY(-100%);
+            opacity: 0.95;
+            pointer-events: none;
+        }
+
+        /* Tipografia destacada per a la cortina de benvinguda (Plus Jakarta Sans) */
+        .font-splash-jakarta {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 h-[100dvh] w-screen overflow-hidden flex flex-col antialiased touch-manipulation">
+
+    <!-- Cortina de Benvinguda (Splash Screen) -->
+    <div id="welcome-curtain" onclick="dismissCurtain()" class="fixed inset-0 z-[100] bg-primary text-white flex flex-col items-center justify-center p-6 sm:p-8 transition-all duration-700 ease-in-out select-none cursor-pointer">
+        <div class="text-center">
+            <h2 class="text-6xl sm:text-7xl md:text-8xl font-black italic tracking-tighter leading-[1.05] drop-shadow-sm font-splash-jakarta select-none">
+                <span class="block">Benvingut,</span>
+                <span class="block">Giscer!</span>
+            </h2>
+        </div>
+    </div>
+
+    <!-- Capçalera Premium -->
+    <header class="px-6 pt-10 pb-2 flex justify-between items-start z-10 shrink-0">
+        <div>
+            <h1 class="text-[32px] font-extrabold tracking-tight text-slate-900 leading-tight">Hola, Giscer!</h1>
+            <p id="top-date" class="text-sm font-semibold text-slate-500 mt-1 capitalize">--</p>
+        </div>
+    </header>
+
+    <!-- Contingut Principal (Scrollable independent) -->
+    <main id="main-view" class="flex-1 overflow-y-auto pb-32 relative px-6">
+        
+        <!-- PESTANYA 1: ARA -->
+        <div id="tab-ara" class="flex flex-col gap-6 fade-in pb-10">
+            
+            <!-- Rellotge Gegant -->
+            <div class="flex flex-col items-center justify-center py-4 w-full">
+                <div id="huge-clock" class="text-[6.5rem] leading-none font-black text-slate-800 tracking-tighter tabular-nums">--:--</div>
+            </div>
+
+            <!-- Títol de Targeta -->
+            <div class="mt-2">
+                <h2 id="card-heading" class="text-2xl font-bold text-slate-800 mb-4">El teu pla</h2>
+                <div id="active-card-container">
+                    <!-- S'omple amb JS -->
+                </div>
+            </div>
+
+            <!-- Pròximament Programa -->
+            <div class="mt-4">
+                <h2 class="text-xl font-bold text-slate-800 mb-3">Pròximament a PyConES</h2>
+                <div id="upcoming-program-container" class="flex flex-col gap-3">
+                    <!-- S'omple amb JS dinàmicament només per Ds i Dg -->
+                </div>
+                <button onclick="switchTab('programa')" class="mt-4 w-full bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 py-3 rounded-2xl text-sm font-bold transition-colors flex justify-center items-center gap-2">
+                    Veure tot el programa <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- PESTANYA 2: HORARI -->
+        <div id="tab-horari" class="hidden flex flex-col gap-6 fade-in pb-10 pt-4">
+            <h2 class="text-3xl font-bold text-slate-800">Horari del Viatge</h2>
+            <div id="full-schedule-content" class="flex flex-col gap-4">
+                <!-- S'omple amb JS -->
+            </div>
+        </div>
+
+        <!-- PESTANYA 2.5: PROGRAMA PYCONES -->
+        <div id="tab-programa" class="hidden flex flex-col gap-5 fade-in pb-10 pt-4">
+            <h2 class="text-3xl font-bold text-slate-800">Programa PyConES</h2>
+            
+            <!-- Selector de dia -->
+            <div class="flex bg-slate-200/80 p-1 rounded-2xl gap-1">
+                <button id="day-tab-ds" onclick="switchPyconDay('ds')" class="flex-1 py-2.5 rounded-xl font-bold text-sm transition-all bg-white text-slate-800 shadow-sm flex items-center justify-center gap-1.5">
+                    <i data-lucide="calendar" class="w-4 h-4 text-primary"></i> Dissabte 7
+                </button>
+                <button id="day-tab-dg" onclick="switchPyconDay('dg')" class="flex-1 py-2.5 rounded-xl font-bold text-sm transition-all text-slate-500 hover:text-slate-800 flex items-center justify-center gap-1.5">
+                    <i data-lucide="calendar" class="w-4 h-4"></i> Diumenge 8
+                </button>
+            </div>
+
+            <div id="pycon-program-content" class="flex flex-col gap-4">
+                <!-- S'omple amb JS segons el dia seleccionat -->
+            </div>
+        </div>
+
+        <!-- PESTANYA 3: INFO I ENLLAÇOS -->
+        <div id="tab-info" class="hidden flex flex-col gap-5 fade-in pb-10 pt-4">
+            <h2 class="text-3xl font-bold text-slate-800 mb-2">Informació Útil</h2>
+            
+            <!-- Allotjament -->
+            <div class="bg-white rounded-[32px] p-6 shadow-sm shadow-slate-200/50 border border-slate-100">
+                <div class="flex items-center gap-4 mb-4 text-primary">
+                    <div class="bg-blue-50 p-3 rounded-[20px]">
+                        <i data-lucide="hotel" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-xl text-slate-800">Allotjament</h3>
+                </div>
+                <p class="text-slate-500 text-sm font-medium mb-5">Hotel Midmost (Carrer de Pelai, 14)</p>
+                <a href="https://maps.google.com/?q=Hotel+Midmost+Carrer+de+Pelai+14+Barcelona" target="_blank" class="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 px-4 py-4 rounded-2xl text-sm font-bold transition-colors w-full">
+                    <i data-lucide="map" class="w-4 h-4"></i> Veure al Mapa
+                </a>
+            </div>
+
+            <!-- Sopar -->
+            <div class="bg-white rounded-[32px] p-6 shadow-sm shadow-slate-200/50 border border-slate-100">
+                <div class="flex items-center gap-4 mb-4 text-orange-500">
+                    <div class="bg-orange-50 p-3 rounded-[20px]">
+                        <i data-lucide="utensils" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-xl text-slate-800">Sopar Dissabte</h3>
+                </div>
+                <p class="text-slate-500 text-sm font-medium mb-5">Quesarium a les 21:00h (Trobada 20:45h)</p>
+                <a href="https://maps.google.com/?q=Quesarium+Carrer+de+Muntaner+7+Barcelona" target="_blank" class="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 px-4 py-4 rounded-2xl text-sm font-bold transition-colors w-full">
+                    <i data-lucide="map" class="w-4 h-4"></i> Veure al Mapa
+                </a>
+            </div>
+            
+            <!-- Entrades -->
+            <div class="bg-white rounded-[32px] p-6 shadow-sm shadow-slate-200/50 border border-slate-100">
+                <div class="flex items-center gap-4 mb-4 text-emerald-500">
+                    <div class="bg-emerald-50 p-3 rounded-[20px]">
+                        <i data-lucide="ticket" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-xl text-slate-800">Entrades</h3>
+                </div>
+                <p class="text-slate-500 text-sm leading-relaxed font-medium">Els bitllets de RENFE els porta l'Eduard Carreras. Recorda comprovar que tens la teva entrada de PyConES per poder acreditar-te a l'arribada.</p>
+            </div>
+
+            <!-- Botó per instal·lar l'App -->
+            <button id="install-button" class="hidden mt-4 w-full bg-primary hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-4 px-6 rounded-[24px] transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-500/30">
+                <i data-lucide="download" class="w-5 h-5"></i>
+                Instal·lar com a App
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Barra de Navegació Flotant (Pill Shape) -->
+    <div class="fixed bottom-6 left-0 right-0 px-6 z-50 pointer-events-none pb-safe">
+        <nav class="bg-slate-900 rounded-full shadow-2xl shadow-slate-900/30 p-2 flex justify-between items-center max-w-[360px] mx-auto pointer-events-auto">
+            <button onclick="switchTab('ara')" id="nav-ara" class="w-14 h-14 flex items-center justify-center transition-all bg-primary text-white rounded-full">
+                <i data-lucide="home" class="w-6 h-6"></i>
+            </button>
+            <button onclick="switchTab('horari')" id="nav-horari" class="w-14 h-14 flex items-center justify-center transition-all text-slate-400 rounded-full">
+                <i data-lucide="train-front" class="w-6 h-6"></i>
+            </button>
+            <button onclick="switchTab('programa')" id="nav-programa" class="w-14 h-14 flex items-center justify-center transition-all text-slate-400 rounded-full">
+                <i data-lucide="mic" class="w-6 h-6"></i>
+            </button>
+            <button onclick="switchTab('info')" id="nav-info" class="w-14 h-14 flex items-center justify-center transition-all text-slate-400 rounded-full">
+                <i data-lucide="info" class="w-6 h-6"></i>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Botó Flotant Telegram (FAB) -->
+    <a href="https://t.me/gisce_pycones26_placeholder" target="_blank" rel="noopener noreferrer" class="fixed bottom-[100px] right-6 bg-[#0088cc] hover:bg-[#0077b5] text-white p-4 rounded-full shadow-xl shadow-blue-900/20 z-40 transition-transform transform hover:scale-105 active:scale-95 flex items-center justify-center touch-manipulation">
+        <i data-lucide="send" class="w-6 h-6"></i>
+    </a>
+
+    <script>
+        // +01:00 assegura horari CET peninsular
+        const TZ = '+01:00'; 
+        
+        const itinerary = [
+            // DISSABTE 7 DE NOVEMBRE
+            {
+                start: new Date(`2026-11-07T07:00:00${TZ}`), end: new Date(`2026-11-07T07:14:00${TZ}`),
+                title: 'Trobada vestíbul', location: 'Estació Girona (NO AVE)', day: 'Dissabte 7', icon: 'map-pin',
+                mapLink: 'https://maps.google.com/?q=Estació+de+Girona'
+            },
+            {
+                start: new Date(`2026-11-07T07:14:00${TZ}`), end: new Date(`2026-11-07T08:34:00${TZ}`),
+                title: 'Tren a Barcelona', location: 'Passeig de Gràcia', day: 'Dissabte 7', icon: 'train-front',
+                mapLink: 'https://maps.google.com/?q=Estació+Passeig+de+Gràcia+Barcelona'
+            },
+            {
+                start: new Date(`2026-11-07T08:34:00${TZ}`), end: new Date(`2026-11-07T09:30:00${TZ}`),
+                title: 'Acreditacions', location: 'UB Gran Via 585', day: 'Dissabte 7', icon: 'ticket',
+                mapLink: 'https://maps.google.com/?q=Universitat+de+Barcelona+Gran+Via+585+Barcelona'
+            },
+            {
+                start: new Date(`2026-11-07T09:30:00${TZ}`), end: new Date(`2026-11-07T10:20:00${TZ}`),
+                title: 'Keynote Molina-Contreras', location: 'Paranimf UB', day: 'Dissabte 7', icon: 'mic',
+                mapLink: 'https://maps.google.com/?q=Universitat+de+Barcelona+Gran+Via+585+Barcelona'
+            },
+            {
+                start: new Date(`2026-11-07T10:20:00${TZ}`), end: new Date(`2026-11-07T16:45:00${TZ}`),
+                title: 'Xerrades i pauses', location: 'Sales UB', day: 'Dissabte 7', icon: 'code',
+                mapLink: 'https://maps.google.com/?q=Universitat+de+Barcelona+Gran+Via+585+Barcelona'
+            },
+            {
+                start: new Date(`2026-11-07T16:45:00${TZ}`), end: new Date(`2026-11-07T17:35:00${TZ}`),
+                title: 'Keynote Mia Bajić', location: 'Paranimf UB', day: 'Dissabte 7', icon: 'mic',
+                mapLink: 'https://maps.google.com/?q=Universitat+de+Barcelona+Gran+Via+585+Barcelona'
+            },
+            {
+                start: new Date(`2026-11-07T17:35:00${TZ}`), end: new Date(`2026-11-07T18:05:00${TZ}`),
+                title: 'Xerrades llampec', location: 'Paranimf UB', day: 'Dissabte 7', icon: 'zap',
+                mapLink: 'https://maps.google.com/?q=Universitat+de+Barcelona+Gran+Via+585+Barcelona'
+            },
+            {
+                start: new Date(`2026-11-07T18:05:00${TZ}`), end: new Date(`2026-11-07T20:45:00${TZ}`),
+                title: 'Check-in i temps lliure', location: 'Hotel Midmost', day: 'Dissabte 7', icon: 'hotel',
+                mapLink: 'https://maps.google.com/?q=Hotel+Midmost+Carrer+de+Pelai+14+Barcelona'
+            },
+            {
+                start: new Date(`2026-11-07T20:45:00${TZ}`), end: new Date(`2026-11-07T23:00:00${TZ}`),
+                title: 'Sopar Quesarium', location: 'Carrer de Muntaner, 7', day: 'Dissabte 7', icon: 'utensils',
+                mapLink: 'https://maps.google.com/?q=Quesarium+Carrer+de+Muntaner+7+Barcelona'
+            },
+            
+            // DIUMENGE 8 DE NOVEMBRE
+            {
+                start: new Date(`2026-11-08T08:00:00${TZ}`), end: new Date(`2026-11-08T10:00:00${TZ}`),
+                title: 'Esmorzar i Check-out', location: 'Hotel Midmost', day: 'Diumenge 8', icon: 'backpack',
+                mapLink: 'https://maps.google.com/?q=Hotel+Midmost+Carrer+de+Pelai+14+Barcelona'
+            },
+            {
+                start: new Date(`2026-11-08T10:00:00${TZ}`), end: new Date(`2026-11-08T10:50:00${TZ}`),
+                title: 'Keynote Diego Russo', location: 'Paranimf UB', day: 'Diumenge 8', icon: 'mic',
+                mapLink: 'https://maps.google.com/?q=Universitat+de+Barcelona+Gran+Via+585+Barcelona'
+            },
+            {
+                start: new Date(`2026-11-08T10:50:00${TZ}`), end: new Date(`2026-11-08T16:20:00${TZ}`),
+                title: 'Xerrades i pauses', location: 'Sales UB', day: 'Diumenge 8', icon: 'code',
+                mapLink: 'https://maps.google.com/?q=Universitat+de+Barcelona+Gran+Via+585+Barcelona'
+            },
+            {
+                start: new Date(`2026-11-08T16:20:00${TZ}`), end: new Date(`2026-11-08T17:00:00${TZ}`),
+                title: 'Xerrades llampec finals', location: 'Paranimf UB', day: 'Diumenge 8', icon: 'zap',
+                mapLink: 'https://maps.google.com/?q=Universitat+de+Barcelona+Gran+Via+585+Barcelona'
+            },
+            {
+                start: new Date(`2026-11-08T17:00:00${TZ}`), end: new Date(`2026-11-08T18:24:00${TZ}`),
+                title: 'Cap a Pg de Gràcia (Equipatge)', location: 'Direcció estació', day: 'Diumenge 8', icon: 'footprints',
+                mapLink: 'https://maps.google.com/?q=Estació+Passeig+de+Gràcia+Barcelona'
+            },
+            {
+                start: new Date(`2026-11-08T18:24:00${TZ}`), end: new Date(`2026-11-08T19:42:00${TZ}`),
+                title: 'Tren tornada a Girona', location: 'Passeig de Gràcia', day: 'Diumenge 8', icon: 'train-front',
+                mapLink: 'https://maps.google.com/?q=Estació+Passeig+de+Gràcia+Barcelona'
+            }
+        ];
+
+        // Programa Complet de PyConES 2026 (Exclusivament Dissabte 7 i Diumenge 8)
+        const pyconProgram = [
+            // DISSABTE 7 DE NOVEMBRE
+            {
+                dayId: 'ds',
+                dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T08:30:00${TZ}`),
+                end: new Date(`2026-11-07T09:00:00${TZ}`),
+                title: 'Acreditacions',
+                type: 'single',
+                icon: 'ticket',
+                room: 'Hall UB'
+            },
+            {
+                dayId: 'ds',
+                dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T09:00:00${TZ}`),
+                end: new Date(`2026-11-07T09:30:00${TZ}`),
+                title: "Apertura de l'esdeveniment",
+                type: 'single',
+                icon: 'flag',
+                room: 'Paranimf Perk'
+            },
+            {
+                dayId: 'ds',
+                dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T09:30:00${TZ}`),
+                end: new Date(`2026-11-07T10:20:00${TZ}`),
+                title: 'Keynote: El bosque no estaba vacío: IA, Ciencia y los límites que no conocemos',
+                speaker: 'Maria Jose Molina-Contreras',
+                type: 'keynote',
+                icon: 'mic',
+                room: 'Paranimf Perk'
+            },
+            {
+                dayId: 'ds',
+                dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T10:20:00${TZ}`),
+                end: new Date(`2026-11-07T10:50:00${TZ}`),
+                title: 'Pausa per al cafè',
+                type: 'break',
+                icon: 'coffee'
+            },
+            {
+                dayId: 'ds',
+                dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T10:50:00${TZ}`),
+                end: new Date(`2026-11-07T11:30:00${TZ}`),
+                title: 'Bloc de Xerrades Matí 1',
+                type: 'track',
+                icon: 'presentation',
+                sessions: [
+                    { title: 'Lazy imports and the art of interpreter procrastination', speaker: 'Brittany Reynoso', room: 'Paranimf Perk' },
+                    { title: 'Stop firefighting: practical observability for Python APIs, workers, and scheduled jobs', speaker: 'Daria Korsakova', room: 'Aula Magna' },
+                    { title: 'Odyssey: De contributor a maintainer', speaker: 'Gema Parreño', room: 'Aula B5 - Nagarro' },
+                    { title: 'Diseñando arquitecturas reales. Cuando tu sistema no necesita escalar a un millón de usuarios', speaker: 'Juan Rodriguez Monti', room: 'Aula B3 - Manychat' },
+                    { title: '¿Qué hueso es? Clasificación zooarqueológica con Python, Machine Learning y datos sintéticos', speaker: 'Francisco Javier Luengo Gutiérrez', room: 'Aula B7 - OLX' },
+                    { title: 'Hackathon (10:50 - 17:30)', speaker: 'Comunitat', room: 'Aula IA' }
+                ]
+            },
+            {
+                dayId: 'ds',
+                dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T11:40:00${TZ}`),
+                end: new Date(`2026-11-07T12:20:00${TZ}`),
+                title: 'Bloc de Xerrades Matí 2',
+                type: 'track',
+                icon: 'presentation',
+                sessions: [
+                    { title: '¿Puede la IA construir una integración por sí sola? Lo bueno, lo malo y lo feo', speaker: 'Alberto Maldonado', room: 'Paranimf Perk' },
+                    { title: "What I've Learned Maintaining the MCP Python SDK", speaker: 'Marcelo Trylesinski', room: 'Aula Magna' },
+                    { title: 'From code to consequences: Modelling for policy', speaker: 'Eloisa Perez Bennetts', room: 'Aula B5 - Nagarro' },
+                    { title: 'Tu CI está perdiendo el tiempo (y Test Impact Analysis lo sabe)', speaker: 'Federico', room: 'Aula B3 - Manychat' },
+                    { title: 'Desenredando la Web: Protocolos Alternativos con Python para un Internet Más Tranquilo', speaker: 'Alan Velasco', room: 'Aula B7 - OLX' }
+                ]
+            },
+            {
+                dayId: 'ds',
+                dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T12:30:00${TZ}`),
+                end: new Date(`2026-11-07T13:10:00${TZ}`),
+                title: 'Bloc de Xerrades Migdia',
+                type: 'track',
+                icon: 'presentation',
+                sessions: [
+                    { title: 'Using Python to reveal the faint side of galaxy clusters', speaker: 'Zahra Sharbaf', room: 'Paranimf Perk' },
+                    { title: 'uv: organiza tus proyectos Python como si supieras lo que haces', speaker: 'Lino Figueroa', room: 'Aula Magna' },
+                    { title: 'De Scripts a Autodidactas: Construyendo Agentes de IA que se Mejoran a Sí Mismos', speaker: 'Juan Carlos González-Avella', room: 'Aula B5 - Nagarro' },
+                    { title: 'De caos a control: cómo guiar modelos de difusión con Python', speaker: 'Mai Giménez', room: 'Aula B3 - Manychat' },
+                    { title: 'Datanomy: Understanding the Anatomy of Arrow and Parquet', speaker: 'Raúl Cumplido Dominguez', room: 'Aula B7 - OLX' }
+                ]
+            },
+            {
+                dayId: 'ds',
+                dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T13:10:00${TZ}`),
+                end: new Date(`2026-11-07T14:40:00${TZ}`),
+                title: 'Pausa per dinar',
+                type: 'break',
+                icon: 'utensils'
+            },
+            {
+                dayId: 'ds',
+                dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T14:40:00${TZ}`),
+                end: new Date(`2026-11-07T15:25:00${TZ}`),
+                title: 'Mesa redonda: Tecnología en evolución: pasado, presente y futuro',
+                speaker: 'Gessica Paniagua, Nuria Pujol, Johanna Sánchez, Muriel Rovira-Esteva',
+                type: 'keynote',
+                icon: 'users',
+                room: 'Paranimf Perk'
+            },
+            {
+                dayId: 'ds',
+                dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T15:35:00${TZ}`),
+                end: new Date(`2026-11-07T16:15:00${TZ}`),
+                title: 'Bloc de Xerrades Tarda',
+                type: 'track',
+                icon: 'presentation',
+                sessions: [
+                    { title: 'Prevención de incendios forestales con Python', speaker: 'Leyre Labarga, Alberto Labarga', room: 'Paranimf Perk' },
+                    { title: 'Análisis forense con Python: evidencia digital explicable con agentes de IA', speaker: 'Carolina Passarello', room: 'Aula Magna' },
+                    { title: 'SIGIL4Py: Harmonic Integration for Large-Scale Python Systems', speaker: 'Jara Juana Bermejo Vega', room: 'Aula B5 - Nagarro' },
+                    { title: '¿Qué viene después de Rust en el ecosistema Python?', speaker: 'Cristian Maureira-Fredes', room: 'Aula B3 - Manychat' },
+                    { title: 'PydanticAI: Building Agents That Survive Production', speaker: 'Mariano Semeiman', room: 'Aula B7 - OLX' }
+                ]
+            },
+            {
+                dayId: 'ds',
+                dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T16:15:00${TZ}`),
+                end: new Date(`2026-11-07T16:45:00${TZ}`),
+                title: 'Pausa per al cafè',
+                type: 'break',
+                icon: 'coffee'
+            },
+            {
+                dayId: 'ds',
+                dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T16:45:00${TZ}`),
+                end: new Date(`2026-11-07T17:35:00${TZ}`),
+                title: 'Keynote: Mia Bajić',
+                speaker: 'Mia Bajić',
+                type: 'keynote',
+                icon: 'mic',
+                room: 'Paranimf Perk'
+            },
+            {
+                dayId: 'ds',
+                dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T17:35:00${TZ}`),
+                end: new Date(`2026-11-07T18:05:00${TZ}`),
+                title: 'Charlas relámpago I',
+                type: 'single',
+                icon: 'zap',
+                room: 'Paranimf Perk'
+            },
+            {
+                dayId: 'ds',
+                dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T18:15:00${TZ}`),
+                end: new Date(`2026-11-07T18:30:00${TZ}`),
+                title: 'Asamblea Python España / Post-evento',
+                type: 'single',
+                icon: 'users',
+                room: 'Paranimf Perk'
+            },
+
+            // DIUMENGE 8 DE NOVEMBRE
+            {
+                dayId: 'dg',
+                dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T09:30:00${TZ}`),
+                end: new Date(`2026-11-08T10:00:00${TZ}`),
+                title: 'Acreditacions',
+                type: 'single',
+                icon: 'ticket',
+                room: 'Hall UB'
+            },
+            {
+                dayId: 'dg',
+                dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T10:00:00${TZ}`),
+                end: new Date(`2026-11-08T10:50:00${TZ}`),
+                title: 'Keynote: Ultreia: ¿Cuándo una idea pasa a ser Python?',
+                speaker: 'Diego Russo',
+                type: 'keynote',
+                icon: 'mic',
+                room: 'Paranimf Perk'
+            },
+            {
+                dayId: 'dg',
+                dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T10:50:00${TZ}`),
+                end: new Date(`2026-11-08T11:20:00${TZ}`),
+                title: 'Pausa per al cafè',
+                type: 'break',
+                icon: 'coffee'
+            },
+            {
+                dayId: 'dg',
+                dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T11:20:00${TZ}`),
+                end: new Date(`2026-11-08T12:00:00${TZ}`),
+                title: 'Bloc de Xerrades Matí 1',
+                type: 'track',
+                icon: 'presentation',
+                sessions: [
+                    { title: 'Medicina personalizada: cómo el 0.1% de tu ADN puede cambiarlo todo', speaker: 'Helena Gómez Pozo, Marina Maro López', room: 'Paranimf Perk' },
+                    { title: 'Diseñar para el fallo en tiempo real: qué pasa cuando tu LLM se equivoca en el peor momento', speaker: 'Almudena Zhou Ramirez, Tamara Kadyrova', room: 'Aula Magna' },
+                    { title: 'Películas y vídeos más accesibles con Python (y un poco de IA)', speaker: 'Ramón Corominas', room: 'Aula B5 - Nagarro' },
+                    { title: 'El texto no es texto: historia de las strings en Python', speaker: 'Daniel Hervás', room: 'Aula B3 - Manychat' },
+                    { title: 'Securing High-Risk Django Applications: Lessons from the Payment Domain', speaker: 'Dmytro Khmelenko', room: 'Aula B7 - OLX' }
+                ]
+            },
+            {
+                dayId: 'dg',
+                dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T12:10:00${TZ}`),
+                end: new Date(`2026-11-08T12:50:00${TZ}`),
+                title: 'Bloc de Xerrades Matí 2',
+                type: 'track',
+                icon: 'presentation',
+                sessions: [
+                    { title: 'La amenaza fantasma: De GitHub a la trinchera', speaker: 'Jimena Bermúdez', room: 'Paranimf Perk' },
+                    { title: 'Ableton, Claude y Python son Las Supernenas de la música. ¿Cuál es la sustancia X?', speaker: 'Clara de Luna, robmz', room: 'Aula Magna' },
+                    { title: 'Python Meets Hardware: The Missing Survival Guide', speaker: 'Carlos Pereira Atencio', room: 'Aula B5 - Nagarro' },
+                    { title: 'Surviving LLM Traffic Spikes: Routing, Rate Limits, and Failover in Python', speaker: 'Sergi Porta', room: 'Aula B3 - Manychat' },
+                    { title: 'Zero-Copy Data Sharing Between Python and Rust with PyO3 and Arrow', speaker: 'Allen Y', room: 'Aula B7 - OLX' }
+                ]
+            },
+            {
+                dayId: 'dg',
+                dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T12:50:00${TZ}`),
+                end: new Date(`2026-11-08T14:20:00${TZ}`),
+                title: 'Pausa per dinar',
+                type: 'break',
+                icon: 'utensils'
+            },
+            {
+                dayId: 'dg',
+                dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T14:20:00${TZ}`),
+                end: new Date(`2026-11-08T15:00:00${TZ}`),
+                title: 'Bloc de Xerrades Tarda 1',
+                type: 'track',
+                icon: 'presentation',
+                sessions: [
+                    { title: 'Charla invitada', speaker: 'Ponente convidat', room: 'Paranimf Perk' },
+                    { title: 'Cómo he automatizado la preparación de mis planes operativos de vuelo', speaker: 'Marta Gomez Macias', room: 'Aula Magna' },
+                    { title: 'Thinking AI is sentient is like seeing Jesus on toasts', speaker: 'Cheuk Ting Ho', room: 'Aula B5 - Nagarro' },
+                    { title: 'Cómo convertir tu aeropuerto más cercano en una app del tiempo', speaker: 'Mauricio', room: 'Aula B3 - Manychat' },
+                    { title: 'Más allá del Global Interpreter Lock: Exprimiendo algoritmos genómicos con Numba, Cython y CUDA', speaker: 'Pablo Oca Galeano', room: 'Aula B7 - OLX' }
+                ]
+            },
+            {
+                dayId: 'dg',
+                dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T15:10:00${TZ}`),
+                end: new Date(`2026-11-08T15:50:00${TZ}`),
+                title: 'Bloc de Xerrades Tarda 2',
+                type: 'track',
+                icon: 'presentation',
+                sessions: [
+                    { title: 'Tachyon: el profiler por muestreo de Python 3.15 es más rápido que tu código', speaker: 'Pablo Galindo Salgado', room: 'Paranimf Perk' },
+                    { title: 'Questioning the Mathematical Foundations of AI', speaker: 'Dr Ana Rojo-Echeburua', room: 'Aula Magna' },
+                    { title: '10 Years of Lessons Learned Maintaining Conan, a Critical Python Project', speaker: 'Diego', room: 'Aula B5 - Nagarro' },
+                    { title: '¿Qué pasa realmente cuando haces "python my_app.py"? Descubriendo las entrañas del lenguaje', speaker: 'Javier Alonso', room: 'Aula B3 - Manychat' },
+                    { title: 'Ataques Simulados, Detección Real: Python, Elastic Search y Caldera', speaker: 'Joaquin Rayado, Lucciano Sileo', room: 'Aula B7 - OLX' }
+                ]
+            },
+            {
+                dayId: 'dg',
+                dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T15:50:00${TZ}`),
+                end: new Date(`2026-11-08T16:20:00${TZ}`),
+                title: 'Pausa per al cafè',
+                type: 'break',
+                icon: 'coffee'
+            },
+            {
+                dayId: 'dg',
+                dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T16:20:00${TZ}`),
+                end: new Date(`2026-11-08T17:00:00${TZ}`),
+                title: 'Charlas relámpago II',
+                type: 'single',
+                icon: 'zap',
+                room: 'Paranimf Perk'
+            },
+            {
+                dayId: 'dg',
+                dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T17:00:00${TZ}`),
+                end: new Date(`2026-11-08T17:30:00${TZ}`),
+                title: 'Cierre del evento + show especial',
+                type: 'single',
+                icon: 'sparkles',
+                room: 'Paranimf Perk'
+            }
+        ];
+
+        // Formatters
+        const timeFmt = new Intl.DateTimeFormat('ca-ES', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Madrid' });
+        const dateFmt = new Intl.DateTimeFormat('ca-ES', { weekday: 'long', day: 'numeric', month: 'short', timeZone: 'Europe/Madrid' });
+
+        function updateClock() {
+            const now = new Date();
+            
+            // Rellotge
+            const clockEl = document.getElementById('huge-clock');
+            if (clockEl) clockEl.textContent = timeFmt.format(now);
+            
+            // Data
+            const dateEl = document.getElementById('top-date');
+            if (dateEl) dateEl.textContent = dateFmt.format(now);
+            
+            return now;
+        }
+
+        function updateApp() {
+            const now = new Date();
+            
+            let activeEvent = null;
+            let cardState = ''; // 'now', 'next', 'done'
+
+            const firstEvent = itinerary[0];
+            const lastEvent = itinerary[itinerary.length - 1];
+
+            if (now < firstEvent.start) {
+                activeEvent = firstEvent;
+                cardState = 'next';
+                document.getElementById('card-heading').textContent = "Pròximament";
+            } else if (now > lastEvent.end) {
+                activeEvent = lastEvent;
+                cardState = 'done';
+                document.getElementById('card-heading').textContent = "Viatge Finalitzat";
+            } else {
+                activeEvent = itinerary.find(e => now >= e.start && now < e.end);
+                if (activeEvent) {
+                    cardState = 'now';
+                    document.getElementById('card-heading').textContent = "Ara mateix";
+                } else {
+                    activeEvent = itinerary.find(e => e.start > now);
+                    cardState = 'next';
+                    document.getElementById('card-heading').textContent = "Després";
+                }
+            }
+
+            // Dibuixar la targeta principal
+            const container = document.getElementById('active-card-container');
+            if (container && activeEvent) {
+                const isNow = cardState === 'now';
+                const isDone = cardState === 'done';
+                const isNext = cardState === 'next';
+                
+                let bgClass = 'bg-white shadow-slate-200/60 border border-slate-100';
+                let textClass = 'text-slate-800';
+                let subTextClass = 'text-slate-500';
+                let iconBgClass = 'bg-blue-50 text-primary';
+                let pillClass = 'bg-slate-100 text-slate-600';
+                
+                // Tant si és l'activitat en curs (Ara) com la propera (Pròximament / Després), s'aplica el blau primari
+                if (isNow || isNext) {
+                    bgClass = 'bg-primary shadow-blue-500/30';
+                    textClass = 'text-white';
+                    subTextClass = 'text-blue-100';
+                    iconBgClass = 'bg-white/20 text-white';
+                    pillClass = 'bg-white/20 text-white';
+                } else if (isDone) {
+                    bgClass = 'bg-slate-100 shadow-none border border-slate-200';
+                    iconBgClass = 'bg-slate-200 text-slate-500';
+                    pillClass = 'bg-slate-200 text-slate-500';
+                }
+
+                container.innerHTML = `
+                    <div class="${bgClass} rounded-[32px] p-6 shadow-xl relative overflow-hidden transition-all">
+                        ${(isNow || isNext) ? '<div class="absolute -right-12 -top-12 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>' : ''}
+                        
+                        <div class="flex justify-between items-start mb-6 relative z-10">
+                            <div class="${iconBgClass} p-3 rounded-[20px]">
+                                <i data-lucide="${activeEvent.icon}" class="w-7 h-7"></i>
+                            </div>
+                            <span class="${pillClass} text-xs px-3.5 py-1.5 rounded-full font-bold tracking-wide">
+                                ${timeFmt.format(activeEvent.start)} - ${timeFmt.format(activeEvent.end)}
+                            </span>
+                        </div>
+                        <div class="relative z-10">
+                            <h3 class="text-[26px] font-extrabold ${textClass} leading-tight mb-2 tracking-tight">${activeEvent.title}</h3>
+                            ${activeEvent.mapLink ? 
+                                `<a href="${activeEvent.mapLink}" target="_blank" class="inline-flex items-center gap-1.5 ${subTextClass} hover:opacity-80 transition-opacity">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    <span class="font-medium text-[15px] underline-offset-4 underline decoration-current/30">${activeEvent.location}</span>
+                                </a>` 
+                                : 
+                                `<div class="flex items-center gap-1.5 ${subTextClass}">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    <span class="font-medium text-[15px]">${activeEvent.location}</span>
+                                </div>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Lògica del widget 'Pròximament a PyConES' (Dissabte 7 i Diumenge 8)
+            const upcomingProgramContainer = document.getElementById('upcoming-program-container');
+            if (upcomingProgramContainer) {
+                let futureSlots = pyconProgram.filter(slot => slot.end > now);
+                // Si encara no ha començat el congrés o estem fora de les dates, agafem els primers del dissabte
+                if (futureSlots.length === 0 && now < pyconProgram[0].start) {
+                    futureSlots = pyconProgram;
+                }
+
+                const nextSlots = futureSlots.slice(0, 2);
+
+                if (nextSlots.length > 0) {
+                    let upcomingHtml = '';
+                    nextSlots.forEach(slot => {
+                        const timeRange = `${timeFmt.format(slot.start)} - ${timeFmt.format(slot.end)}`;
+                        let subtitleHtml = '';
+                        
+                        if (slot.sessions && slot.sessions.length > 0) {
+                            subtitleHtml = `
+                                <div class="mt-2 flex flex-col gap-1.5">
+                                    <span class="text-xs font-semibold text-primary">${slot.sessions.length} sessions en paral·lel disponibles:</span>
+                                    ${slot.sessions.slice(0, 2).map(s => `
+                                        <div class="text-xs text-slate-600 bg-slate-50 p-2 rounded-xl flex items-center justify-between gap-2">
+                                            <span class="font-medium truncate">${s.title}</span>
+                                            <span class="font-bold text-primary shrink-0 bg-blue-50 px-1.5 py-0.5 rounded text-[11px]">${s.room.split(' - ')[0]}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            `;
+                        } else if (slot.speaker) {
+                            subtitleHtml = `<p class="text-xs text-slate-500 font-medium mt-1 flex items-center gap-1.5"><i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i> ${slot.speaker} · <span class="text-primary font-semibold">${slot.room || ''}</span></p>`;
+                        } else if (slot.room) {
+                            subtitleHtml = `<p class="text-xs text-slate-500 font-medium mt-1 flex items-center gap-1.5"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400"></i> ${slot.room}</p>`;
+                        }
+
+                        upcomingHtml += `
+                            <div class="bg-white rounded-[26px] p-5 shadow-sm shadow-slate-200/50 border border-slate-100">
+                                <div class="flex items-center justify-between gap-2 mb-2">
+                                    <span class="inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-blue-50 px-3 py-1 rounded-full uppercase tracking-wider">
+                                        <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                                        ${slot.dayLabel.split(' ')[0]} ${slot.dayLabel.split(' ')[1]} · ${timeRange}
+                                    </span>
+                                    <i data-lucide="${slot.icon || 'presentation'}" class="w-5 h-5 text-slate-400"></i>
+                                </div>
+                                <h3 class="font-bold text-slate-800 text-base leading-snug">${slot.title}</h3>
+                                ${subtitleHtml}
+                            </div>
+                        `;
+                    });
+                    upcomingProgramContainer.innerHTML = upcomingHtml;
+                } else {
+                    upcomingProgramContainer.innerHTML = `
+                        <div class="bg-white rounded-[24px] p-5 text-center text-slate-500 font-medium border border-slate-200 flex items-center justify-center gap-2">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500"></i>
+                            Totes les sessions del cap de setmana han finalitzat.
+                        </div>
+                    `;
+                }
+            }
+
+            lucide.createIcons();
+        }
+
+        function generateFullSchedule() {
+            const container = document.getElementById('full-schedule-content');
+            if (!container) return;
+            
+            const days = {};
+            itinerary.forEach(ev => {
+                if (!days[ev.day]) days[ev.day] = [];
+                days[ev.day].push(ev);
+            });
+
+            let html = '';
+            for (const [dayName, events] of Object.entries(days)) {
+                html += `
+                    <section class="mb-2">
+                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 px-1">${dayName}</h3>
+                        <div class="flex flex-col gap-4">
+                `;
+                
+                events.forEach(ev => {
+                    html += `
+                        <div class="bg-white rounded-[28px] p-5 shadow-sm shadow-slate-200/50 border border-slate-100 flex gap-5">
+                            <div class="bg-slate-50 p-3.5 rounded-[20px] h-fit shrink-0">
+                                <i data-lucide="${ev.icon}" class="w-6 h-6 text-primary"></i>
+                            </div>
+                            <div class="flex-1 pt-1">
+                                <div class="text-xs font-black tracking-wide text-primary mb-1.5 uppercase">
+                                    ${timeFmt.format(ev.start)} - ${timeFmt.format(ev.end)}
+                                </div>
+                                <h4 class="text-slate-800 font-bold text-lg leading-tight mb-1.5">${ev.title}</h4>
+                                ${ev.mapLink ? `
+                                    <a href="${ev.mapLink}" target="_blank" class="text-slate-500 hover:text-primary text-sm font-medium inline-flex items-center gap-1 transition-colors">
+                                        <i data-lucide="map-pin" class="w-3.5 h-3.5 shrink-0"></i>
+                                        <span class="underline underline-offset-2">${ev.location}</span>
+                                    </a>
+                                ` : `
+                                    <p class="text-slate-500 text-sm font-medium flex items-start gap-1">
+                                        <i data-lucide="map-pin" class="w-3.5 h-3.5 mt-0.5 shrink-0"></i>
+                                        ${ev.location}
+                                    </p>
+                                `}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `</div></section>`;
+            }
+            container.innerHTML = html;
+        }
+
+        let currentPyconDay = 'ds';
+
+        function switchPyconDay(day) {
+            currentPyconDay = day;
+            const dsBtn = document.getElementById('day-tab-ds');
+            const dgBtn = document.getElementById('day-tab-dg');
+
+            if (day === 'ds') {
+                dsBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-sm transition-all bg-white text-slate-800 shadow-sm flex items-center justify-center gap-1.5";
+                dgBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-sm transition-all text-slate-500 hover:text-slate-800 flex items-center justify-center gap-1.5";
+            } else {
+                dgBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-sm transition-all bg-white text-slate-800 shadow-sm flex items-center justify-center gap-1.5";
+                dsBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-sm transition-all text-slate-500 hover:text-slate-800 flex items-center justify-center gap-1.5";
+            }
+            
+            renderPyconProgram();
+        }
+
+        function renderPyconProgram() {
+            const container = document.getElementById('pycon-program-content');
+            if (!container) return;
+
+            const slots = pyconProgram.filter(slot => slot.dayId === currentPyconDay);
+            let html = '';
+
+            slots.forEach(slot => {
+                const timeString = `${timeFmt.format(slot.start)} - ${timeFmt.format(slot.end)}`;
+                let innerContent = '';
+
+                if (slot.sessions && slot.sessions.length > 0) {
+                    innerContent = `<div class="mt-4 flex flex-col gap-2.5 border-t border-slate-100 pt-3">`;
+                    slot.sessions.forEach(sess => {
+                        innerContent += `
+                            <div class="bg-slate-50 hover:bg-slate-100 rounded-2xl p-4 transition-colors">
+                                <h5 class="text-sm font-bold text-slate-800 leading-snug mb-1.5">${sess.title}</h5>
+                                <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 font-medium">
+                                    ${sess.speaker ? `<span class="flex items-center gap-1"><i data-lucide="user" class="w-3.5 h-3.5"></i> ${sess.speaker}</span>` : ''}
+                                    ${sess.room ? `<span class="flex items-center gap-1 text-primary bg-blue-50 px-2.5 py-0.5 rounded-full font-semibold"><i data-lucide="map-pin" class="w-3 h-3"></i> ${sess.room}</span>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    innerContent += `</div>`;
+                } else if (slot.speaker || slot.room) {
+                    innerContent = `
+                        <div class="flex flex-wrap items-center gap-2.5 mt-2.5 text-xs text-slate-500 font-medium">
+                            ${slot.speaker ? `<span class="flex items-center gap-1"><i data-lucide="user" class="w-3.5 h-3.5"></i> ${slot.speaker}</span>` : ''}
+                            ${slot.room ? `<span class="flex items-center gap-1 text-primary bg-blue-50 px-2.5 py-0.5 rounded-full font-semibold"><i data-lucide="map-pin" class="w-3 h-3"></i> ${slot.room}</span>` : ''}
+                        </div>
+                    `;
+                }
+
+                const isBreak = slot.type === 'break';
+                const bgStyle = isBreak ? 'bg-slate-100/70 border-dashed border-slate-200' : 'bg-white shadow-sm border border-slate-100';
+                const iconColor = isBreak ? 'text-slate-400' : 'text-primary';
+
+                html += `
+                    <div class="${bgStyle} rounded-[28px] p-5">
+                        <div class="flex items-start gap-4">
+                            <div class="bg-slate-50 p-3 rounded-2xl shrink-0">
+                                <i data-lucide="${slot.icon || 'presentation'}" class="w-5 h-5 ${iconColor}"></i>
+                            </div>
+                            <div class="flex-1">
+                                <span class="text-xs font-black text-primary tracking-wide uppercase">${timeString}</span>
+                                <h4 class="font-bold text-slate-800 text-base leading-snug mt-0.5">${slot.title}</h4>
+                                ${innerContent}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        // Navegació de pestanyes
+        function switchTab(tabId) {
+            ['ara', 'horari', 'programa', 'info'].forEach(id => {
+                const el = document.getElementById('tab-' + id);
+                if (el) el.classList.add('hidden');
+                
+                const btn = document.getElementById('nav-' + id);
+                if (btn) {
+                    btn.classList.remove('bg-primary', 'text-white');
+                    btn.classList.add('text-slate-400');
+                }
+            });
+            
+            const targetEl = document.getElementById('tab-' + tabId);
+            if (targetEl) targetEl.classList.remove('hidden');
+            
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-400');
+                activeBtn.classList.add('bg-primary', 'text-white');
+            }
+            
+            lucide.createIcons();
+            const mainView = document.getElementById('main-view');
+            if (mainView) mainView.scrollTo(0, 0);
+        }
+
+        // Inicialització
+        generateFullSchedule();
+        renderPyconProgram();
+        updateClock();
+        updateApp();
+        
+        setInterval(updateClock, 1000);
+        setInterval(updateApp, 30000);
+
+        // Control de la cortina de benvinguda (es tanca sola o tocant la pantalla)
+        let curtainDismissed = false;
+        function dismissCurtain() {
+            if (curtainDismissed) return;
+            curtainDismissed = true;
+            const curtain = document.getElementById('welcome-curtain');
+            if (curtain) {
+                curtain.classList.add('curtain-exit');
+                setTimeout(() => {
+                    curtain.style.display = 'none';
+                }, 750);
+            }
+        }
+
+        // Tanca la cortina automàticament després de 1.8 segons o amb un toc
+        setTimeout(dismissCurtain, 1800);
+        
+        // PWA Logica Instal·lació
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-button');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (installBtn) installBtn.classList.remove('hidden');
+        });
+
+        if (installBtn) {
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        installBtn.classList.add('hidden');
+                    }
+                    deferredPrompt = null;
+                }
+            });
+        }
+
+        const manifestData = {
+            "name": "PyConES 26",
+            "short_name": "PyConES",
+            "start_url": ".",
+            "display": "standalone",
+            "background_color": "#f8fafc",
+            "theme_color": "#f8fafc",
+            "icons": [{
+                "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232974CA'/><text y='68' x='20' font-family='sans-serif' font-weight='900' font-size='42' fill='white'>Py</text></svg>",
+                "sizes": "192x192",
+                "type": "image/svg+xml"
+            }]
+        };
+        const blobManifest = new Blob([JSON.stringify(manifestData)], {type: 'application/manifest+json'});
+        document.getElementById('manifest-link').href = URL.createObjectURL(blobManifest);
+
+        if ('serviceWorker' in navigator) {
+            const swCode = `self.addEventListener('fetch', function(e) {});`;
+            const swBlob = new Blob([swCode], {type: 'application/javascript'});
+            navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+        }
+    </script>
+</body>
+</html>
