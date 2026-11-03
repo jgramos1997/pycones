@@ -276,6 +276,46 @@
         </div>
     </div>
 
+    <!-- Modal d'instruccions per a Android (si s'obre des de Telegram o sense prompt directe) -->
+    <div id="android-modal" class="fixed inset-0 z-[120] bg-slate-900/60 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-4">
+        <div class="bg-white rounded-[32px] p-6 w-full max-w-sm shadow-2xl flex flex-col gap-5 fade-in">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="bg-blue-50 p-2.5 rounded-2xl text-primary">
+                        <i data-lucide="smartphone" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-extrabold text-lg text-slate-800">Instal·lar a Android</h3>
+                </div>
+                <button onclick="closeAndroidModal()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <p class="text-sm text-slate-500 leading-relaxed font-medium">
+                Si estàs dins de Telegram o el navegador no llança la instal·lació automàtica:
+            </p>
+
+            <div class="flex flex-col gap-3 text-sm">
+                <div class="flex items-start gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                    <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                    <p class="text-slate-700">Prem el menú dels <strong>tres punts (⋮)</strong> a dalt a la dreta.</p>
+                </div>
+                <div class="flex items-start gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                    <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                    <p class="text-slate-700">Si estàs a Telegram/Slack, tria primer <strong>"Obrir a Chrome"</strong>.</p>
+                </div>
+                <div class="flex items-start gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                    <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                    <p class="text-slate-700">A Chrome, selecciona <strong>"Instal·lar aplicació"</strong> o <strong>"Afegeix a la pantalla d'inici"</strong>.</p>
+                </div>
+            </div>
+
+            <button onclick="closeAndroidModal()" class="w-full bg-primary text-white font-bold py-3.5 rounded-2xl text-sm transition-colors hover:bg-blue-700">
+                Entès!
+            </button>
+        </div>
+    </div>
+
     <script>
         // +01:00 assegura horari CET peninsular
         const TZ = '+01:00'; 
@@ -1068,6 +1108,7 @@
         // PWA Lògica d'Instal·lació adaptada a iOS (Safari) i Android
         let deferredPrompt = null;
         const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+        const isAndroid = /android/.test(window.navigator.userAgent.toLowerCase());
         const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
 
         function setupInstallUI() {
@@ -1086,8 +1127,14 @@
                 return;
             }
 
-            if (isIos && btnText) {
-                btnText.textContent = "Afegir a l'escriptori (iPhone)";
+            if (btnText) {
+                if (isIos) {
+                    btnText.textContent = "Afegir a l'escriptori (iPhone)";
+                } else if (isAndroid) {
+                    btnText.textContent = "Instal·lar App (Android)";
+                } else {
+                    btnText.textContent = "Instal·lar App";
+                }
             }
         }
 
@@ -1105,9 +1152,11 @@
                     }
                     deferredPrompt = null;
                 });
-            } else {
-                // Per a iOS o navegadors que requereixen afegir manualment
+            } else if (isIos) {
                 openIosModal();
+            } else {
+                // Per a Android si està obert a Telegram o requereix manual
+                openAndroidModal();
             }
         }
 
@@ -1121,6 +1170,19 @@
 
         function closeIosModal() {
             const modal = document.getElementById('ios-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function openAndroidModal() {
+            const modal = document.getElementById('android-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                lucide.createIcons();
+            }
+        }
+
+        function closeAndroidModal() {
+            const modal = document.getElementById('android-modal');
             if (modal) modal.classList.add('hidden');
         }
 
