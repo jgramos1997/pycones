@@ -14,6 +14,7 @@
     
     <!-- PWA Manifest Inline -->
     <link id="manifest-link" rel="manifest" href="">
+    <link id="apple-touch-icon" rel="apple-touch-icon" href="">
     
     <!-- Fonts: Inter i Plus Jakarta Sans en cursiva extra-negreta -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@1,800;1,900&display=swap" rel="stylesheet">
@@ -201,11 +202,13 @@
                 <p class="text-slate-500 text-sm leading-relaxed font-medium">Els bitllets de RENFE els porta l'Eduard Carreras. Recorda comprovar que tens la teva entrada de PyConES per poder acreditar-te a l'arribada.</p>
             </div>
 
-            <!-- Botó per instal·lar l'App -->
-            <button id="install-button" class="hidden mt-4 w-full bg-primary hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-4 px-6 rounded-[24px] transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-500/30">
-                <i data-lucide="download" class="w-5 h-5"></i>
-                Instal·lar com a App
-            </button>
+            <!-- Botó per instal·lar l'App (visible per a iOS i Android) -->
+            <div id="install-container" class="mt-4">
+                <button id="install-button" onclick="handleInstallClick()" class="w-full bg-primary hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-4 px-6 rounded-[24px] transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/30">
+                    <i data-lucide="download" class="w-5 h-5"></i>
+                    <span id="install-btn-text">Afegir a l'escriptori</span>
+                </button>
+            </div>
         </div>
 
     </main>
@@ -232,6 +235,46 @@
     <a href="https://t.me/gisce_pycones26_placeholder" target="_blank" rel="noopener noreferrer" class="fixed bottom-[100px] right-6 bg-[#0088cc] hover:bg-[#0077b5] text-white p-4 rounded-full shadow-xl shadow-blue-900/20 z-40 transition-transform transform hover:scale-105 active:scale-95 flex items-center justify-center touch-manipulation">
         <i data-lucide="send" class="w-6 h-6"></i>
     </a>
+
+    <!-- Modal d'instruccions per a iOS / iPhone -->
+    <div id="ios-modal" class="fixed inset-0 z-[120] bg-slate-900/60 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-4">
+        <div class="bg-white rounded-[32px] p-6 w-full max-w-sm shadow-2xl flex flex-col gap-5 fade-in">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="bg-blue-50 p-2.5 rounded-2xl text-primary">
+                        <i data-lucide="smartphone" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-extrabold text-lg text-slate-800">Instal·lar a l'iPhone</h3>
+                </div>
+                <button onclick="closeIosModal()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <p class="text-sm text-slate-500 leading-relaxed font-medium">
+                A Safari no cal descarregar res de l'App Store. Segueix aquests 3 passos:
+            </p>
+
+            <div class="flex flex-col gap-3 text-sm">
+                <div class="flex items-start gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                    <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                    <p class="text-slate-700">Prem el botó <strong>Compartir</strong> <i data-lucide="share" class="w-4 h-4 inline text-primary mx-0.5"></i> al menú inferior de Safari.</p>
+                </div>
+                <div class="flex items-start gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                    <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                    <p class="text-slate-700">Baixa a la llista i selecciona <strong>"Afegir a la pantalla d'inici"</strong> <i data-lucide="plus-square" class="w-4 h-4 inline text-primary mx-0.5"></i>.</p>
+                </div>
+                <div class="flex items-start gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                    <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                    <p class="text-slate-700">Prem <strong>"Afegeix"</strong> a dalt a la dreta.</p>
+                </div>
+            </div>
+
+            <button onclick="closeIosModal()" class="w-full bg-primary text-white font-bold py-3.5 rounded-2xl text-sm transition-colors hover:bg-blue-700">
+                Entès!
+            </button>
+        </div>
+    </div>
 
     <script>
         // +01:00 assegura horari CET peninsular
@@ -967,28 +1010,87 @@
         // Tanca la cortina automàticament després de 1.8 segons o amb un toc
         setTimeout(dismissCurtain, 1800);
         
-        // PWA Logica Instal·lació
-        let deferredPrompt;
-        const installBtn = document.getElementById('install-button');
+        // PWA Lògica d'Instal·lació adaptada a iOS (Safari) i Android
+        let deferredPrompt = null;
+        const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+        const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+
+        function setupInstallUI() {
+            const container = document.getElementById('install-container');
+            const btnText = document.getElementById('install-btn-text');
+            if (!container) return;
+
+            if (isStandalone) {
+                container.innerHTML = `
+                    <div class="bg-emerald-50 text-emerald-800 p-4 rounded-[24px] border border-emerald-200/60 flex items-center justify-center gap-2 font-bold text-sm">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i>
+                        Ja estàs fent servir l'App instal·lada
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            if (isIos && btnText) {
+                btnText.textContent = "Afegir a l'escriptori (iPhone)";
+            }
+        }
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            if (installBtn) installBtn.classList.remove('hidden');
         });
 
-        if (installBtn) {
-            installBtn.addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    if (outcome === 'accepted') {
-                        installBtn.classList.add('hidden');
+        function handleInstallClick() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choice) => {
+                    if (choice.outcome === 'accepted') {
+                        setupInstallUI();
                     }
                     deferredPrompt = null;
-                }
-            });
+                });
+            } else {
+                // Per a iOS o navegadors que requereixen afegir manualment
+                openIosModal();
+            }
         }
+
+        function openIosModal() {
+            const modal = document.getElementById('ios-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                lucide.createIcons();
+            }
+        }
+
+        function closeIosModal() {
+            const modal = document.getElementById('ios-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        setupInstallUI();
+
+        // Icona en format PNG per a apple-touch-icon
+        try {
+            const iconCanvas = document.createElement('canvas');
+            iconCanvas.width = 192;
+            iconCanvas.height = 192;
+            const ctx = iconCanvas.getContext('2d');
+            if (ctx) {
+                ctx.fillStyle = '#2974CA';
+                ctx.beginPath();
+                ctx.roundRect(0, 0, 192, 192, 36);
+                ctx.fill();
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 76px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('Py', 96, 96);
+                const appleIconEl = document.getElementById('apple-touch-icon');
+                if (appleIconEl) appleIconEl.href = iconCanvas.toDataURL('image/png');
+            }
+        } catch (e) {}
 
         const manifestData = {
             "name": "PyConES 26",
