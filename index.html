@@ -112,11 +112,11 @@
                 <div id="huge-clock" class="text-[6.5rem] leading-none font-black text-slate-800 tracking-tighter tabular-nums">--:--</div>
             </div>
 
-            <!-- Títol de Targeta -->
+            <!-- Secció Activitat Actual i Següent -->
             <div class="mt-2">
                 <h2 id="card-heading" class="text-2xl font-bold text-slate-800 mb-4">El teu pla</h2>
-                <div id="active-card-container">
-                    <!-- S'omple amb JS -->
+                <div id="active-card-container" class="flex flex-col gap-3">
+                    <!-- S'omple amb JS: Targeta "Ara" destacada + Targeta "Pròximament" dissimulada -->
                 </div>
             </div>
 
@@ -686,86 +686,138 @@
         function updateApp() {
             const now = new Date();
             
-            let activeEvent = null;
-            let cardState = ''; // 'now', 'next', 'done'
-
             const firstEvent = itinerary[0];
             const lastEvent = itinerary[itinerary.length - 1];
 
-            if (now < firstEvent.start) {
-                activeEvent = firstEvent;
-                cardState = 'next';
-                document.getElementById('card-heading').textContent = "Pròximament";
-            } else if (now > lastEvent.end) {
-                activeEvent = lastEvent;
-                cardState = 'done';
-                document.getElementById('card-heading').textContent = "Viatge Finalitzat";
-            } else {
-                activeEvent = itinerary.find(e => now >= e.start && now < e.end);
-                if (activeEvent) {
-                    cardState = 'now';
-                    document.getElementById('card-heading').textContent = "Ara mateix";
-                } else {
-                    activeEvent = itinerary.find(e => e.start > now);
-                    cardState = 'next';
-                    document.getElementById('card-heading').textContent = "Després";
-                }
-            }
+            // 1. Cercar activitat que està passant ARA
+            const currentEvent = itinerary.find(e => now >= e.start && now < e.end);
 
-            // Dibuixar la targeta principal
+            // 2. Cercar la següent activitat que vindrà
+            const nextEvent = itinerary.find(e => e.start > now);
+
+            // Renderitzat de les targetes
             const container = document.getElementById('active-card-container');
-            if (container && activeEvent) {
-                const isNow = cardState === 'now';
-                const isDone = cardState === 'done';
-                const isNext = cardState === 'next';
-                
-                let bgClass = 'bg-white shadow-slate-200/60 border border-slate-100';
-                let textClass = 'text-slate-800';
-                let subTextClass = 'text-slate-500';
-                let iconBgClass = 'bg-blue-50 text-primary';
-                let pillClass = 'bg-slate-100 text-slate-600';
-                
-                // Tant si és l'activitat en curs (Ara) com la propera (Pròximament / Després), s'aplica el blau primari
-                if (isNow || isNext) {
-                    bgClass = 'bg-primary shadow-blue-500/30';
-                    textClass = 'text-white';
-                    subTextClass = 'text-blue-100';
-                    iconBgClass = 'bg-white/20 text-white';
-                    pillClass = 'bg-white/20 text-white';
-                } else if (isDone) {
-                    bgClass = 'bg-slate-100 shadow-none border border-slate-200';
-                    iconBgClass = 'bg-slate-200 text-slate-500';
-                    pillClass = 'bg-slate-200 text-slate-500';
+            if (container) {
+                let nowHtml = '';
+                let nextHtml = '';
+
+                // A) TARGETA "ARA MATEIX" (Blau primari)
+                if (currentEvent) {
+                    const timeRange = `${timeFmt.format(currentEvent.start)} - ${timeFmt.format(currentEvent.end)}`;
+                    nowHtml = `
+                        <div class="bg-primary text-white rounded-[32px] p-6 shadow-xl shadow-blue-500/25 relative overflow-hidden transition-all">
+                            <div class="absolute -right-12 -top-12 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+                            
+                            <div class="flex justify-between items-start mb-5 relative z-10">
+                                <div class="bg-white/20 p-3 rounded-[20px] text-white">
+                                    <i data-lucide="${currentEvent.icon}" class="w-7 h-7"></i>
+                                </div>
+                                <div class="flex flex-col items-end gap-1">
+                                    <span class="bg-white/20 text-white text-xs px-3.5 py-1.5 rounded-full font-bold tracking-wide flex items-center gap-1.5">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-300 animate-pulse"></span>
+                                        Ara mateix
+                                    </span>
+                                    <span class="text-[11px] font-semibold text-blue-100 tracking-wide">
+                                        ${currentEvent.day} · ${timeRange}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="relative z-10">
+                                <h3 class="text-[26px] font-extrabold text-white leading-tight mb-2 tracking-tight">${currentEvent.title}</h3>
+                                ${currentEvent.mapLink ? 
+                                    `<a href="${currentEvent.mapLink}" target="_blank" class="inline-flex items-center gap-1.5 text-blue-100 hover:text-white transition-opacity">
+                                        <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                        <span class="font-medium text-[15px] underline-offset-4 underline decoration-white/40">${currentEvent.location}</span>
+                                    </a>` 
+                                    : 
+                                    `<div class="flex items-center gap-1.5 text-blue-100">
+                                        <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                        <span class="font-medium text-[15px]">${currentEvent.location}</span>
+                                    </div>`
+                                }
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Si no hi ha cap activitat activa ara mateix
+                    let idleIcon = 'coffee';
+                    let idleTitle = 'Cap activitat en curs';
+                    let idleDesc = 'No hi ha cap esdeveniment programat ara mateix.';
+
+                    if (now < firstEvent.start) {
+                        idleIcon = 'sparkles';
+                        idleTitle = 'Preparant el viatge';
+                        idleDesc = 'El viatge comença el dissabte 7 a les 07:00h a l\'estació de Girona.';
+                    } else if (now > lastEvent.end) {
+                        idleIcon = 'check-circle-2';
+                        idleTitle = 'Viatge finalitzat';
+                        idleDesc = 'Tots els actes han conclòs. Bon retorn a casa!';
+                    } else {
+                        idleTitle = 'Temps lliure / Pausa';
+                        idleDesc = 'Pots aprofitar per fer una pausa o consultar el programa.';
+                    }
+
+                    nowHtml = `
+                        <div class="bg-primary text-white rounded-[32px] p-6 shadow-xl shadow-blue-500/25 relative overflow-hidden transition-all">
+                            <div class="absolute -right-12 -top-12 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+                            
+                            <div class="flex justify-between items-start mb-4 relative z-10">
+                                <div class="bg-white/20 p-3 rounded-[20px] text-white">
+                                    <i data-lucide="${idleIcon}" class="w-7 h-7"></i>
+                                </div>
+                                <span class="bg-white/20 text-white text-xs px-3.5 py-1.5 rounded-full font-bold tracking-wide">
+                                    Ara mateix
+                                </span>
+                            </div>
+                            
+                            <div class="relative z-10">
+                                <h3 class="text-[22px] font-extrabold text-white leading-tight mb-1.5 tracking-tight">${idleTitle}</h3>
+                                <p class="text-blue-100 text-sm font-medium leading-relaxed">${idleDesc}</p>
+                            </div>
+                        </div>
+                    `;
                 }
 
-                container.innerHTML = `
-                    <div class="${bgClass} rounded-[32px] p-6 shadow-xl relative overflow-hidden transition-all">
-                        ${(isNow || isNext) ? '<div class="absolute -right-12 -top-12 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>' : ''}
-                        
-                        <div class="flex justify-between items-start mb-6 relative z-10">
-                            <div class="${iconBgClass} p-3 rounded-[20px]">
-                                <i data-lucide="${activeEvent.icon}" class="w-7 h-7"></i>
+                // B) TARGETA "PRÒXIMAMENT" DISSIMULADA (Fons clar / Secundària)
+                if (nextEvent) {
+                    const nextTimeRange = `${timeFmt.format(nextEvent.start)} - ${timeFmt.format(nextEvent.end)}`;
+                    nextHtml = `
+                        <div class="bg-white rounded-[24px] p-4 sm:p-5 border border-slate-200/80 shadow-sm transition-all mt-1">
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <span class="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-full uppercase tracking-wider">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-primary"></i>
+                                    Pròximament · ${nextEvent.day} · ${nextTimeRange}
+                                </span>
+                                <div class="p-1.5 bg-slate-50 text-slate-400 rounded-xl">
+                                    <i data-lucide="${nextEvent.icon}" class="w-4 h-4"></i>
+                                </div>
                             </div>
-                            <span class="${pillClass} text-xs px-3.5 py-1.5 rounded-full font-bold tracking-wide">
-                                ${timeFmt.format(activeEvent.start)} - ${timeFmt.format(activeEvent.end)}
-                            </span>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-base leading-snug">${nextEvent.title}</h4>
+                                ${nextEvent.mapLink ? `
+                                    <a href="${nextEvent.mapLink}" target="_blank" class="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-primary transition-colors mt-1 font-medium">
+                                        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+                                        <span class="underline underline-offset-2">${nextEvent.location}</span>
+                                    </a>
+                                ` : `
+                                    <p class="text-xs text-slate-500 mt-1 flex items-center gap-1 font-medium">
+                                        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+                                        ${nextEvent.location}
+                                    </p>
+                                `}
+                            </div>
                         </div>
-                        <div class="relative z-10">
-                            <h3 class="text-[26px] font-extrabold ${textClass} leading-tight mb-2 tracking-tight">${activeEvent.title}</h3>
-                            ${activeEvent.mapLink ? 
-                                `<a href="${activeEvent.mapLink}" target="_blank" class="inline-flex items-center gap-1.5 ${subTextClass} hover:opacity-80 transition-opacity">
-                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
-                                    <span class="font-medium text-[15px] underline-offset-4 underline decoration-current/30">${activeEvent.location}</span>
-                                </a>` 
-                                : 
-                                `<div class="flex items-center gap-1.5 ${subTextClass}">
-                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
-                                    <span class="font-medium text-[15px]">${activeEvent.location}</span>
-                                </div>`
-                            }
+                    `;
+                } else {
+                    nextHtml = `
+                        <div class="bg-white rounded-[20px] p-3.5 border border-slate-200 text-center text-xs text-slate-400 font-medium mt-1">
+                            No hi ha més esdeveniments programats al viatge.
                         </div>
-                    </div>
-                `;
+                    `;
+                }
+
+                container.innerHTML = nowHtml + nextHtml;
             }
 
             // Lògica del widget 'Pròximament a PyConES' (Dissabte 7 i Diumenge 8)
