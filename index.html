@@ -12,37 +12,66 @@
     <meta name="theme-color" content="#0f172a">
     <meta name="description" content="Itinerari del viatge de GISCE-TI a la PyConES 2026">
     
-    <!-- PWA Manifest Inline -->
-    <link id="manifest-link" rel="manifest" href="">
-    <link id="apple-touch-icon" rel="apple-touch-icon" href="">
-    
-    <!-- Fonts: Inter i Plus Jakarta Sans en cursiva extra-negreta -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@1,800;1,900&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
+    <!-- Icones: pestanya del navegador, iPhone i Android -->
+    <link rel="icon" href="favicon.ico" sizes="32x32">
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="application-name" content="PyConES26">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#2974CA">
+    <meta name="msapplication-TileImage" content="icons/icon-192.png">
+
+    <!-- Pantalla d'arrencada en obrir l'app instal·lada a l'iPhone (una per mida de pantalla) -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/splash-1320x2868.png">
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/splash-1206x2622.png">
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/splash-1290x2796.png">
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/splash-1179x2556.png">
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/splash-1284x2778.png">
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/splash-1170x2532.png">
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/splash-1125x2436.png">
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="icons/splash/splash-1242x2688.png">
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="icons/splash/splash-828x1792.png">
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="icons/splash/splash-750x1334.png">
+
+    <!-- Vista prèvia en compartir l'enllaç (WhatsApp, Telegram, Slack, X, LinkedIn...).
+         IMPORTANT: aquestes adreces han de ser absolutes. Substitueix https://EL-TEU-USUARI.github.io/EL-TEU-REPO per la URL real de GitHub Pages. -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PyConES 26 · GISCE-TI">
+    <meta property="og:title" content="PyConES 26 · GISCE-TI">
+    <meta property="og:description" content="Horaris, programa i fotos del viatge a Barcelona · 7 i 8 de novembre">
+    <meta property="og:locale" content="ca_ES">
+    <meta property="og:url" content="https://EL-TEU-USUARI.github.io/EL-TEU-REPO/">
+    <meta property="og:image" content="https://EL-TEU-USUARI.github.io/EL-TEU-REPO/icons/og-image.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="PyConES 26 · GISCE-TI, amb el skyline de Barcelona">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PyConES 26 · GISCE-TI">
+    <meta name="twitter:description" content="Horaris, programa i fotos del viatge a Barcelona · 7 i 8 de novembre">
+    <meta name="twitter:image" content="https://EL-TEU-USUARI.github.io/EL-TEU-REPO/icons/og-image.png">
+
+    <!-- Estils, fonts i icones en local: l'app no depèn de cap CDN -->
+    <link rel="stylesheet" href="app.css">
+    <script src="lucide.js"></script>
+
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        primary: '#2974CA'
-                    }
-                }
-            }
+        // Aplicació immediata de la preferència de tema abans de renderitzar per evitar parpelleigs
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
         }
     </script>
     
     <style>
         body {
             -webkit-tap-highlight-color: transparent;
+        }
+
+        html.dark {
+            color-scheme: dark;
         }
 
         /* Suport per a marges segurs (Safe Areas) en PWA d'iOS / Android */
@@ -54,11 +83,11 @@
         
         /* Transicions suaus */
         .fade-in {
-            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -68,6 +97,55 @@
             background: transparent;
         }
 
+        /* Escriptori i tauleta: l'app es queda en una columna centrada d'amplada de mòbil.
+           El contenidor de scroll continua ocupant tota la pantalla, així la roda del ratolí
+           funciona encara que el cursor estigui fora de la columna. */
+        :root { --app-max: 480px; }
+        body > header {
+            width: 100%;
+            max-width: calc(var(--app-max) + 3rem); /* + el padding lateral (px-6) */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #main-view > div {
+            width: 100%;
+            max-width: var(--app-max);
+            margin-left: auto;
+            margin-right: auto;
+        }
+        body > .fixed.bottom-6 > nav {
+            max-width: calc(var(--app-max) - 2rem);
+        }
+
+        /* Inici: cel i skyline */
+        .home-sky {
+            padding-top: max(2.75rem, calc(env(safe-area-inset-top) + 1.25rem));
+            padding-bottom: 150px;
+            transition: background 0.8s ease;
+        }
+        #home-sky-extras svg, #home-city svg { display: block; width: 100%; height: auto; }
+        .plan-row:first-child { border-top: 0; }
+        .home-gap { margin-top: 38px; }
+        /* Mòbils baixos (p. ex. 360×640): el cel ocupa menys perquè "El teu pla" es vegi abans */
+        @media (max-height: 700px) {
+            .home-sky { padding-top: max(1.75rem, calc(env(safe-area-inset-top) + 0.75rem)); padding-bottom: 104px; }
+            .home-gap { margin-top: 22px; }
+        }
+        .toast { bottom: calc(104px + env(safe-area-inset-bottom)); }
+
+        /* Entrada de la pantalla del nom */
+        .name-dialog-in { animation: nameIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        @keyframes nameIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Respectar "reduir moviment" del sistema */
+        @media (prefers-reduced-motion: reduce) {
+            .fade-in, .animate-pulse, .name-dialog-in { animation: none !important; }
+            #welcome-curtain { transition: none !important; }
+        }
+
         /* Animació de sortida de la cortina */
         .curtain-exit {
             transform: translateY(-100%);
@@ -75,132 +153,305 @@
             pointer-events: none;
         }
 
-        /* Tipografia destacada per a la cortina de benvinguda (Plus Jakarta Sans) */
-        .font-splash-jakarta {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+        /* Tipografia de la cortina de benvinguda (Bricolage Grotesque, en local) */
+        .font-display {
+            font-family: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
         }
+        .curtain-name {
+            /* Mida que s'adapta a la llargada del nom (--chars el posa el JS) */
+            font-size: min(88px, calc((100vw - 48px) / (var(--chars, 6) * 0.56)));
+            text-wrap: balance;
+        }
+        .curtain-foot { bottom: calc(56px + env(safe-area-inset-bottom)); }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 h-[100dvh] w-screen overflow-hidden flex flex-col antialiased touch-manipulation">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 h-[100dvh] w-screen overflow-hidden flex flex-col antialiased touch-manipulation transition-colors duration-300">
 
-    <!-- Cortina de Benvinguda (Splash Screen) -->
-    <div id="welcome-curtain" onclick="dismissCurtain()" class="fixed inset-0 z-[100] bg-primary text-white flex flex-col items-center justify-center p-6 sm:p-8 transition-all duration-700 ease-in-out select-none cursor-pointer">
-        <div class="text-center">
-            <h2 class="text-6xl sm:text-7xl md:text-8xl font-black italic tracking-tighter leading-[1.05] drop-shadow-sm font-splash-jakarta select-none">
-                <span class="block">Benvingut,</span>
-                <span class="block">Giscer!</span>
-            </h2>
+    <!-- Cortina de benvinguda: salutació petita i el nom gran -->
+    <div id="welcome-curtain" onclick="dismissCurtain()" class="fixed inset-0 z-[100] bg-primary text-white flex flex-col items-center justify-center px-6 transition-all duration-700 ease-in-out select-none cursor-pointer">
+        <div class="font-display flex flex-col items-center text-center gap-2.5">
+            <span id="curtain-greeting" class="text-lg font-medium tracking-wide text-white/80">Hola,</span>
+            <span id="curtain-name" class="curtain-name font-bold leading-[0.9] tracking-[-0.05em] [overflow-wrap:anywhere]">Giscer</span>
         </div>
+        <div class="curtain-foot font-display absolute inset-x-0 text-center text-[13px] font-medium text-white/70">PyConES 26 · Barcelona</div>
+    </div>
+    <script>
+        // Salutació segons l'hora de Barcelona i el nom guardat ("Bon dia, / Marta")
+        (function () {
+            try {
+                const name = localStorage.getItem('pycones26-name') || 'Giscer';
+                const parts = new Intl.DateTimeFormat('ca-ES', { hour: '2-digit', hourCycle: 'h23', timeZone: 'Europe/Madrid' }).formatToParts(new Date());
+                const h = Number(parts.find(p => p.type === 'hour').value);
+                const greeting = !localStorage.getItem('pycones26-name') ? 'Hola,'
+                    : (h >= 6 && h < 13 ? 'Bon dia,' : (h >= 13 && h < 20 ? 'Bona tarda,' : 'Bona nit,'));
+                document.getElementById('curtain-greeting').textContent = greeting;
+                const el = document.getElementById('curtain-name');
+                el.textContent = name;
+                // Per a noms de diverses paraules, la mida la marca la paraula més llarga
+                const longest = name.split(' ').reduce((m, w) => Math.max(m, w.length), 0);
+                el.style.setProperty('--chars', Math.max(5, longest));
+            } catch (e) {}
+        })();
+    </script>
+
+    <!-- Presentació: preguntar el nom (només la primera vegada, o des d'Info) -->
+    <div id="name-dialog" role="dialog" aria-modal="true" aria-labelledby="name-title" class="hidden fixed inset-0 z-[90] bg-slate-50 dark:bg-slate-950 overflow-y-auto">
+        <form id="name-form" onsubmit="saveName(event)" class="name-dialog-in min-h-full w-full max-w-[420px] mx-auto px-6 pt-16 pb-10 flex flex-col gap-7">
+            <div class="w-14 h-14 rounded-2xl bg-primary text-white flex items-center justify-center text-2xl font-bold font-display tracking-tight shadow-lg shadow-blue-500/25" aria-hidden="true">Py</div>
+            <div class="flex flex-col gap-2">
+                <p class="text-xs font-bold uppercase tracking-widest text-[#1E5FA8] dark:text-blue-300">PyConES 26 · GISCE-TI</p>
+                <h2 id="name-title" class="text-[34px] leading-tight font-extrabold tracking-tight text-slate-900 dark:text-white">Com et dius?</h2>
+                <p class="text-[15px] font-medium text-slate-600 dark:text-slate-400 leading-relaxed">Posarem el teu nom a l'app perquè sigui una mica més teva. Només es guarda en aquest mòbil.</p>
+            </div>
+            <label class="flex flex-col gap-2">
+                <span class="text-sm font-bold text-slate-700 dark:text-slate-300">El teu nom</span>
+                <input id="name-input" type="text" maxlength="20" autocomplete="given-name" autocapitalize="words" enterkeyhint="done" spellcheck="false" placeholder="Per exemple, Marta"
+                    class="h-14 px-4 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 focus:border-primary focus:outline-none text-lg font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-colors">
+            </label>
+            <p id="name-preview" class="hidden -mt-3 text-sm font-semibold text-slate-600 dark:text-slate-400" aria-live="polite"></p>
+            <div class="flex flex-col gap-2 mt-1">
+                <button id="name-submit" type="submit" disabled class="h-14 rounded-2xl bg-primary text-white text-base font-bold shadow-lg shadow-blue-500/25 active:scale-[0.98] transition-all disabled:opacity-40 disabled:shadow-none">Som-hi!</button>
+                <button id="name-skip" type="button" onclick="skipName()" class="h-12 rounded-2xl text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors">Ara no, continua com a Giscer</button>
+            </div>
+        </form>
     </div>
 
-    <!-- Capçalera Premium -->
-    <header class="px-6 pt-10 pb-2 flex justify-between items-start z-10 shrink-0">
-        <div>
-            <h1 class="text-[32px] font-extrabold tracking-tight text-slate-900 leading-tight">Hola, Giscer!</h1>
-            <p id="top-date" class="text-sm font-semibold text-slate-500 mt-1 capitalize">--</p>
+    <!-- Capçalera Premium amb botó de Mode Fosc -->
+    <header class="hidden px-6 pt-10 pb-2 flex justify-between items-center z-10 shrink-0">
+        <div class="min-w-0 flex-1 pr-3">
+            <h1 class="text-[32px] font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight [overflow-wrap:anywhere]">
+                <button type="button" onclick="openNameDialog(false)" class="text-left" aria-label="Canviar el teu nom">Hola, <span data-user-name>Giscer</span>!</button>
+            </h1>
+            <p id="top-date" class="text-sm font-semibold text-slate-500 dark:text-slate-400 mt-1">--</p>
+            <span id="offline-pill" class="hidden mt-1.5 items-center gap-1 text-xs font-bold text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/60 px-2 py-0.5 rounded-full w-fit">
+                <i data-lucide="wifi-off" class="w-3.5 h-3.5"></i>Sense connexió · funciona igual
+            </span>
         </div>
+        <!-- Selector de Mode Fosc -->
+        <button onclick="toggleDarkMode()" id="theme-toggle" class="shrink-0 p-3 rounded-2xl bg-white dark:bg-slate-900 text-slate-700 dark:text-amber-400 border border-slate-200 dark:border-slate-800 shadow-sm active:scale-90 transition-all flex items-center justify-center cursor-pointer" title="Canviar tema clar/fosc">
+            <i id="theme-icon" data-lucide="moon" class="w-5 h-5"></i>
+        </button>
     </header>
 
     <!-- Contingut Principal (Scrollable independent) -->
     <main id="main-view" class="flex-1 overflow-y-auto pb-32 relative px-6">
         
-        <!-- PESTANYA 1: ARA -->
-        <div id="tab-ara" class="flex flex-col gap-6 fade-in pb-10">
-            
-            <!-- Rellotge Gegant -->
-            <div class="flex flex-col items-center justify-center py-4 w-full">
-                <div id="huge-clock" class="text-[6.5rem] leading-none font-black text-slate-800 tracking-tighter tabular-nums">--:--</div>
-            </div>
+        <!-- PESTANYA 1: INICI (cel segons l'hora + skyline de Barcelona) -->
+        <div id="tab-ara" class="flex flex-col fade-in">
 
-            <!-- Secció Activitat Actual i Següent -->
-            <div class="mt-2">
-                <h2 id="card-heading" class="text-2xl font-bold text-slate-800 mb-4">El teu pla</h2>
-                <div id="active-card-container" class="flex flex-col gap-3">
-                    <!-- S'omple amb JS: Targeta "Ara" destacada + Targeta "Pròximament" dissimulada -->
-                </div>
-            </div>
+            <!-- Cel: el color canvia amb l'hora del dia i amb el tema -->
+            <section id="home-sky" class="home-sky relative -mx-6 px-6 overflow-hidden">
+                <div id="home-sky-extras" class="absolute inset-x-0 top-0 pointer-events-none" aria-hidden="true"></div>
+                <div id="home-city" class="absolute inset-x-0 bottom-0 pointer-events-none" aria-hidden="true"></div>
+                <div id="home-hero" class="relative z-[1]" aria-live="polite"></div>
+            </section>
 
-            <!-- Pròximament Programa -->
-            <div class="mt-4">
-                <h2 class="text-xl font-bold text-slate-800 mb-3">Pròximament a PyConES</h2>
-                <div id="upcoming-program-container" class="flex flex-col gap-3">
-                    <!-- S'omple amb JS dinàmicament només per Ds i Dg -->
+            <!-- Fulla que puja per sobre de la ciutat -->
+            <section class="home-sheet relative z-[2] -mx-6 -mt-7 px-6 pt-5 pb-40 -mb-32 bg-white dark:bg-slate-900 rounded-t-[28px] shadow-[0_-12px_28px_-18px_rgba(15,23,42,0.45)] flex flex-col gap-6">
+
+                <!-- Checklist abans del viatge (només es mostra abans de sortir) -->
+                <div id="pretrip-section" class="hidden">
+                    <h2 class="text-[17px] font-extrabold text-slate-900 dark:text-white mb-3">Abans de sortir</h2>
+                    <div class="bg-slate-50 dark:bg-slate-800/60 rounded-[20px] px-4 divide-y divide-slate-200 dark:divide-slate-700/70">
+                        <div class="flex items-start gap-3 py-3">
+                            <div class="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 text-primary flex items-center justify-center shrink-0">
+                                <i data-lucide="ticket" class="w-[18px] h-[18px]"></i>
+                            </div>
+                            <div>
+                                <p class="text-[15px] font-bold text-slate-800 dark:text-white">Entrada PyConES</p>
+                                <p class="text-[13px] font-medium text-slate-600 dark:text-slate-400 leading-snug">Comprova que la tens per acreditar-te a l'arribada.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 py-3">
+                            <div class="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 text-primary flex items-center justify-center shrink-0">
+                                <i data-lucide="train-front" class="w-[18px] h-[18px]"></i>
+                            </div>
+                            <div>
+                                <p class="text-[15px] font-bold text-slate-800 dark:text-white">Bitllets RENFE</p>
+                                <p class="text-[13px] font-medium text-slate-600 dark:text-slate-400 leading-snug">Els porta l'Eduard Carreras.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button onclick="switchTab('programa')" class="mt-4 w-full bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 py-3 rounded-2xl text-sm font-bold transition-colors flex justify-center items-center gap-2">
+
+                <!-- El teu pla: el que passa ara, el que ve i les teves favorites -->
+                <div id="plan-section">
+                    <div class="flex items-center justify-between gap-3">
+                        <h2 id="card-heading" class="text-[17px] font-extrabold text-slate-900 dark:text-white">El teu pla</h2>
+                        <div class="flex gap-1.5" role="group" aria-label="Què vols veure">
+                            <button type="button" id="home-filter-all" onclick="setHomeFilter('all')" aria-pressed="true" class="h-9 px-3.5 rounded-full text-xs font-bold transition-colors">Tot</button>
+                            <button type="button" id="home-filter-favs" onclick="setHomeFilter('favs')" aria-pressed="false" class="h-9 px-3.5 rounded-full text-xs font-bold transition-colors">★ Les meves</button>
+                        </div>
+                    </div>
+                    <div id="home-plan-list" class="mt-1"></div>
+                </div>
+
+                <button onclick="switchTab('programa')" class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:bg-slate-300 text-slate-700 dark:text-slate-200 py-3.5 rounded-2xl text-sm font-bold transition-colors flex justify-center items-center gap-2">
                     Veure tot el programa <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </button>
-            </div>
+            </section>
+
+            <!-- Càmera directa del botó de l'inici (fora de la part que es redibuixa) -->
+            <input id="home-camera-input" type="file" accept="image/*" capture="environment" class="hidden" onchange="handlePhotoSelected(event)">
         </div>
 
         <!-- PESTANYA 2: HORARI -->
         <div id="tab-horari" class="hidden flex flex-col gap-6 fade-in pb-10 pt-4">
-            <h2 class="text-3xl font-bold text-slate-800">Horari del Viatge</h2>
+            <h2 class="text-3xl font-bold text-slate-800 dark:text-white">Horari del Viatge</h2>
             <div id="full-schedule-content" class="flex flex-col gap-4">
                 <!-- S'omple amb JS -->
             </div>
         </div>
 
-        <!-- PESTANYA 2.5: PROGRAMA PYCONES -->
-        <div id="tab-programa" class="hidden flex flex-col gap-5 fade-in pb-10 pt-4">
-            <h2 class="text-3xl font-bold text-slate-800">Programa PyConES</h2>
-            
-            <!-- Selector de dia -->
-            <div class="flex bg-slate-200/80 p-1 rounded-2xl gap-1">
-                <button id="day-tab-ds" onclick="switchPyconDay('ds')" class="flex-1 py-2.5 rounded-xl font-bold text-sm transition-all bg-white text-slate-800 shadow-sm flex items-center justify-center gap-1.5">
-                    <i data-lucide="calendar" class="w-4 h-4 text-primary"></i> Dissabte 7
-                </button>
-                <button id="day-tab-dg" onclick="switchPyconDay('dg')" class="flex-1 py-2.5 rounded-xl font-bold text-sm transition-all text-slate-500 hover:text-slate-800 flex items-center justify-center gap-1.5">
-                    <i data-lucide="calendar" class="w-4 h-4"></i> Diumenge 8
-                </button>
+        <!-- PESTANYA 3: PROGRAMA PYCONES -->
+        <div id="tab-programa" class="hidden flex flex-col gap-3 fade-in pb-10 pt-4">
+            <h2 class="text-3xl font-bold text-slate-800 dark:text-white">Programa PyConES</h2>
+
+            <!-- Selector de dia: es queda fix a dalt en fer scroll -->
+            <div id="program-selector" class="sticky top-0 z-20 -mx-6 px-6 pt-2 pb-3 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-transparent transition-shadow">
+                <div role="tablist" aria-label="Dia del programa" class="flex bg-slate-200/80 dark:bg-slate-900 p-1 rounded-2xl gap-1 border border-transparent dark:border-slate-800">
+                    <button type="button" role="tab" id="day-tab-ds" onclick="switchPyconDay('ds')" class="flex-1 min-w-0 h-10 px-1 rounded-xl font-bold text-[13px] transition-all flex items-center justify-center gap-1.5">
+                        <i data-lucide="calendar" class="w-4 h-4 shrink-0 hidden min-[380px]:block"></i><span class="truncate">Dissabte 7</span>
+                    </button>
+                    <button type="button" role="tab" id="day-tab-dg" onclick="switchPyconDay('dg')" class="flex-1 min-w-0 h-10 px-1 rounded-xl font-bold text-[13px] transition-all flex items-center justify-center gap-1.5">
+                        <i data-lucide="calendar" class="w-4 h-4 shrink-0 hidden min-[380px]:block"></i><span class="truncate">Diumenge 8</span>
+                    </button>
+                    <button type="button" role="tab" id="day-tab-agenda" onclick="switchPyconDay('agenda')" class="flex-1 min-w-0 h-10 px-1 rounded-xl font-bold text-[13px] transition-all flex items-center justify-center gap-1.5">
+                        <i data-lucide="star" class="w-4 h-4 shrink-0"></i><span class="truncate">Agenda</span>
+                        <span id="agenda-count" class="hidden min-w-[18px] h-[18px] px-1 rounded-full text-[11px] font-extrabold text-white items-center justify-center"></span>
+                    </button>
+                </div>
             </div>
 
-            <div id="pycon-program-content" class="flex flex-col gap-4">
+            <div id="pycon-program-content" class="flex flex-col gap-3">
                 <!-- S'omple amb JS segons el dia seleccionat -->
             </div>
         </div>
 
-        <!-- PESTANYA 3: INFO I ENLLAÇOS -->
+        <!-- PESTANYA 4: FOTOS I DRIVE -->
+        <div id="tab-fotos" class="hidden flex flex-col gap-5 fade-in pb-10 pt-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-800 dark:text-white">Fotos de l'Equip</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Records compartits de la PyConES 2026</p>
+                </div>
+                <button onclick="fetchPhotos()" class="p-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:bg-slate-300 text-slate-600 dark:text-slate-300 rounded-full transition-colors" title="Actualitzar galeria">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Botons d'acció per pujar fotos -->
+            <div class="grid grid-cols-2 gap-3">
+                <label class="bg-primary hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-3.5 px-4 rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-blue-500/20 text-sm">
+                    <i data-lucide="camera" class="w-4 h-4"></i>
+                    <span>Fer Foto</span>
+                    <input type="file" accept="image/*" capture="environment" class="hidden" onchange="handlePhotoSelected(event)">
+                </label>
+                <label class="bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 active:bg-slate-200 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800 font-bold py-3.5 px-4 rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer text-sm shadow-sm">
+                    <i data-lucide="image" class="w-4 h-4 text-primary"></i>
+                    <span>De la Galeria</span>
+                    <input type="file" accept="image/*" multiple class="hidden" onchange="handlePhotoSelected(event)">
+                </label>
+            </div>
+
+            <!-- Avís sense connexió -->
+            <div id="offline-banner" class="hidden bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 text-amber-900 dark:text-amber-200 p-3.5 rounded-2xl text-[13px] font-medium leading-snug flex items-start gap-2.5">
+                <i data-lucide="wifi-off" class="w-4 h-4 shrink-0 mt-0.5 text-amber-600 dark:text-amber-400"></i>
+                <span><strong class="font-bold">Sense connexió.</strong> Pots continuar fent fotos: es guarden al mòbil i es pujaran soles quan tornis a tenir cobertura.</span>
+            </div>
+
+            <!-- Estat de pujada (s'omple amb JS) -->
+            <div id="upload-status" class="hidden" role="status" aria-live="polite"></div>
+
+            <!-- Enllaç directe a la carpeta de Google Drive -->
+            <a href="https://drive.google.com/drive/folders/1KRg_rKQUD-aifzKsPWdz7r036mwz0kDt" target="_blank" rel="noopener noreferrer" class="bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 active:bg-slate-300 text-slate-700 dark:text-slate-200 border border-transparent dark:border-slate-800 py-3 px-4 rounded-2xl text-xs font-bold transition-colors flex items-center justify-between">
+                <span class="flex items-center gap-2">
+                    <i data-lucide="folder-symlink" class="w-4 h-4 text-primary"></i>
+                    Obrir carpeta a Google Drive
+                </span>
+                <i data-lucide="external-link" class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500"></i>
+            </a>
+
+            <!-- Nota quan la galeria ve de la còpia guardada -->
+            <p id="photos-note" class="hidden -mb-2 text-xs font-semibold text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
+                <i data-lucide="history" class="w-3.5 h-3.5 shrink-0"></i><span>Mostrant les últimes fotos guardades</span>
+            </p>
+
+            <!-- Graella de fotos en directe -->
+            <div id="photos-grid" class="grid grid-cols-2 gap-3 min-h-[160px]">
+                <div class="col-span-2 text-center py-12 flex flex-col items-center justify-center gap-2 text-slate-400 dark:text-slate-500 text-xs">
+                    <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-primary"></i>
+                    <span>Carregant fotos de l'equip...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PESTANYA 5: INFO I ENLLAÇOS -->
         <div id="tab-info" class="hidden flex flex-col gap-5 fade-in pb-10 pt-4">
-            <h2 class="text-3xl font-bold text-slate-800 mb-2">Informació Útil</h2>
+            <h2 class="text-3xl font-bold text-slate-800 dark:text-white mb-2">Informació Útil</h2>
             
+            <!-- Grup de Telegram (abans era un botó flotant que tapava contingut) -->
+            <a href="https://t.me/+qNi4J0Yx6V43ZGM0" target="_blank" rel="noopener noreferrer" class="bg-[#0077b5] hover:bg-[#006aa3] active:scale-[0.98] text-white rounded-[28px] p-5 flex items-center gap-4 shadow-lg shadow-sky-800/20 transition-all">
+                <div class="bg-white/20 p-3 rounded-[18px] shrink-0">
+                    <i data-lucide="send" class="w-6 h-6"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-bold text-lg leading-tight">Grup de Telegram</h3>
+                    <p class="text-sm text-sky-50 font-medium">Avisos i coordinació de l'equip</p>
+                </div>
+                <i data-lucide="external-link" class="w-5 h-5 text-sky-100 shrink-0"></i>
+            </a>
+
             <!-- Allotjament -->
-            <div class="bg-white rounded-[32px] p-6 shadow-sm shadow-slate-200/50 border border-slate-100">
+            <div class="bg-white dark:bg-slate-900 rounded-[32px] p-6 shadow-sm shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800">
                 <div class="flex items-center gap-4 mb-4 text-primary">
-                    <div class="bg-blue-50 p-3 rounded-[20px]">
+                    <div class="bg-blue-50 dark:bg-blue-950/60 p-3 rounded-[20px]">
                         <i data-lucide="hotel" class="w-6 h-6"></i>
                     </div>
-                    <h3 class="font-bold text-xl text-slate-800">Allotjament</h3>
+                    <h3 class="font-bold text-xl text-slate-800 dark:text-white">Allotjament</h3>
                 </div>
-                <p class="text-slate-500 text-sm font-medium mb-5">Hotel Midmost (Carrer de Pelai, 14)</p>
-                <a href="https://maps.google.com/?q=Hotel+Midmost+Carrer+de+Pelai+14+Barcelona" target="_blank" class="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 px-4 py-4 rounded-2xl text-sm font-bold transition-colors w-full">
+                <p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-5">Hotel Midmost (Carrer de Pelai, 14)</p>
+                <a href="https://maps.google.com/?q=Hotel+Midmost+Carrer+de+Pelai+14+Barcelona" target="_blank" class="flex items-center justify-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:bg-slate-300 text-slate-700 dark:text-slate-200 px-4 py-4 rounded-2xl text-sm font-bold transition-colors w-full">
                     <i data-lucide="map" class="w-4 h-4"></i> Veure al Mapa
                 </a>
             </div>
 
             <!-- Sopar -->
-            <div class="bg-white rounded-[32px] p-6 shadow-sm shadow-slate-200/50 border border-slate-100">
+            <div class="bg-white dark:bg-slate-900 rounded-[32px] p-6 shadow-sm shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800">
                 <div class="flex items-center gap-4 mb-4 text-orange-500">
-                    <div class="bg-orange-50 p-3 rounded-[20px]">
+                    <div class="bg-orange-50 dark:bg-orange-950/60 p-3 rounded-[20px]">
                         <i data-lucide="utensils" class="w-6 h-6"></i>
                     </div>
-                    <h3 class="font-bold text-xl text-slate-800">Sopar Dissabte</h3>
+                    <h3 class="font-bold text-xl text-slate-800 dark:text-white">Sopar Dissabte</h3>
                 </div>
-                <p class="text-slate-500 text-sm font-medium mb-5">Quesarium a les 21:00h (Trobada 20:45h)</p>
-                <a href="https://maps.google.com/?q=Quesarium+Carrer+de+Muntaner+7+Barcelona" target="_blank" class="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 px-4 py-4 rounded-2xl text-sm font-bold transition-colors w-full">
+                <p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-5">Quesarium a les 21:00h (Trobada 20:45h)</p>
+                <a href="https://maps.google.com/?q=Quesarium+Carrer+de+Muntaner+7+Barcelona" target="_blank" class="flex items-center justify-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:bg-slate-300 text-slate-700 dark:text-slate-200 px-4 py-4 rounded-2xl text-sm font-bold transition-colors w-full">
                     <i data-lucide="map" class="w-4 h-4"></i> Veure al Mapa
                 </a>
             </div>
             
             <!-- Entrades -->
-            <div class="bg-white rounded-[32px] p-6 shadow-sm shadow-slate-200/50 border border-slate-100">
+            <div class="bg-white dark:bg-slate-900 rounded-[32px] p-6 shadow-sm shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800">
                 <div class="flex items-center gap-4 mb-4 text-emerald-500">
-                    <div class="bg-emerald-50 p-3 rounded-[20px]">
+                    <div class="bg-emerald-50 dark:bg-emerald-950/60 p-3 rounded-[20px]">
                         <i data-lucide="ticket" class="w-6 h-6"></i>
                     </div>
-                    <h3 class="font-bold text-xl text-slate-800">Entrades</h3>
+                    <h3 class="font-bold text-xl text-slate-800 dark:text-white">Entrades</h3>
                 </div>
-                <p class="text-slate-500 text-sm leading-relaxed font-medium">Els bitllets de RENFE els porta l'Eduard Carreras. Recorda comprovar que tens la teva entrada de PyConES per poder acreditar-te a l'arribada.</p>
+                <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed font-medium">Els bitllets de RENFE els porta l'Eduard Carreras. Recorda comprovar que tens la teva entrada de PyConES per poder acreditar-te a l'arribada.</p>
             </div>
+
+            <!-- El teu nom -->
+            <button type="button" onclick="openNameDialog(false)" class="bg-white dark:bg-slate-900 rounded-[24px] p-4 border border-slate-100 dark:border-slate-800 shadow-sm shadow-slate-200/50 dark:shadow-none flex items-center gap-3 text-left active:scale-[0.98] transition-transform">
+                <div class="w-11 h-11 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-primary flex items-center justify-center shrink-0">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">El teu nom</p>
+                    <p class="text-base font-bold text-slate-800 dark:text-white truncate" data-user-name>Giscer</p>
+                </div>
+                <span class="text-sm font-bold text-[#1E5FA8] dark:text-blue-300 shrink-0">Canviar</span>
+            </button>
 
             <!-- Botó per instal·lar l'App (visible per a iOS i Android) -->
             <div id="install-container" class="mt-4">
@@ -213,60 +464,74 @@
 
     </main>
 
-    <!-- Barra de Navegació Flotant (Pill Shape) -->
-    <div class="fixed bottom-6 left-0 right-0 px-6 z-50 pointer-events-none pb-safe">
-        <nav class="bg-slate-900 rounded-full shadow-2xl shadow-slate-900/30 p-2 flex justify-between items-center max-w-[360px] mx-auto pointer-events-auto">
-            <button onclick="switchTab('ara')" id="nav-ara" class="w-14 h-14 flex items-center justify-center transition-all bg-primary text-white rounded-full">
-                <i data-lucide="home" class="w-6 h-6"></i>
+    <!-- Avís flotant de pujada de fotos -->
+    <div id="toast" class="hidden" role="status" aria-live="polite"></div>
+
+    <!-- Barra de Navegació Flotant (5 pestanyes amb etiqueta) -->
+    <div class="fixed bottom-6 left-0 right-0 px-4 sm:px-6 z-50 pointer-events-none pb-safe">
+        <nav aria-label="Navegació principal" class="bg-slate-900/95 backdrop-blur-md border border-transparent dark:border-slate-800 rounded-[28px] shadow-2xl shadow-slate-900/40 h-[68px] px-1.5 flex justify-between items-center max-w-[420px] mx-auto pointer-events-auto">
+            <button onclick="switchTab('ara')" id="nav-ara" aria-current="page" class="flex-1 h-full flex flex-col items-center justify-center gap-0.5 text-white transition-colors">
+                <span class="nav-pill w-12 h-[30px] rounded-full flex items-center justify-center transition-colors bg-primary"><i data-lucide="home" class="w-[19px] h-[19px]"></i></span>
+                <span class="text-[11px] font-semibold">Inici</span>
             </button>
-            <button onclick="switchTab('horari')" id="nav-horari" class="w-14 h-14 flex items-center justify-center transition-all text-slate-400 rounded-full">
-                <i data-lucide="train-front" class="w-6 h-6"></i>
+            <button onclick="switchTab('horari')" id="nav-horari" class="flex-1 h-full flex flex-col items-center justify-center gap-0.5 text-slate-400 transition-colors">
+                <span class="nav-pill w-12 h-[30px] rounded-full flex items-center justify-center transition-colors"><i data-lucide="train-front" class="w-[19px] h-[19px]"></i></span>
+                <span class="text-[11px] font-semibold">Horari</span>
             </button>
-            <button onclick="switchTab('programa')" id="nav-programa" class="w-14 h-14 flex items-center justify-center transition-all text-slate-400 rounded-full">
-                <i data-lucide="mic" class="w-6 h-6"></i>
+            <button onclick="switchTab('programa')" id="nav-programa" class="flex-1 h-full flex flex-col items-center justify-center gap-0.5 text-slate-400 transition-colors">
+                <span class="nav-pill w-12 h-[30px] rounded-full flex items-center justify-center transition-colors"><i data-lucide="mic" class="w-[19px] h-[19px]"></i></span>
+                <span class="text-[11px] font-semibold">Programa</span>
             </button>
-            <button onclick="switchTab('info')" id="nav-info" class="w-14 h-14 flex items-center justify-center transition-all text-slate-400 rounded-full">
-                <i data-lucide="info" class="w-6 h-6"></i>
+            <button onclick="switchTab('fotos')" id="nav-fotos" class="flex-1 h-full flex flex-col items-center justify-center gap-0.5 text-slate-400 transition-colors">
+                <span class="nav-pill w-12 h-[30px] rounded-full flex items-center justify-center transition-colors"><i data-lucide="camera" class="w-[19px] h-[19px]"></i></span>
+                <span class="text-[11px] font-semibold">Fotos</span>
+            </button>
+            <button onclick="switchTab('info')" id="nav-info" class="flex-1 h-full flex flex-col items-center justify-center gap-0.5 text-slate-400 transition-colors">
+                <span class="nav-pill w-12 h-[30px] rounded-full flex items-center justify-center transition-colors"><i data-lucide="info" class="w-[19px] h-[19px]"></i></span>
+                <span class="text-[11px] font-semibold">Info</span>
             </button>
         </nav>
     </div>
 
-    <!-- Botó Flotant Telegram (FAB) -->
-    <a href="https://t.me/+qNi4J0Yx6V43ZGM0" target="_blank" rel="noopener noreferrer" class="fixed bottom-[100px] right-6 bg-[#0088cc] hover:bg-[#0077b5] text-white p-4 rounded-full shadow-xl shadow-blue-900/20 z-40 transition-transform transform hover:scale-105 active:scale-95 flex items-center justify-center touch-manipulation">
-        <i data-lucide="send" class="w-6 h-6"></i>
-    </a>
+    <!-- Modal Visor de Foto a pantalla completa -->
+    <div id="photo-viewer-modal" class="fixed inset-0 z-[130] bg-black/90 hidden flex flex-col items-center justify-center p-4 select-none" onclick="closePhotoModal()">
+        <button onclick="closePhotoModal()" class="absolute top-6 right-6 text-white p-2.5 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        <img id="photo-viewer-img" src="" alt="Foto PyConES GISCE" class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl" onclick="event.stopPropagation()">
+    </div>
 
     <!-- Modal d'instruccions per a iOS / iPhone -->
     <div id="ios-modal" class="fixed inset-0 z-[120] bg-slate-900/60 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-4">
-        <div class="bg-white rounded-[32px] p-6 w-full max-w-sm shadow-2xl flex flex-col gap-5 fade-in">
+        <div class="bg-white dark:bg-slate-900 rounded-[32px] p-6 w-full max-w-sm shadow-2xl flex flex-col gap-5 fade-in border border-transparent dark:border-slate-800">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div class="bg-blue-50 p-2.5 rounded-2xl text-primary">
+                    <div class="bg-blue-50 dark:bg-blue-950/60 p-2.5 rounded-2xl text-primary">
                         <i data-lucide="smartphone" class="w-6 h-6"></i>
                     </div>
-                    <h3 class="font-extrabold text-lg text-slate-800">Instal·lar a l'iPhone</h3>
+                    <h3 class="font-extrabold text-lg text-slate-800 dark:text-white">Instal·lar a l'iPhone</h3>
                 </div>
-                <button onclick="closeIosModal()" class="text-slate-400 hover:text-slate-600 p-1">
+                <button onclick="closeIosModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
             </div>
 
-            <p class="text-sm text-slate-500 leading-relaxed font-medium">
+            <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
                 A Safari no cal descarregar res de l'App Store. Segueix aquests 3 passos:
             </p>
 
             <div class="flex flex-col gap-3 text-sm">
-                <div class="flex items-start gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <div class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/80 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800">
                     <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
-                    <p class="text-slate-700">Prem el botó <strong>Compartir</strong> <i data-lucide="share" class="w-4 h-4 inline text-primary mx-0.5"></i> al menú inferior de Safari.</p>
+                    <p class="text-slate-700 dark:text-slate-200">Prem el botó <strong>Compartir</strong> <i data-lucide="share" class="w-4 h-4 inline text-primary mx-0.5"></i> al menú inferior de Safari.</p>
                 </div>
-                <div class="flex items-start gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <div class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/80 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800">
                     <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
-                    <p class="text-slate-700">Baixa a la llista i selecciona <strong>"Afegir a la pantalla d'inici"</strong> <i data-lucide="plus-square" class="w-4 h-4 inline text-primary mx-0.5"></i>.</p>
+                    <p class="text-slate-700 dark:text-slate-200">Baixa a la llista i selecciona <strong>"Afegir a la pantalla d'inici"</strong> <i data-lucide="plus-square" class="w-4 h-4 inline text-primary mx-0.5"></i>.</p>
                 </div>
-                <div class="flex items-start gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <div class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/80 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800">
                     <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
-                    <p class="text-slate-700">Prem <strong>"Afegeix"</strong> a dalt a la dreta.</p>
+                    <p class="text-slate-700 dark:text-slate-200">Prem <strong>"Afegeix"</strong> a dalt a la dreta.</p>
                 </div>
             </div>
 
@@ -276,37 +541,37 @@
         </div>
     </div>
 
-    <!-- Modal d'instruccions per a Android (si s'obre des de Telegram o sense prompt directe) -->
+    <!-- Modal d'instruccions per a Android -->
     <div id="android-modal" class="fixed inset-0 z-[120] bg-slate-900/60 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-4">
-        <div class="bg-white rounded-[32px] p-6 w-full max-w-sm shadow-2xl flex flex-col gap-5 fade-in">
+        <div class="bg-white dark:bg-slate-900 rounded-[32px] p-6 w-full max-w-sm shadow-2xl flex flex-col gap-5 fade-in border border-transparent dark:border-slate-800">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div class="bg-blue-50 p-2.5 rounded-2xl text-primary">
+                    <div class="bg-blue-50 dark:bg-blue-950/60 p-2.5 rounded-2xl text-primary">
                         <i data-lucide="smartphone" class="w-6 h-6"></i>
                     </div>
-                    <h3 class="font-extrabold text-lg text-slate-800">Instal·lar a Android</h3>
+                    <h3 class="font-extrabold text-lg text-slate-800 dark:text-white">Instal·lar a Android</h3>
                 </div>
-                <button onclick="closeAndroidModal()" class="text-slate-400 hover:text-slate-600 p-1">
+                <button onclick="closeAndroidModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
             </div>
 
-            <p class="text-sm text-slate-500 leading-relaxed font-medium">
+            <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
                 Si estàs dins de Telegram o el navegador no llança la instal·lació automàtica:
             </p>
 
             <div class="flex flex-col gap-3 text-sm">
-                <div class="flex items-start gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <div class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/80 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800">
                     <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
-                    <p class="text-slate-700">Prem el menú dels <strong>tres punts (⋮)</strong> a dalt a la dreta.</p>
+                    <p class="text-slate-700 dark:text-slate-200">Prem el menú dels <strong>tres punts (⋮)</strong> a dalt a la dreta.</p>
                 </div>
-                <div class="flex items-start gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <div class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/80 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800">
                     <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
-                    <p class="text-slate-700">Si estàs a Telegram/Slack, tria primer <strong>"Obrir a Chrome"</strong>.</p>
+                    <p class="text-slate-700 dark:text-slate-200">Si estàs a Telegram/Slack, tria primer <strong>"Obrir a Chrome"</strong>.</p>
                 </div>
-                <div class="flex items-start gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <div class="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/80 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800">
                     <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
-                    <p class="text-slate-700">A Chrome, selecciona <strong>"Instal·lar aplicació"</strong> o <strong>"Afegeix a la pantalla d'inici"</strong>.</p>
+                    <p class="text-slate-700 dark:text-slate-200">A Chrome, selecciona <strong>"Instal·lar aplicació"</strong> o <strong>"Afegeix a la pantalla d'inici"</strong>.</p>
                 </div>
             </div>
 
@@ -319,7 +584,32 @@
     <script>
         // +01:00 assegura horari CET peninsular
         const TZ = '+01:00'; 
+
+        // Enllaç oficial de desplegament de Google Apps Script
+        const GOOGLE_SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbw7sbdPeQCfm-sGmd0AlgeHQwJnstpH7ZauRm75GWxweZRqDaRmlFuACXP9hVudBUXong/exec"; 
         
+        // Paràmetre camuflat com a identificador de versió de l'aplicació
+        const CLIENT_BUILD_TAG = "gisce-pycon26-release";
+
+        // Gestió del Mode Fosc
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeUI(isDark);
+        }
+
+        function updateThemeUI(isDark) {
+            const iconEl = document.getElementById('theme-icon');
+            if (iconEl) {
+                iconEl.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+            }
+            setThemeColor(defaultThemeColor());
+            // Redibuixar el cel de l'inici amb el tema nou
+            lastSkyKey = null;
+            updateApp();
+            lucide.createIcons();
+        }
+
         const itinerary = [
             // DISSABTE 7 DE NOVEMBRE
             {
@@ -401,57 +691,34 @@
             }
         ];
 
-        // Programa Complet de PyConES 2026 (Exclusivament Dissabte 7 i Diumenge 8)
+        // Programa PyConES
         const pyconProgram = [
             // DISSABTE 7 DE NOVEMBRE
             {
-                dayId: 'ds',
-                dayLabel: 'Dissabte 7 de novembre',
-                start: new Date(`2026-11-07T08:30:00${TZ}`),
-                end: new Date(`2026-11-07T09:00:00${TZ}`),
-                title: 'Acreditacions',
-                type: 'single',
-                icon: 'ticket',
-                room: 'Hall UB'
+                dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T08:30:00${TZ}`), end: new Date(`2026-11-07T09:00:00${TZ}`),
+                title: 'Acreditacions', type: 'single', icon: 'ticket', room: 'Hall UB'
             },
             {
-                dayId: 'ds',
-                dayLabel: 'Dissabte 7 de novembre',
-                start: new Date(`2026-11-07T09:00:00${TZ}`),
-                end: new Date(`2026-11-07T09:30:00${TZ}`),
-                title: "Apertura de l'esdeveniment",
-                type: 'single',
-                icon: 'flag',
-                room: 'Paranimf Perk'
+                dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T09:00:00${TZ}`), end: new Date(`2026-11-07T09:30:00${TZ}`),
+                title: "Apertura de l'esdeveniment", type: 'single', icon: 'flag', room: 'Paranimf Perk'
             },
             {
-                dayId: 'ds',
-                dayLabel: 'Dissabte 7 de novembre',
-                start: new Date(`2026-11-07T09:30:00${TZ}`),
-                end: new Date(`2026-11-07T10:20:00${TZ}`),
+                dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T09:30:00${TZ}`), end: new Date(`2026-11-07T10:20:00${TZ}`),
                 title: 'Keynote: El bosque no estaba vacío: IA, Ciencia y los límites que no conocemos',
-                speaker: 'Maria Jose Molina-Contreras',
-                type: 'keynote',
-                icon: 'mic',
-                room: 'Paranimf Perk'
+                speaker: 'Maria Jose Molina-Contreras', type: 'keynote', icon: 'mic', room: 'Paranimf Perk'
             },
             {
-                dayId: 'ds',
-                dayLabel: 'Dissabte 7 de novembre',
-                start: new Date(`2026-11-07T10:20:00${TZ}`),
-                end: new Date(`2026-11-07T10:50:00${TZ}`),
-                title: 'Pausa per al cafè',
-                type: 'break',
-                icon: 'coffee'
+                dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T10:20:00${TZ}`), end: new Date(`2026-11-07T10:50:00${TZ}`),
+                title: 'Pausa per al cafè', type: 'break', icon: 'coffee'
             },
             {
-                dayId: 'ds',
-                dayLabel: 'Dissabte 7 de novembre',
-                start: new Date(`2026-11-07T10:50:00${TZ}`),
-                end: new Date(`2026-11-07T11:30:00${TZ}`),
-                title: 'Bloc de Xerrades Matí 1',
-                type: 'track',
-                icon: 'presentation',
+                dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T10:50:00${TZ}`), end: new Date(`2026-11-07T11:30:00${TZ}`),
+                title: 'Bloc de Xerrades Matí 1', type: 'track', icon: 'presentation',
                 sessions: [
                     { title: 'Lazy imports and the art of interpreter procrastination', speaker: 'Brittany Reynoso', room: 'Paranimf Perk' },
                     { title: 'Stop firefighting: practical observability for Python APIs, workers, and scheduled jobs', speaker: 'Daria Korsakova', room: 'Aula Magna' },
@@ -462,13 +729,9 @@
                 ]
             },
             {
-                dayId: 'ds',
-                dayLabel: 'Dissabte 7 de novembre',
-                start: new Date(`2026-11-07T11:40:00${TZ}`),
-                end: new Date(`2026-11-07T12:20:00${TZ}`),
-                title: 'Bloc de Xerrades Matí 2',
-                type: 'track',
-                icon: 'presentation',
+                dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T11:40:00${TZ}`), end: new Date(`2026-11-07T12:20:00${TZ}`),
+                title: 'Bloc de Xerrades Matí 2', type: 'track', icon: 'presentation',
                 sessions: [
                     { title: '¿Puede la IA construir una integración por sí sola? Lo bueno, lo malo y lo feo', speaker: 'Alberto Maldonado', room: 'Paranimf Perk' },
                     { title: "What I've Learned Maintaining the MCP Python SDK", speaker: 'Marcelo Trylesinski', room: 'Aula Magna' },
@@ -478,13 +741,9 @@
                 ]
             },
             {
-                dayId: 'ds',
-                dayLabel: 'Dissabte 7 de novembre',
-                start: new Date(`2026-11-07T12:30:00${TZ}`),
-                end: new Date(`2026-11-07T13:10:00${TZ}`),
-                title: 'Bloc de Xerrades Migdia',
-                type: 'track',
-                icon: 'presentation',
+                dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T12:30:00${TZ}`), end: new Date(`2026-11-07T13:10:00${TZ}`),
+                title: 'Bloc de Xerrades Migdia', type: 'track', icon: 'presentation',
                 sessions: [
                     { title: 'Using Python to reveal the faint side of galaxy clusters', speaker: 'Zahra Sharbaf', room: 'Paranimf Perk' },
                     { title: 'uv: organiza tus proyectos Python como si supieras lo que haces', speaker: 'Lino Figueroa', room: 'Aula Magna' },
@@ -494,33 +753,21 @@
                 ]
             },
             {
-                dayId: 'ds',
-                dayLabel: 'Dissabte 7 de novembre',
-                start: new Date(`2026-11-07T13:10:00${TZ}`),
-                end: new Date(`2026-11-07T14:40:00${TZ}`),
-                title: 'Pausa per dinar',
-                type: 'break',
-                icon: 'utensils'
+                dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T13:10:00${TZ}`), end: new Date(`2026-11-07T14:40:00${TZ}`),
+                title: 'Pausa per dinar', type: 'break', icon: 'utensils'
             },
             {
-                dayId: 'ds',
-                dayLabel: 'Dissabte 7 de novembre',
-                start: new Date(`2026-11-07T14:40:00${TZ}`),
-                end: new Date(`2026-11-07T15:25:00${TZ}`),
+                dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T14:40:00${TZ}`), end: new Date(`2026-11-07T15:25:00${TZ}`),
                 title: 'Mesa redonda: Tecnología en evolución: pasado, presente y futuro',
                 speaker: 'Gessica Paniagua, Nuria Pujol, Johanna Sánchez, Muriel Rovira-Esteva',
-                type: 'keynote',
-                icon: 'users',
-                room: 'Paranimf Perk'
+                type: 'keynote', icon: 'users', room: 'Paranimf Perk'
             },
             {
-                dayId: 'ds',
-                dayLabel: 'Dissabte 7 de novembre',
-                start: new Date(`2026-11-07T15:35:00${TZ}`),
-                end: new Date(`2026-11-07T16:15:00${TZ}`),
-                title: 'Bloc de Xerrades Tarda',
-                type: 'track',
-                icon: 'presentation',
+                dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T15:35:00${TZ}`), end: new Date(`2026-11-07T16:15:00${TZ}`),
+                title: 'Bloc de Xerrades Tarda', type: 'track', icon: 'presentation',
                 sessions: [
                     { title: 'Prevención de incendios forestales con Python', speaker: 'Leyre Labarga, Alberto Labarga', room: 'Paranimf Perk' },
                     { title: 'Análisis forense con Python: evidencia digital explicable con agentes de IA', speaker: 'Carolina Passarello', room: 'Aula Magna' },
@@ -530,85 +777,47 @@
                 ]
             },
             {
-                dayId: 'ds',
-                dayLabel: 'Dissabte 7 de novembre',
-                start: new Date(`2026-11-07T16:15:00${TZ}`),
-                end: new Date(`2026-11-07T16:45:00${TZ}`),
-                title: 'Pausa per al cafè',
-                type: 'break',
-                icon: 'coffee'
+                dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T16:15:00${TZ}`), end: new Date(`2026-11-07T16:45:00${TZ}`),
+                title: 'Pausa per al cafè', type: 'break', icon: 'coffee'
             },
             {
-                dayId: 'ds',
-                dayLabel: 'Dissabte 7 de novembre',
-                start: new Date(`2026-11-07T16:45:00${TZ}`),
-                end: new Date(`2026-11-07T17:35:00${TZ}`),
-                title: 'Keynote: Mia Bajić',
-                speaker: 'Mia Bajić',
-                type: 'keynote',
-                icon: 'mic',
-                room: 'Paranimf Perk'
+                dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T16:45:00${TZ}`), end: new Date(`2026-11-07T17:35:00${TZ}`),
+                title: 'Keynote: Mia Bajić', speaker: 'Mia Bajić', type: 'keynote', icon: 'mic', room: 'Paranimf Perk'
             },
             {
-                dayId: 'ds',
-                dayLabel: 'Dissabte 7 de novembre',
-                start: new Date(`2026-11-07T17:35:00${TZ}`),
-                end: new Date(`2026-11-07T18:05:00${TZ}`),
-                title: 'Charlas relámpago I',
-                type: 'single',
-                icon: 'zap',
-                room: 'Paranimf Perk'
+                dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T17:35:00${TZ}`), end: new Date(`2026-11-07T18:05:00${TZ}`),
+                title: 'Charlas relámpago I', type: 'single', icon: 'zap', room: 'Paranimf Perk'
             },
             {
-                dayId: 'ds',
-                dayLabel: 'Dissabte 7 de novembre',
-                start: new Date(`2026-11-07T18:15:00${TZ}`),
-                end: new Date(`2026-11-07T18:30:00${TZ}`),
-                title: 'Asamblea Python España / Post-evento',
-                type: 'single',
-                icon: 'users',
-                room: 'Paranimf Perk'
+                dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
+                start: new Date(`2026-11-07T18:15:00${TZ}`), end: new Date(`2026-11-07T18:30:00${TZ}`),
+                title: 'Asamblea Python España / Post-evento', type: 'single', icon: 'users', room: 'Paranimf Perk'
             },
 
             // DIUMENGE 8 DE NOVEMBRE
             {
-                dayId: 'dg',
-                dayLabel: 'Diumenge 8 de novembre',
-                start: new Date(`2026-11-08T09:30:00${TZ}`),
-                end: new Date(`2026-11-08T10:00:00${TZ}`),
-                title: 'Acreditacions',
-                type: 'single',
-                icon: 'ticket',
-                room: 'Hall UB'
+                dayId: 'dg', dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T09:30:00${TZ}`), end: new Date(`2026-11-08T10:00:00${TZ}`),
+                title: 'Acreditacions', type: 'single', icon: 'ticket', room: 'Hall UB',
+                skipCountdown: true // ja us vau acreditar dissabte
             },
             {
-                dayId: 'dg',
-                dayLabel: 'Diumenge 8 de novembre',
-                start: new Date(`2026-11-08T10:00:00${TZ}`),
-                end: new Date(`2026-11-08T10:50:00${TZ}`),
-                title: 'Keynote: Ultreia: ¿Cuándo una idea pasa a ser Python?',
-                speaker: 'Diego Russo',
-                type: 'keynote',
-                icon: 'mic',
-                room: 'Paranimf Perk'
+                dayId: 'dg', dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T10:00:00${TZ}`), end: new Date(`2026-11-08T10:50:00${TZ}`),
+                title: 'Keynote: Ultreia: ¿Cuándo una idea pasa a ser Python?', speaker: 'Diego Russo', type: 'keynote', icon: 'mic', room: 'Paranimf Perk'
             },
             {
-                dayId: 'dg',
-                dayLabel: 'Diumenge 8 de novembre',
-                start: new Date(`2026-11-08T10:50:00${TZ}`),
-                end: new Date(`2026-11-08T11:20:00${TZ}`),
-                title: 'Pausa per al cafè',
-                type: 'break',
-                icon: 'coffee'
+                dayId: 'dg', dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T10:50:00${TZ}`), end: new Date(`2026-11-08T11:20:00${TZ}`),
+                title: 'Pausa per al cafè', type: 'break', icon: 'coffee'
             },
             {
-                dayId: 'dg',
-                dayLabel: 'Diumenge 8 de novembre',
-                start: new Date(`2026-11-08T11:20:00${TZ}`),
-                end: new Date(`2026-11-08T12:00:00${TZ}`),
-                title: 'Bloc de Xerrades Matí 1',
-                type: 'track',
-                icon: 'presentation',
+                dayId: 'dg', dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T11:20:00${TZ}`), end: new Date(`2026-11-08T12:00:00${TZ}`),
+                title: 'Bloc de Xerrades Matí 1', type: 'track', icon: 'presentation',
                 sessions: [
                     { title: 'Medicina personalizada: cómo el 0.1% de tu ADN puede cambiarlo todo', speaker: 'Helena Gómez Pozo, Marina Maro López', room: 'Paranimf Perk' },
                     { title: 'Diseñar para el fallo en tiempo real: qué pasa cuando tu LLM se equivoca en el peor momento', speaker: 'Almudena Zhou Ramirez, Tamara Kadyrova', room: 'Aula Magna' },
@@ -618,13 +827,9 @@
                 ]
             },
             {
-                dayId: 'dg',
-                dayLabel: 'Diumenge 8 de novembre',
-                start: new Date(`2026-11-08T12:10:00${TZ}`),
-                end: new Date(`2026-11-08T12:50:00${TZ}`),
-                title: 'Bloc de Xerrades Matí 2',
-                type: 'track',
-                icon: 'presentation',
+                dayId: 'dg', dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T12:10:00${TZ}`), end: new Date(`2026-11-08T12:50:00${TZ}`),
+                title: 'Bloc de Xerrades Matí 2', type: 'track', icon: 'presentation',
                 sessions: [
                     { title: 'La amenaza fantasma: De GitHub a la trinchera', speaker: 'Jimena Bermúdez', room: 'Paranimf Perk' },
                     { title: 'Ableton, Claude y Python son Las Supernenas de la música. ¿Cuál es la sustancia X?', speaker: 'Clara de Luna, robmz', room: 'Aula Magna' },
@@ -634,22 +839,14 @@
                 ]
             },
             {
-                dayId: 'dg',
-                dayLabel: 'Diumenge 8 de novembre',
-                start: new Date(`2026-11-08T12:50:00${TZ}`),
-                end: new Date(`2026-11-08T14:20:00${TZ}`),
-                title: 'Pausa per dinar',
-                type: 'break',
-                icon: 'utensils'
+                dayId: 'dg', dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T12:50:00${TZ}`), end: new Date(`2026-11-08T14:20:00${TZ}`),
+                title: 'Pausa per dinar', type: 'break', icon: 'utensils'
             },
             {
-                dayId: 'dg',
-                dayLabel: 'Diumenge 8 de novembre',
-                start: new Date(`2026-11-08T14:20:00${TZ}`),
-                end: new Date(`2026-11-08T15:00:00${TZ}`),
-                title: 'Bloc de Xerrades Tarda 1',
-                type: 'track',
-                icon: 'presentation',
+                dayId: 'dg', dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T14:20:00${TZ}`), end: new Date(`2026-11-08T15:00:00${TZ}`),
+                title: 'Bloc de Xerrades Tarda 1', type: 'track', icon: 'presentation',
                 sessions: [
                     { title: 'Charla invitada', speaker: 'Ponente convidat', room: 'Paranimf Perk' },
                     { title: 'Cómo he automatizado la preparación de mis planes operativos de vuelo', speaker: 'Marta Gomez Macias', room: 'Aula Magna' },
@@ -659,13 +856,9 @@
                 ]
             },
             {
-                dayId: 'dg',
-                dayLabel: 'Diumenge 8 de novembre',
-                start: new Date(`2026-11-08T15:10:00${TZ}`),
-                end: new Date(`2026-11-08T15:50:00${TZ}`),
-                title: 'Bloc de Xerrades Tarda 2',
-                type: 'track',
-                icon: 'presentation',
+                dayId: 'dg', dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T15:10:00${TZ}`), end: new Date(`2026-11-08T15:50:00${TZ}`),
+                title: 'Bloc de Xerrades Tarda 2', type: 'track', icon: 'presentation',
                 sessions: [
                     { title: 'Tachyon: el profiler por muestreo de Python 3.15 es más rápido que tu código', speaker: 'Pablo Galindo Salgado', room: 'Paranimf Perk' },
                     { title: 'Questioning the Mathematical Foundations of AI', speaker: 'Dr Ana Rojo-Echeburua', room: 'Aula Magna' },
@@ -675,33 +868,19 @@
                 ]
             },
             {
-                dayId: 'dg',
-                dayLabel: 'Diumenge 8 de novembre',
-                start: new Date(`2026-11-08T15:50:00${TZ}`),
-                end: new Date(`2026-11-08T16:20:00${TZ}`),
-                title: 'Pausa per al cafè',
-                type: 'break',
-                icon: 'coffee'
+                dayId: 'dg', dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T15:50:00${TZ}`), end: new Date(`2026-11-08T16:20:00${TZ}`),
+                title: 'Pausa per al cafè', type: 'break', icon: 'coffee'
             },
             {
-                dayId: 'dg',
-                dayLabel: 'Diumenge 8 de novembre',
-                start: new Date(`2026-11-08T16:20:00${TZ}`),
-                end: new Date(`2026-11-08T17:00:00${TZ}`),
-                title: 'Charlas relámpago II',
-                type: 'single',
-                icon: 'zap',
-                room: 'Paranimf Perk'
+                dayId: 'dg', dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T16:20:00${TZ}`), end: new Date(`2026-11-08T17:00:00${TZ}`),
+                title: 'Charlas relámpago II', type: 'single', icon: 'zap', room: 'Paranimf Perk'
             },
             {
-                dayId: 'dg',
-                dayLabel: 'Diumenge 8 de novembre',
-                start: new Date(`2026-11-08T17:00:00${TZ}`),
-                end: new Date(`2026-11-08T17:30:00${TZ}`),
-                title: 'Cierre del evento + show especial',
-                type: 'single',
-                icon: 'sparkles',
-                room: 'Paranimf Perk'
+                dayId: 'dg', dayLabel: 'Diumenge 8 de novembre',
+                start: new Date(`2026-11-08T17:00:00${TZ}`), end: new Date(`2026-11-08T17:30:00${TZ}`),
+                title: 'Cierre del evento + show especial', type: 'single', icon: 'sparkles', room: 'Paranimf Perk'
             }
         ];
 
@@ -718,218 +897,783 @@
             
             // Data
             const dateEl = document.getElementById('top-date');
-            if (dateEl) dateEl.textContent = dateFmt.format(now);
+            if (dateEl) {
+                // Només la primera lletra en majúscula ("Dissabte, 7 de nov.")
+                const txt = dateFmt.format(now);
+                dateEl.textContent = txt.charAt(0).toUpperCase() + txt.slice(1);
+            }
             
             return now;
         }
 
+        // ---------- Compte enrere ----------
+
+        // Text del compte enrere per a cada acte de l'itinerari (clau = títol)
+        const countdownMeta = {
+            'Trobada vestíbul': {
+                pill: 'Trobada', lead: "Trobada a l'estació d'aquí a",
+                subs: [['map-pin', 'Estació de Girona · vestíbul (NO AVE)'], ['train-front', 'Tren a les 07:14 cap a Passeig de Gràcia']]
+            },
+            'Tren a Barcelona': {
+                critical: true, pill: "Tren d'anada", lead: 'El tren surt en',
+                map: 'https://maps.google.com/?q=Estació+de+Girona',
+                subs: [['map-pin', 'Estació de Girona (NO AVE)'], ['clock', 'Arribada a Passeig de Gràcia a les 08:34']]
+            },
+            'Acreditacions': { lead: 'Acreditacions en', subs: [['map-pin', 'UB Gran Via 585']] },
+            'Keynote Molina-Contreras': { pill: 'Keynote', lead: 'Molina-Contreras comença en', subs: [['map-pin', 'Paranimf UB']] },
+            'Xerrades i pauses': { pill: 'Xerrades', lead: 'Les xerrades comencen en', subs: [['map-pin', 'Sales UB']] },
+            'Keynote Mia Bajić': { pill: 'Keynote', lead: 'Mia Bajić comença en', subs: [['map-pin', 'Paranimf UB']] },
+            'Xerrades llampec': { lead: 'Les xerrades llampec comencen en', subs: [['map-pin', 'Paranimf UB']] },
+            'Check-in i temps lliure': { pill: 'Hotel', lead: "Check-in a l'hotel en", subs: [['map-pin', 'Hotel Midmost · Carrer de Pelai, 14']] },
+            'Sopar Quesarium': {
+                pill: 'Sopar Quesarium', lead: 'Trobada per sopar en',
+                subs: [['map-pin', 'Carrer de Muntaner, 7'], ['clock', 'Sopar a les 21:00']],
+                // Mentre dura el sopar, missatge en lloc de compte enrere
+                during: {
+                    lead: 'Ara toca sopar',
+                    bigText: 'Bon profit!',
+                    subs: [['map-pin', 'Quesarium · Carrer de Muntaner, 7'], ['clock', 'Demà: esmorzar i check-out a les 08:00']]
+                }
+            },
+            'Esmorzar i Check-out': { pill: 'Check-out', lead: 'Esmorzar i check-out en', subs: [['map-pin', 'Hotel Midmost']] },
+            'Keynote Diego Russo': { pill: 'Keynote', lead: 'Diego Russo comença en', subs: [['map-pin', 'Paranimf UB']] },
+            'Xerrades llampec finals': { lead: 'Les xerrades llampec comencen en', subs: [['map-pin', 'Paranimf UB']] },
+            'Cap a Pg de Gràcia (Equipatge)': {
+                critical: true, pill: "Cap a l'estació", lead: "Sortim cap a l'estació en",
+                subs: [['map-pin', 'Direcció Passeig de Gràcia'], ['train-front', 'Tren a les 18:24']]
+            },
+            'Tren tornada a Girona': {
+                critical: true, pill: 'Tren de tornada', lead: 'El tren surt en',
+                subs: [['map-pin', 'Passeig de Gràcia'], ['clock', 'Arribada a Girona a les 19:42']]
+            }
+        };
+
+        // Estils de la targeta segons urgència (calm → aviat → urgent)
+        const HERO_STYLES = {
+            calm: {
+                box: 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white shadow-sm',
+                pill: 'bg-blue-50 dark:bg-blue-950/60 text-[#1E5FA8] dark:text-blue-300',
+                sub: 'text-slate-600 dark:text-slate-400',
+                btn: 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white',
+                track: 'bg-slate-200 dark:bg-slate-800', fill: 'bg-primary'
+            },
+            soon: {
+                box: 'bg-primary text-white shadow-xl shadow-blue-500/25',
+                pill: 'bg-white/20 text-white',
+                sub: 'text-blue-50',
+                btn: 'bg-white text-[#1E5FA8]',
+                track: 'bg-white/25', fill: 'bg-white'
+            },
+            urgent: {
+                box: 'bg-[#C2410C] text-white shadow-xl shadow-orange-700/30',
+                pill: 'bg-white/20 text-white',
+                sub: 'text-orange-50',
+                btn: 'bg-white text-[#9A3412]',
+                track: 'bg-white/25', fill: 'bg-white'
+            }
+        };
+
+        const dayShortFmt = new Intl.DateTimeFormat('ca-ES', { weekday: 'short', timeZone: 'Europe/Madrid' });
+        const dayKeyFmt = new Intl.DateTimeFormat('ca-ES', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Europe/Madrid' });
+
+        function sameDay(a, b) {
+            return dayKeyFmt.format(a) === dayKeyFmt.format(b);
+        }
+
+        // "07:14" si és avui, "Ds 07:14" si és un altre dia
+        function whenLabel(date, now) {
+            const t = timeFmt.format(date);
+            if (sameDay(date, now)) return t;
+            const d = dayShortFmt.format(date).replace('.', '');
+            return d.charAt(0).toUpperCase() + d.slice(1) + ' ' + t;
+        }
+
+        // Minuts → peces [text, 'n' (número gran) | 'u' (unitat petita)]
+        function durationParts(mins) {
+            if (mins <= 0) return [['Ara', 'n']];
+            const d = Math.floor(mins / 1440);
+            const h = Math.floor((mins % 1440) / 60);
+            const m = mins % 60;
+            if (d >= 1) {
+                // També els minuts, perquè es vegi que el compte enrere avança
+                return [[d, 'n'], [d === 1 ? 'dia' : 'dies', 'u']]
+                    .concat(h ? [[h, 'n'], ['h', 'u']] : [])
+                    .concat(m ? [[m, 'n'], ['min', 'u']] : []);
+            }
+            if (h) return [[h, 'n'], ['h', 'u']].concat(m ? [[m, 'n'], ['min', 'u']] : []);
+            return [[m, 'n'], ['min', 'u']];
+        }
+
+        function shortDuration(mins) {
+            const h = Math.floor(mins / 60);
+            const m = mins % 60;
+            if (h && m) return `${h} h ${m} min`;
+            if (h) return `${h} h`;
+            return `${m} min`;
+        }
+
+        function renderHero(o) {
+            const v = HERO_STYLES[o.variant];
+            // Amb tres xifres (dies + hores + minuts) el número es fa més petit perquè càpiga en una línia
+            const compact = o.parts && o.parts.filter(([, k]) => k === 'n').length >= 3;
+            const numCls = compact ? 'text-[52px] leading-none' : 'text-[76px] leading-[0.9]';
+            const unitCls = compact ? 'text-[22px] ml-1 mr-2' : 'text-[26px] ml-1 mr-3';
+            const big = o.bigText
+                ? `<span class="text-[40px] font-extrabold tracking-tight leading-none">${o.bigText}</span>`
+                : o.parts.map(([t, k]) => k === 'n'
+                    ? `<span class="${numCls} font-extrabold tracking-[-0.045em]">${t}</span>`
+                    : `<span class="${unitCls} font-bold tracking-tight">${t}</span>`).join('');
+            const subs = o.subs.map(([ic, tx]) => `
+                <div class="flex items-center gap-2 text-[15px] font-medium ${v.sub} leading-snug">
+                    <i data-lucide="${ic}" class="w-4 h-4 shrink-0"></i><span>${tx}</span>
+                </div>`).join('');
+            const progress = o.progress ? `
+                <div class="flex flex-col gap-1.5">
+                    <div class="h-1.5 rounded-full ${v.track} overflow-hidden">
+                        <div class="h-full rounded-full ${v.fill} transition-[width] duration-700" style="width: ${o.progress.pct.toFixed(1)}%"></div>
+                    </div>
+                    <div class="flex justify-between text-xs font-semibold ${v.sub} tabular-nums">
+                        <span>${o.progress.left}</span><span>${o.progress.right}</span>
+                    </div>
+                </div>` : '';
+            const button = o.button ? `
+                <a href="${o.button.href}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 h-12 rounded-2xl ${v.btn} text-[15px] font-bold active:scale-[0.98] transition-transform">
+                    <i data-lucide="navigation" class="w-4 h-4"></i>${o.button.text}
+                </a>` : '';
+            const urgentDot = o.variant === 'urgent' ? '<span class="w-2 h-2 rounded-full bg-white animate-pulse shrink-0"></span>' : '';
+
+            return `
+                <section class="${v.box} rounded-[28px] p-5 flex flex-col gap-4 transition-colors duration-500">
+                    <div class="flex justify-between items-center gap-3">
+                        <span class="inline-flex items-center gap-1.5 ${v.pill} text-xs font-bold tracking-wide pl-2.5 pr-3 py-1.5 rounded-full min-w-0">
+                            ${urgentDot}<i data-lucide="${o.icon}" class="w-3.5 h-3.5 shrink-0"></i><span class="truncate">${o.pill}</span>
+                        </span>
+                        <span class="text-[13px] font-bold ${v.sub} tabular-nums shrink-0">${o.right}</span>
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <span class="text-base font-semibold ${v.sub}">${o.lead}</span>
+                        <div class="flex items-baseline flex-wrap tabular-nums">${big}</div>
+                    </div>
+                    ${subs ? `<div class="flex flex-col gap-1.5">${subs}</div>` : ''}
+                    ${progress}
+                    ${button}
+                </section>`;
+        }
+
+        function renderNowCard(ev, now) {
+            const pct = Math.min(100, Math.max(0, (now - ev.start) / (ev.end - ev.start) * 100));
+            const left = Math.max(0, Math.ceil((ev.end - now) / 60000));
+            const tag = ev.mapLink ? 'a' : 'div';
+            const href = ev.mapLink ? `href="${ev.mapLink}" target="_blank" rel="noopener noreferrer"` : '';
+            return `
+                <${tag} ${href} class="block bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-[22px] p-4 active:scale-[0.99] transition-transform">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-11 h-11 rounded-[14px] bg-slate-100 dark:bg-slate-800 text-primary flex items-center justify-center shrink-0">
+                            <i data-lucide="${ev.icon}" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex flex-col gap-0.5 min-w-0 flex-1">
+                            <div class="flex items-center gap-1.5 text-[11px] font-bold tracking-wider">
+                                <span class="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse"></span>
+                                <span class="text-emerald-700 dark:text-emerald-400">ARA MATEIX</span>
+                                <span class="text-slate-500 dark:text-slate-400 tracking-normal tabular-nums">· ${timeFmt.format(ev.start)}–${timeFmt.format(ev.end)}</span>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white leading-tight">${ev.title}</h3>
+                            <p class="flex items-center gap-1 text-[13px] font-medium text-slate-600 dark:text-slate-400">
+                                <i data-lucide="map-pin" class="w-3.5 h-3.5 shrink-0"></i><span class="truncate">${ev.location}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2.5 mt-3">
+                        <div class="flex-1 h-1 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                            <div class="h-full rounded-full bg-emerald-600 dark:bg-emerald-400" style="width: ${pct.toFixed(1)}%"></div>
+                        </div>
+                        <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 tabular-nums">queden ${shortDuration(left)}</span>
+                    </div>
+                </${tag}>`;
+        }
+
+        function renderNextCard(ev, now) {
+            const tag = ev.mapLink ? 'a' : 'div';
+            const href = ev.mapLink ? `href="${ev.mapLink}" target="_blank" rel="noopener noreferrer"` : '';
+            return `
+                <${tag} ${href} class="flex items-center gap-3.5 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-[22px] p-4 active:scale-[0.99] transition-transform">
+                    <div class="flex flex-col gap-0.5 min-w-0 flex-1">
+                        <span class="text-[11px] font-bold tracking-wider text-slate-500 dark:text-slate-400 tabular-nums uppercase">Després · ${whenLabel(ev.start, now)}–${timeFmt.format(ev.end)}</span>
+                        <h3 class="text-base font-bold text-slate-900 dark:text-white leading-tight">${ev.title}</h3>
+                        <p class="flex items-center gap-1 text-[13px] font-medium text-slate-600 dark:text-slate-400">
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5 shrink-0"></i><span class="truncate">${ev.location}</span>
+                        </p>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center justify-center shrink-0">
+                        <i data-lucide="${ev.icon}" class="w-[18px] h-[18px]"></i>
+                    </div>
+                </${tag}>`;
+        }
+        // ---------- Inici: cel de Barcelona que canvia amb l'hora ----------
+        // text: 'dark' = textos en blau marí (cel clar) · 'light' = textos en blanc (cel fosc)
+        const SKY = {
+            dawn: { sky: 'linear-gradient(180deg, #141B45 0%, #34306C 34%, #8E5A8E 64%, #EE9468 88%, #FFD3A0 100%)', far: '#B57E98', mid: '#5B3F78', front: '#2A1F4A', win: '#FFD27A', lit: 0.25, text: 'light', top: '#141B45', cam: '#141B45' },
+            day: { sky: 'linear-gradient(180deg, #5FA5EA 0%, #9CCDF5 55%, #FBE2C2 100%)', far: '#A9C8E8', mid: '#5E92CC', front: '#2A5C97', win: '#FCE3C0', lit: 0, text: 'dark', top: '#5FA5EA', cam: '#0B2545' },
+            dayDark: { sky: 'linear-gradient(180deg, #4F92D6 0%, #86B8E3 55%, #DCC7AE 100%)', far: '#92B3D6', mid: '#4F80B8', front: '#234F86', win: '#FCE3C0', lit: 0, text: 'dark', top: '#4F92D6', cam: '#0B2545' },
+            dusk: { sky: 'linear-gradient(180deg, #23306B 0%, #6A4A8C 40%, #D9727A 72%, #FDB57A 100%)', far: '#C47F8F', mid: '#6A3F70', front: '#341E46', win: '#FFD27A', lit: 0.2, text: 'light', top: '#23306B', cam: '#23306B' },
+            night: { sky: 'linear-gradient(180deg, #0B1230 0%, #1C2459 55%, #4A3F7A 100%)', far: '#2B2F63', mid: '#1A1F48', front: '#0E1333', win: '#FFD27A', lit: 0.45, text: 'light', top: '#0B1230', cam: '#0E1333' }
+        };
+
+        const madridHourFmt = new Intl.DateTimeFormat('ca-ES', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'Europe/Madrid' });
+        function madridMinutes(d) {
+            const parts = madridHourFmt.formatToParts(d);
+            const h = Number(parts.find(p => p.type === 'hour').value);
+            const m = Number(parts.find(p => p.type === 'minute').value);
+            return h * 60 + m;
+        }
+
+        // Franges aproximades per a Barcelona al novembre (surt el sol cap a les 7:40, es pon cap a les 17:30)
+        function skyPeriod(now) {
+            const m = madridMinutes(now);
+            if (m < 6 * 60) return 'night';
+            if (m < 8 * 60 + 30) return 'dawn';
+            if (m < 17 * 60) return 'day';
+            if (m < 18 * 60 + 30) return 'dusk';
+            return 'night';
+        }
+
+        function greetingFor(now) {
+            const h = Math.floor(madridMinutes(now) / 60);
+            if (h >= 6 && h < 13) return 'Bon dia,';
+            if (h >= 13 && h < 20) return 'Bona tarda,';
+            return 'Bona nit,';
+        }
+
+        const CITY_BLOCKS = [[0, 34, 26], [40, 30, 34], [76, 36, 22], [118, 28, 30], [150, 34, 26], [236, 30, 28], [272, 36, 22], [314, 32, 32], [352, 38, 24]];
+
+        // Skyline: Collserola, Sagrada Família, Torre Glòries i illes de l'Eixample
+        function citySvg(P, period) {
+            let blocks = '';
+            CITY_BLOCKS.forEach(([x, w, h]) => {
+                const y = 200 - h;
+                blocks += `<path d="M${x} 200 V${y + 5} L${x + 5} ${y} H${x + w - 5} L${x + w} ${y + 5} V200 Z" fill="${P.front}"/>`;
+                if (P.lit) {
+                    let i = 0;
+                    for (let wx = x + 6; wx < x + w - 4; wx += 8, i++) {
+                        for (let wy = y + 8; wy < 196; wy += 9) {
+                            if (((wx * 7 + wy * 3 + i) % 10) / 10 < P.lit) {
+                                blocks += `<rect x="${wx}" y="${wy}" width="3" height="4" rx="0.5" fill="${P.win}" opacity="0.9"/>`;
+                            }
+                        }
+                    }
+                }
+            });
+            const glories = P.lit
+                ? [[296, 134], [304, 142], [310, 128], [298, 156], [306, 166], [312, 150], [296, 176]]
+                    .map(([x, y]) => `<rect x="${x}" y="${y}" width="3" height="4" fill="${P.win}" opacity="0.85"/>`).join('')
+                : '';
+            const lowSun = period === 'dawn'
+                ? '<circle cx="330" cy="104" r="40" fill="#FFC27A" opacity="0.35"/><circle cx="330" cy="104" r="24" fill="#FFD9A0"/>'
+                : period === 'dusk'
+                ? '<circle cx="70" cy="112" r="42" fill="#FFB27A" opacity="0.3"/><circle cx="70" cy="112" r="25" fill="#FFC98F"/>'
+                : '';
+            return `<svg viewBox="0 0 390 200" preserveAspectRatio="xMidYMax meet" focusable="false">
+                ${lowSun}
+                <path d="M0 132 C40 112 74 120 108 108 C140 97 160 86 186 92 C214 98 236 84 262 90 C300 99 336 112 390 104 L390 200 L0 200 Z" fill="${P.far}"/>
+                <path d="M150 92 l4 -10 h6 l4 10 z" fill="${P.far}"/>
+                <g fill="${P.mid}">
+                    <rect x="10" y="150" width="22" height="50" rx="2"/><rect x="36" y="140" width="18" height="60" rx="2"/><rect x="58" y="156" width="26" height="44" rx="2"/>
+                    <rect x="88" y="146" width="20" height="54" rx="2"/>
+                    <path d="M176 200 V120 L180 96 L184 120 V200 Z"/><path d="M188 200 V112 L193 80 L198 112 V200 Z"/><path d="M202 200 V104 L208 62 L214 104 V200 Z"/>
+                    <path d="M218 200 V112 L223 80 L228 112 V200 Z"/><path d="M232 200 V120 L236 96 L240 120 V200 Z"/><rect x="172" y="150" width="72" height="50" rx="3"/>
+                    <path d="M290 200 V128 C290 104 318 104 318 128 V200 Z"/>
+                    <rect x="326" y="150" width="20" height="50" rx="2"/><rect x="350" y="138" width="16" height="62" rx="2"/><rect x="368" y="154" width="22" height="46" rx="2"/>
+                    <rect x="114" y="158" width="24" height="42" rx="2"/><rect x="252" y="152" width="30" height="48" rx="2"/>
+                </g>
+                <rect x="206.5" y="56" width="3" height="8" rx="1" fill="${P.mid}"/>
+                ${glories}${blocks}
+            </svg>`;
+        }
+
+        function stars(list) {
+            return list.map(([x, y, r, o]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#FFFFFF" opacity="${o}"/>`).join('');
+        }
+
+        // Sol, lluna, núvols i estrelles
+        function skyExtrasSvg(period, dark) {
+            let inner = '';
+            if (period === 'day') {
+                const sun = dark ? '#FBE19A' : '#FFE8A3';
+                inner = `<circle cx="338" cy="138" r="22" fill="${sun}"/><circle cx="338" cy="138" r="36" fill="${sun}" opacity="0.25"/>
+                    <g fill="#FFFFFF" opacity="${dark ? 0.55 : 0.75}"><ellipse cx="232" cy="62" rx="26" ry="8"/><ellipse cx="248" cy="55" rx="15" ry="9"/>
+                    <ellipse cx="378" cy="232" rx="24" ry="8"/><ellipse cx="392" cy="225" rx="15" ry="9"/></g>`;
+            } else if (period === 'dawn') {
+                inner = stars([[250, 40, 1.2, .8], [300, 70, 1, .6], [360, 30, 1.3, .8], [210, 110, .9, .5], [340, 120, 1, .5]]);
+            } else if (period === 'dusk') {
+                inner = stars([[300, 40, 1.1, .7], [360, 70, 1, .5]]);
+            } else {
+                inner = stars([[30, 120, 1.2, .9], [240, 60, 1, .7], [260, 150, 1.4, .9], [300, 210, 1, .6], [210, 230, 1.2, .8], [360, 240, 1, .6],
+                    [370, 60, 1.3, .9], [352, 196, 1, .7], [230, 110, 1.2, .8], [190, 180, 1, .5]])
+                    + '<circle cx="334" cy="134" r="20" fill="#F4EBD0"/><circle cx="343" cy="128" r="18" fill="#141B45"/>';
+            }
+            return `<svg viewBox="0 0 390 470" preserveAspectRatio="xMidYMin meet" focusable="false">${inner}</svg>`;
+        }
+
+        let lastSkyKey = null;
+        let currentSky = SKY.day;
+        let lastHeroHtml = '';
+        let lastPlanHtml = '';
+        let homeFilter = 'all';
+
+        function defaultThemeColor() {
+            return document.documentElement.classList.contains('dark') ? '#020617' : '#0f172a';
+        }
+
+        function setThemeColor(color) {
+            const meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', color);
+        }
+
+        function homeVisible() {
+            const tab = document.getElementById('tab-ara');
+            return tab && !tab.classList.contains('hidden');
+        }
+
+        function updateHomeSky(now) {
+            const dark = document.documentElement.classList.contains('dark');
+            const period = skyPeriod(now);
+            const key = period + (dark ? '-dark' : '');
+            const P = (period === 'day' && dark) ? SKY.dayDark : SKY[period];
+            currentSky = P;
+            if (key !== lastSkyKey) {
+                lastSkyKey = key;
+                lastHeroHtml = '';
+                const skyEl = document.getElementById('home-sky');
+                if (skyEl) skyEl.style.background = P.sky;
+                const extras = document.getElementById('home-sky-extras');
+                if (extras) extras.innerHTML = skyExtrasSvg(period, dark);
+                const city = document.getElementById('home-city');
+                if (city) city.innerHTML = citySvg(P, period);
+            }
+            if (homeVisible()) setThemeColor(P.top);
+            return P;
+        }
+
+        function openAgenda() {
+            currentPyconDay = 'agenda';
+            switchTab('programa');
+        }
+
+        // Capçalera, compte enrere i botons ràpids, damunt del cel
+        function renderHomeHero(o, P, now) {
+            const navy = P.text === 'dark';
+            const dark = document.documentElement.classList.contains('dark');
+            const fg = navy ? 'text-[#0B2545]' : 'text-white';
+            const soft = navy ? 'text-[#1E4E86]' : 'text-[#DCE3F7]';
+            const glass = navy ? 'bg-white/40 border-white/50' : 'bg-white/15 border-white/25';
+            let name = 'Giscer';
+            try { name = localStorage.getItem('pycones26-name') || 'Giscer'; } catch (e) {}
+
+            const pillCls = o.variant === 'urgent' ? 'bg-[#C2410C] text-white'
+                : o.variant === 'soon' ? 'bg-primary text-white'
+                : (navy ? 'bg-white/55 text-[#0B2545]' : 'bg-white/15 text-white');
+            const dot = o.variant === 'urgent' ? '<span class="w-[7px] h-[7px] rounded-full bg-white animate-pulse shrink-0"></span>' : '';
+            const pillText = o.right ? `${o.pill} · ${o.right}` : o.pill;
+
+            const compact = o.parts && o.parts.filter(([, k]) => k === 'n').length >= 3;
+            const numCls = compact ? 'text-[52px] leading-none' : 'text-[72px] leading-[0.95]';
+            const unitCls = compact ? 'text-[22px] ml-1 mr-2' : 'text-[26px] ml-1 mr-3';
+            const big = o.bigText
+                ? `<span class="text-[40px] font-extrabold tracking-tight leading-none ${fg}">${o.bigText}</span>`
+                : o.parts.map(([t, k]) => k === 'n'
+                    ? `<span class="${numCls} font-extrabold tracking-[-0.045em] ${fg}">${t}</span>`
+                    : `<span class="${unitCls} font-bold tracking-tight ${fg}">${t}</span>`).join('');
+
+            const progress = o.progress ? `
+                <div class="h-1.5 max-w-[260px] rounded-full ${navy ? 'bg-[#0B2545]/15' : 'bg-white/25'} overflow-hidden mt-1">
+                    <div class="h-full rounded-full ${navy ? 'bg-primary' : 'bg-white'}" style="width: ${o.progress.pct.toFixed(1)}%"></div>
+                </div>` : '';
+            const subs = (o.subs || []).slice(0, 2).map(([ic, tx]) => `
+                <div class="flex items-center gap-2 text-sm font-semibold ${soft} leading-snug">
+                    <i data-lucide="${ic}" class="w-[15px] h-[15px] shrink-0"></i><span>${tx}</span>
+                </div>`).join('');
+
+            const offline = !isOnline();
+            const offlinePill = offline ? `
+                <span class="mt-2 inline-flex w-fit items-center gap-1 text-xs font-bold text-amber-900 bg-amber-100 px-2 py-0.5 rounded-full">
+                    <i data-lucide="wifi-off" class="w-3.5 h-3.5"></i>Sense connexió · funciona igual
+                </span>` : '';
+
+            // Botons: si toca afanyar-se, "Com arribar" en color + Telegram; si no, Programa i Agenda
+            const btnBase = 'flex-1 min-w-0 h-[50px] rounded-2xl flex items-center justify-center gap-2 text-[15px] font-bold shadow-[0_8px_18px_-10px_rgba(0,0,0,0.45)] active:scale-[0.97] transition-transform';
+            const plainBtn = dark ? 'bg-slate-900/55 border border-white/20 text-slate-100' : 'bg-white text-slate-900';
+            const hurry = o.variant !== 'calm' && o.button;
+            const actions = hurry
+                ? `<a href="${o.button.href}" target="_blank" rel="noopener noreferrer" class="${btnBase} ${o.variant === 'urgent' ? 'bg-[#C2410C]' : 'bg-primary'} text-white"><i data-lucide="navigation" class="w-[18px] h-[18px] shrink-0"></i><span class="truncate">Com arribar</span></a>
+                   <a href="https://t.me/+qNi4J0Yx6V43ZGM0" target="_blank" rel="noopener noreferrer" class="${btnBase} ${plainBtn}"><i data-lucide="send" class="w-[18px] h-[18px] shrink-0"></i><span class="truncate">Telegram</span></a>`
+                : `<button type="button" onclick="switchTab('programa')" class="${btnBase} ${plainBtn}"><i data-lucide="mic" class="w-[18px] h-[18px] shrink-0"></i><span class="truncate">Programa</span></button>
+                   <button type="button" onclick="openAgenda()" class="${btnBase} ${plainBtn}"><i data-lucide="star" class="w-[18px] h-[18px] shrink-0"></i><span class="truncate">Agenda</span></button>`;
+
+            return `
+                <div class="flex justify-between items-start gap-3">
+                    <div class="flex flex-col gap-0.5 min-w-0">
+                        <span class="text-[15px] font-semibold ${soft}">${greetingFor(now)}</span>
+                        <button type="button" onclick="openNameDialog(false)" aria-label="Canviar el teu nom" class="text-left text-[34px] font-extrabold tracking-tight leading-[1.1] ${fg} [overflow-wrap:anywhere]"><span data-user-name>${escapeAttr(name)}</span>!</button>
+                        ${offlinePill}
+                    </div>
+                    <button type="button" onclick="toggleDarkMode()" aria-label="Canviar tema clar/fosc" class="w-11 h-11 rounded-full border ${glass} ${fg} flex items-center justify-center shrink-0 active:scale-90 transition-transform">
+                        <i data-lucide="${dark ? 'sun' : 'moon'}" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div class="home-gap flex flex-col gap-2">
+                    <span class="inline-flex self-start max-w-full items-center gap-1.5 ${pillCls} text-xs font-bold pl-2.5 pr-3 py-1.5 rounded-full">
+                        ${dot}<i data-lucide="${o.icon}" class="w-3.5 h-3.5 shrink-0"></i><span class="truncate">${pillText}</span>
+                    </span>
+                    <span class="mt-1 text-[15px] font-semibold ${soft}">${o.lead}</span>
+                    <div class="flex items-baseline flex-wrap tabular-nums">${big}</div>
+                    ${progress}
+                    ${subs ? `<div class="flex flex-col gap-1.5 mt-0.5">${subs}</div>` : ''}
+                </div>
+                <div class="mt-5 flex gap-2.5">
+                    ${actions}
+                    <label for="home-camera-input" role="button" tabindex="0" aria-label="Fer una foto i pujar-la" class="w-[50px] h-[50px] rounded-2xl flex items-center justify-center shrink-0 cursor-pointer text-white border border-white/15 shadow-[0_8px_18px_-10px_rgba(0,0,0,0.45)] active:scale-[0.94] transition-transform" style="background: ${P.cam}">
+                        <i data-lucide="camera" class="w-5 h-5"></i>
+                    </label>
+                </div>`;
+        }
+
+        // ---------- "El teu pla" de l'inici ----------
+        const PLAN_TONES = {
+            now: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400',
+            blue: 'bg-blue-50 text-primary dark:bg-blue-500/15 dark:text-blue-400',
+            orange: 'bg-orange-50 text-[#C2410C] dark:bg-orange-500/15 dark:text-orange-400',
+            violet: 'bg-violet-50 text-violet-700 dark:bg-violet-500/15 dark:text-violet-400',
+            amber: 'bg-amber-50 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400'
+        };
+        const ICON_TONES = { 'train-front': 'orange', 'utensils': 'orange', 'footprints': 'orange', 'mic': 'violet', 'hotel': 'violet', 'backpack': 'violet', 'zap': 'violet' };
+
+        function planRow(r) {
+            const tag = r.href ? 'a' : 'button';
+            const attrs = r.href
+                ? `href="${r.href}" target="_blank" rel="noopener noreferrer"`
+                : `type="button" onclick="${r.onclick}"`;
+            return `
+                <${tag} ${attrs} class="plan-row w-full text-left flex items-center gap-3 py-3 border-t border-slate-100 dark:border-slate-800">
+                    <span class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${PLAN_TONES[r.tone]}">
+                        <i data-lucide="${r.icon}" class="w-[18px] h-[18px] ${r.icon === 'star' ? 'fill-current' : ''}"></i>
+                    </span>
+                    <span class="flex-1 min-w-0 flex flex-col gap-0.5">
+                        <span class="text-[15px] font-bold text-slate-900 dark:text-slate-100 truncate">${r.title}</span>
+                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400 truncate">${r.sub}</span>
+                    </span>
+                    <span class="text-[13px] font-bold tabular-nums shrink-0 ${r.rightCls || 'text-slate-500 dark:text-slate-400'}">${r.right}</span>
+                </${tag}>`;
+        }
+
+        function upcomingFavourites(now) {
+            const list = [];
+            pyconProgram.forEach(slot => {
+                if (slot.end <= now) return;
+                if (slot.sessions) {
+                    slot.sessions.forEach(s => {
+                        if (favs.has(favId(slot, s))) list.push({ slot, start: slot.start, title: s.title, room: s.room });
+                    });
+                } else if (slot.type !== 'break' && favs.has(favId(slot))) {
+                    list.push({ slot, start: slot.start, title: slot.title, room: slot.room });
+                }
+            });
+            return list;
+        }
+
+        function favPlanRow(f, now) {
+            const current = now >= f.start;
+            return planRow({
+                tone: 'amber', icon: 'star', title: f.title,
+                sub: `${shortRoom(f.room) || 'PyConES'} · la teva favorita`,
+                right: current ? 'Ara' : whenLabel(f.start, now),
+                rightCls: current ? 'text-emerald-700 dark:text-emerald-400' : '',
+                onclick: "switchTab('programa')"
+            });
+        }
+
+        function renderHomePlan(now, currentEvent) {
+            const favList = upcomingFavourites(now);
+
+            if (homeFilter === 'favs') {
+                if (!favList.length) {
+                    return `
+                        <div class="py-6 text-center text-sm font-medium text-slate-500 dark:text-slate-400 leading-relaxed">
+                            Encara no has marcat cap xerrada.<br>
+                            <button type="button" onclick="switchTab('programa')" class="mt-1 font-bold text-[#1E5FA8] dark:text-blue-300">Obre el programa i toca ★</button>
+                        </div>`;
+                }
+                return favList.slice(0, 6).map(f => favPlanRow(f, now)).join('');
+            }
+
+            let html = '';
+            let count = 0;
+            if (currentEvent) {
+                const left = Math.max(0, Math.ceil((currentEvent.end - now) / 60000));
+                html += planRow({
+                    tone: 'now', icon: currentEvent.icon, title: currentEvent.title,
+                    sub: `Ara mateix · ${currentEvent.location}`,
+                    right: shortDuration(left), rightCls: 'text-emerald-700 dark:text-emerald-400',
+                    href: currentEvent.mapLink
+                });
+                count++;
+            }
+            const upcoming = itinerary.filter(e => e.start > now).map(e => ({ kind: 'event', start: e.start, ev: e }))
+                .concat(favList.map(f => ({ kind: 'fav', start: f.start, f })))
+                .sort((a, b) => a.start - b.start)
+                .slice(0, 4 - count);
+            upcoming.forEach(item => {
+                if (item.kind === 'fav') {
+                    html += favPlanRow(item.f, now);
+                } else {
+                    const ev = item.ev;
+                    const critical = (countdownMeta[ev.title] || {}).critical;
+                    html += planRow({
+                        tone: ICON_TONES[ev.icon] || 'blue', icon: ev.icon, title: ev.title,
+                        sub: ev.location, right: whenLabel(ev.start, now),
+                        rightCls: critical ? 'text-[#C2410C] dark:text-orange-400' : '',
+                        href: ev.mapLink
+                    });
+                }
+            });
+            return html;
+        }
+
+        function setHomeFilter(filter) {
+            homeFilter = filter;
+            lastPlanHtml = '';
+            updateApp();
+        }
+
+        function updateHomeFilterChips() {
+            const on = 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900';
+            const off = 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-300';
+            [['all', 'home-filter-all'], ['favs', 'home-filter-favs']].forEach(([f, id]) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const active = homeFilter === f;
+                el.className = `h-9 px-3.5 rounded-full text-xs font-bold transition-colors ${active ? on : off}`;
+                el.setAttribute('aria-pressed', active ? 'true' : 'false');
+            });
+        }
+
         function updateApp() {
             const now = new Date();
+
+            // Un cop per minut: refrescar estat (ARA / FET / atenuat) a Horari i Programa
+            const minuteKey = Math.floor(now.getTime() / 60000);
+            if (minuteKey !== lastRenderedMinute) {
+                lastRenderedMinute = minuteKey;
+                generateFullSchedule();
+                renderPyconProgram();
+            }
             
             const firstEvent = itinerary[0];
             const lastEvent = itinerary[itinerary.length - 1];
+            const beforeTrip = now < firstEvent.start;
 
-            // 1. Cercar activitat que està passant ARA
+            // Activitat en curs i següent de l'itinerari
             const currentEvent = itinerary.find(e => now >= e.start && now < e.end);
-
-            // 2. Cercar la següent activitat que vindrà
             const nextEvent = itinerary.find(e => e.start > now);
 
-            // Renderitzat de les targetes
-            const container = document.getElementById('active-card-container');
-            if (container) {
-                let nowHtml = '';
-                let nextHtml = '';
+            // Bloc del programa PyConES en curs i següent (sense pauses)
+            const currentSlot = pyconProgram.find(s => now >= s.start && now < s.end && s.type !== 'break' && !s.skipCountdown);
+            const nextSlot = pyconProgram.find(s => s.start > now && s.type !== 'break' && !s.skipCountdown);
 
-                // A) TARGETA "ARA MATEIX" (Blau primari)
-                if (currentEvent) {
-                    const timeRange = `${timeFmt.format(currentEvent.start)} - ${timeFmt.format(currentEvent.end)}`;
-                    nowHtml = `
-                        <div class="bg-primary text-white rounded-[32px] p-6 shadow-xl shadow-blue-500/25 relative overflow-hidden transition-all">
-                            <div class="absolute -right-12 -top-12 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
-                            
-                            <div class="flex justify-between items-start mb-5 relative z-10">
-                                <div class="bg-white/20 p-3 rounded-[20px] text-white">
-                                    <i data-lucide="${currentEvent.icon}" class="w-7 h-7"></i>
-                                </div>
-                                <div class="flex flex-col items-end gap-1">
-                                    <span class="bg-white/20 text-white text-xs px-3.5 py-1.5 rounded-full font-bold tracking-wide flex items-center gap-1.5">
-                                        <span class="w-2 h-2 rounded-full bg-emerald-300 animate-pulse"></span>
-                                        Ara mateix
-                                    </span>
-                                    <span class="text-[11px] font-semibold text-blue-100 tracking-wide">
-                                        ${currentEvent.day} · ${timeRange}
-                                    </span>
-                                </div>
-                            </div>
-                            
-                            <div class="relative z-10">
-                                <h3 class="text-[26px] font-extrabold text-white leading-tight mb-2 tracking-tight">${currentEvent.title}</h3>
-                                ${currentEvent.mapLink ? 
-                                    `<a href="${currentEvent.mapLink}" target="_blank" class="inline-flex items-center gap-1.5 text-blue-100 hover:text-white transition-opacity">
-                                        <i data-lucide="map-pin" class="w-4 h-4"></i>
-                                        <span class="font-medium text-[15px] underline-offset-4 underline decoration-white/40">${currentEvent.location}</span>
-                                    </a>` 
-                                    : 
-                                    `<div class="flex items-center gap-1.5 text-blue-100">
-                                        <i data-lucide="map-pin" class="w-4 h-4"></i>
-                                        <span class="font-medium text-[15px]">${currentEvent.location}</span>
-                                    </div>`
-                                }
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    // Si no hi ha cap activitat activa ara mateix
-                    let idleIcon = 'coffee';
-                    let idleTitle = 'Cap activitat en curs';
-                    let idleDesc = 'No hi ha cap esdeveniment programat ara mateix.';
+            const minsTo = d => Math.max(0, Math.ceil((d - now) / 60000));
+            const meta = e => countdownMeta[e.title] || {};
 
-                    if (now < firstEvent.start) {
-                        idleIcon = 'sparkles';
-                        idleTitle = 'Preparant el viatge';
-                        idleDesc = 'El viatge comença el dissabte 7 a les 07:00h a l\'estació de Girona.';
-                    } else if (now > lastEvent.end) {
-                        idleIcon = 'check-circle-2';
-                        idleTitle = 'Viatge finalitzat';
-                        idleDesc = 'Tots els actes han conclòs. Bon retorn a casa!';
-                    } else {
-                        idleTitle = 'Temps lliure / Pausa';
-                        idleDesc = 'Pots aprofitar per fer una pausa o consultar el programa.';
-                    }
+            // Què mostra el compte enrere (per ordre de prioritat):
+            // 1. Un acte crític (trens) en menys de 2 h, o qualsevol acte en menys de 15 min
+            // 2. El bloc de xerrades en curs (quant falta perquè acabi)
+            // 3. El següent acte de l'itinerari si és en menys d'1 h
+            // 4. El següent bloc de xerrades si és en menys de 2 h
+            // 5. Si no, el següent acte de l'itinerari, encara que sigui lluny
+            let heroEvent = null;
+            let heroSlot = null;
+            let heroDuring = null;
+            const nextMins = nextEvent ? minsTo(nextEvent.start) : Infinity;
+            const nextCritical = nextEvent && meta(nextEvent).critical;
 
-                    nowHtml = `
-                        <div class="bg-primary text-white rounded-[32px] p-6 shadow-xl shadow-blue-500/25 relative overflow-hidden transition-all">
-                            <div class="absolute -right-12 -top-12 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
-                            
-                            <div class="flex justify-between items-start mb-4 relative z-10">
-                                <div class="bg-white/20 p-3 rounded-[20px] text-white">
-                                    <i data-lucide="${idleIcon}" class="w-7 h-7"></i>
-                                </div>
-                                <span class="bg-white/20 text-white text-xs px-3.5 py-1.5 rounded-full font-bold tracking-wide">
-                                    Ara mateix
-                                </span>
-                            </div>
-                            
-                            <div class="relative z-10">
-                                <h3 class="text-[22px] font-extrabold text-white leading-tight mb-1.5 tracking-tight">${idleTitle}</h3>
-                                <p class="text-blue-100 text-sm font-medium leading-relaxed">${idleDesc}</p>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                // B) TARGETA "PRÒXIMAMENT" DISSIMULADA (Fons clar / Secundària)
-                if (nextEvent) {
-                    const nextTimeRange = `${timeFmt.format(nextEvent.start)} - ${timeFmt.format(nextEvent.end)}`;
-                    nextHtml = `
-                        <div class="bg-white rounded-[24px] p-4 sm:p-5 border border-slate-200/80 shadow-sm transition-all mt-1">
-                            <div class="flex flex-col items-start gap-1.5 mb-3">
-                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Pròximament</span>
-                                <span class="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-full uppercase tracking-wider">
-                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-primary"></i>
-                                    ${nextEvent.day} · ${nextTimeRange}
-                                </span>
-                            </div>
-                            <div class="flex items-start justify-between gap-3">
-                                <div>
-                                    <h4 class="font-bold text-slate-800 text-base leading-snug">${nextEvent.title}</h4>
-                                    ${nextEvent.mapLink ? `
-                                        <a href="${nextEvent.mapLink}" target="_blank" class="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-primary transition-colors mt-1 font-medium">
-                                            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
-                                            <span class="underline underline-offset-2">${nextEvent.location}</span>
-                                        </a>
-                                    ` : `
-                                        <p class="text-xs text-slate-500 mt-1 flex items-center gap-1 font-medium">
-                                            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
-                                            ${nextEvent.location}
-                                        </p>
-                                    `}
-                                </div>
-                                <div class="p-2 bg-slate-50 text-primary rounded-2xl shrink-0">
-                                    <i data-lucide="${nextEvent.icon}" class="w-5 h-5"></i>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    nextHtml = `
-                        <div class="bg-white rounded-[20px] p-3.5 border border-slate-200 text-center text-xs text-slate-400 font-medium mt-1">
-                            No hi ha més esdeveniments programats al viatge.
-                        </div>
-                    `;
-                }
-
-                container.innerHTML = nowHtml + nextHtml;
+            if (nextEvent && ((nextCritical && nextMins <= 120) || nextMins <= 15)) {
+                heroEvent = nextEvent;
+            } else if (currentEvent && meta(currentEvent).during) {
+                // Actes on no cal comptar res (el sopar): es mostra un missatge
+                heroDuring = currentEvent;
+            } else if (currentSlot) {
+                heroSlot = { slot: currentSlot, ending: true };
+            } else if (nextEvent && nextMins <= 60) {
+                heroEvent = nextEvent;
+            } else if (nextSlot && minsTo(nextSlot.start) <= 120 && !(nextEvent && +nextEvent.start === +nextSlot.start)) {
+                heroSlot = { slot: nextSlot, ending: false };
+            } else if (nextEvent) {
+                heroEvent = nextEvent;
             }
 
-            // Lògica del widget 'Pròximament a PyConES' (Dissabte 7 i Diumenge 8)
-            const upcomingProgramContainer = document.getElementById('upcoming-program-container');
-            if (upcomingProgramContainer) {
-                let futureSlots = pyconProgram.filter(slot => slot.end > now);
-                // Si encara no ha començat el congrés o estem fora de les dates, agafem els primers del dissabte
-                if (futureSlots.length === 0 && now < pyconProgram[0].start) {
-                    futureSlots = pyconProgram;
-                }
-
-                const nextSlots = futureSlots.slice(0, 2);
-
-                if (nextSlots.length > 0) {
-                    let upcomingHtml = '';
-                    nextSlots.forEach(slot => {
-                        const timeRange = `${timeFmt.format(slot.start)} - ${timeFmt.format(slot.end)}`;
-                        let subtitleHtml = '';
-                        
-                        if (slot.sessions && slot.sessions.length > 0) {
-                            subtitleHtml = `
-                                <div class="mt-2 flex flex-col gap-1.5">
-                                    <span class="text-xs font-semibold text-primary">${slot.sessions.length} sessions en paral·lel disponibles:</span>
-                                    ${slot.sessions.slice(0, 2).map(s => `
-                                        <div class="text-xs text-slate-600 bg-slate-50 p-2 rounded-xl flex items-center justify-between gap-2">
-                                            <span class="font-medium truncate">${s.title}</span>
-                                            <span class="font-bold text-primary shrink-0 bg-blue-50 px-1.5 py-0.5 rounded text-[11px]">${s.room.split(' - ')[0]}</span>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            `;
-                        } else if (slot.speaker) {
-                            subtitleHtml = `<p class="text-xs text-slate-500 font-medium mt-1 flex items-center gap-1.5"><i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i> ${slot.speaker} · <span class="text-primary font-semibold">${slot.room || ''}</span></p>`;
-                        } else if (slot.room) {
-                            subtitleHtml = `<p class="text-xs text-slate-500 font-medium mt-1 flex items-center gap-1.5"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400"></i> ${slot.room}</p>`;
-                        }
-
-                        upcomingHtml += `
-                            <div class="bg-white rounded-[26px] p-5 shadow-sm shadow-slate-200/50 border border-slate-100">
-                                <div class="flex items-center justify-between gap-2 mb-2">
-                                    <span class="inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-blue-50 px-3 py-1 rounded-full uppercase tracking-wider">
-                                        <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
-                                        ${slot.dayLabel.split(' ')[0]} ${slot.dayLabel.split(' ')[1]} · ${timeRange}
-                                    </span>
-                                    <i data-lucide="${slot.icon || 'presentation'}" class="w-5 h-5 text-slate-400"></i>
-                                </div>
-                                <h3 class="font-bold text-slate-800 text-base leading-snug">${slot.title}</h3>
-                                ${subtitleHtml}
-                            </div>
-                        `;
-                    });
-                    upcomingProgramContainer.innerHTML = upcomingHtml;
+            let hero;
+            if (heroDuring) {
+                const d = meta(heroDuring).during;
+                hero = {
+                    variant: 'calm',
+                    icon: heroDuring.icon,
+                    pill: meta(heroDuring).pill || heroDuring.title,
+                    right: `${timeFmt.format(heroDuring.start)}–${timeFmt.format(heroDuring.end)}`,
+                    lead: d.lead,
+                    bigText: d.bigText,
+                    subs: d.subs
+                };
+            } else if (heroEvent) {
+                const m = meta(heroEvent);
+                // Nivells d'urgència: calm (blanc) → aviat (blau) → urgent (taronja)
+                let variant = 'calm';
+                if (m.critical && nextMins <= 30) variant = 'urgent';
+                else if (nextMins <= 15 || (m.critical && nextMins <= 60)) variant = 'soon';
+                const mapHref = m.map || heroEvent.mapLink;
+                hero = {
+                    variant,
+                    icon: heroEvent.icon,
+                    pill: m.pill || heroEvent.title,
+                    right: whenLabel(heroEvent.start, now),
+                    lead: m.lead || `${heroEvent.title} comença en`,
+                    parts: durationParts(nextMins),
+                    subs: m.subs || [['map-pin', heroEvent.location]],
+                    button: mapHref ? { text: variant === 'calm' ? 'Obrir al mapa' : 'Com arribar', href: mapHref } : null
+                };
+            } else if (heroSlot) {
+                const s = heroSlot.slot;
+                const range = `${timeFmt.format(s.start)}–${timeFmt.format(s.end)}`;
+                const subs = [];
+                if (heroSlot.ending) {
+                    const following = pyconProgram.find(x => x.start >= s.end && x.type !== 'break');
+                    if (following && sameDay(following.start, now)) {
+                        subs.push(['clock', `Proper: ${following.title} · ${timeFmt.format(following.start)}`]);
+                    }
+                    const pct = Math.min(100, Math.max(0, (now - s.start) / (s.end - s.start) * 100));
+                    hero = {
+                        variant: 'calm',
+                        icon: s.icon || 'presentation',
+                        pill: s.title,
+                        right: range,
+                        lead: s.type === 'track' ? 'El bloc acaba en' : 'Acaba en',
+                        parts: durationParts(minsTo(s.end)),
+                        subs,
+                        progress: { pct, left: timeFmt.format(s.start), right: timeFmt.format(s.end) }
+                    };
                 } else {
-                    upcomingProgramContainer.innerHTML = `
-                        <div class="bg-white rounded-[24px] p-5 text-center text-slate-500 font-medium border border-slate-200 flex items-center justify-center gap-2">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500"></i>
-                            Totes les sessions del cap de setmana han finalitzat.
-                        </div>
-                    `;
+                    const mins = minsTo(s.start);
+                    if (s.sessions) subs.push(['users', `${s.sessions.length} sessions en paral·lel`]);
+                    else if (s.room) subs.push(['map-pin', s.room]);
+                    hero = {
+                        variant: mins <= 15 ? 'soon' : 'calm',
+                        icon: s.icon || 'presentation',
+                        pill: s.title,
+                        right: range,
+                        lead: 'Comença en',
+                        parts: durationParts(mins),
+                        subs
+                    };
                 }
+            } else {
+                hero = {
+                    variant: 'calm',
+                    icon: 'check-circle-2',
+                    pill: 'PyConES 26',
+                    right: '',
+                    lead: 'Tots els actes han conclòs',
+                    bigText: 'Bon retorn a casa!',
+                    subs: []
+                };
+            }
+
+            // Inici: cel segons l'hora, compte enrere i "El teu pla"
+            const P = updateHomeSky(now);
+            const heroEl = document.getElementById('home-hero');
+            if (heroEl) {
+                const heroHtml = renderHomeHero(hero, P, now);
+                if (heroHtml !== lastHeroHtml) {
+                    lastHeroHtml = heroHtml;
+                    heroEl.innerHTML = heroHtml;
+                }
+            }
+
+            // Checklist només abans de sortir
+            const pretrip = document.getElementById('pretrip-section');
+            if (pretrip) pretrip.classList.toggle('hidden', !beforeTrip);
+
+            updateHomeFilterChips();
+            const planList = document.getElementById('home-plan-list');
+            const planSection = document.getElementById('plan-section');
+            if (planList && planSection) {
+                const planHtml = renderHomePlan(now, currentEvent);
+                if (planHtml !== lastPlanHtml) {
+                    lastPlanHtml = planHtml;
+                    planList.innerHTML = planHtml;
+                }
+                planSection.classList.toggle('hidden', !planHtml && homeFilter === 'all');
             }
 
             lucide.createIcons();
         }
 
+        // ---------- Horari: el que ja ha passat es plega i s'atenua ----------
+        let hideDoneSchedule = false;
+
+        function toggleDoneSchedule() {
+            hideDoneSchedule = !hideDoneSchedule;
+            generateFullSchedule();
+        }
+
+        function progressRow(start, end, now) {
+            const pct = Math.min(100, Math.max(0, (now - start) / (end - start) * 100));
+            const left = Math.max(0, Math.ceil((end - now) / 60000));
+            return `
+                <div class="flex items-center gap-2.5">
+                    <div class="flex-1 h-1 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                        <div class="h-full rounded-full bg-primary" style="width: ${pct.toFixed(1)}%"></div>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 tabular-nums">queden ${shortDuration(left)}</span>
+                </div>`;
+        }
+
+        const ARA_PILL = `<span class="inline-flex items-center gap-1 bg-primary text-white text-[11px] font-extrabold tracking-wider px-2 py-0.5 rounded-full"><span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>ARA</span>`;
+        const FET_PILL = `<span class="inline-flex items-center gap-0.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400"><i data-lucide="check" class="w-3 h-3"></i>FET</span>`;
+
+        function scheduleCard(ev, current, now) {
+            const box = current
+                ? 'border-2 border-primary shadow-lg shadow-blue-500/15 p-[19px]'
+                : 'border border-slate-100 dark:border-slate-800 shadow-sm shadow-slate-200/50 dark:shadow-none p-5';
+            return `
+                <div class="bg-white dark:bg-slate-900 rounded-[28px] ${box} flex flex-col gap-3">
+                    <div class="flex gap-5">
+                        <div class="bg-slate-50 dark:bg-slate-800 p-3.5 rounded-[20px] h-fit shrink-0">
+                            <i data-lucide="${ev.icon}" class="w-6 h-6 text-primary"></i>
+                        </div>
+                        <div class="flex-1 pt-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <span class="text-xs font-black tracking-wide text-primary uppercase tabular-nums">${timeFmt.format(ev.start)} - ${timeFmt.format(ev.end)}</span>
+                                ${current ? ARA_PILL : ''}
+                            </div>
+                            <h4 class="text-slate-800 dark:text-white font-bold text-lg leading-tight mb-1.5">${ev.title}</h4>
+                            ${ev.mapLink ? `
+                                <a href="${ev.mapLink}" target="_blank" rel="noopener noreferrer" class="text-slate-500 dark:text-slate-400 hover:text-primary text-sm font-medium inline-flex items-center gap-1 transition-colors">
+                                    <i data-lucide="map-pin" class="w-3.5 h-3.5 shrink-0"></i>
+                                    <span class="underline underline-offset-2">${ev.location}</span>
+                                </a>
+                            ` : `
+                                <p class="text-slate-500 dark:text-slate-400 text-sm font-medium flex items-start gap-1">
+                                    <i data-lucide="map-pin" class="w-3.5 h-3.5 mt-0.5 shrink-0"></i>${ev.location}
+                                </p>
+                            `}
+                        </div>
+                    </div>
+                    ${current ? progressRow(ev.start, ev.end, now) : ''}
+                </div>`;
+        }
+
         function generateFullSchedule() {
             const container = document.getElementById('full-schedule-content');
             if (!container) return;
-            
+            const now = new Date();
+
             const days = {};
             itinerary.forEach(ev => {
                 if (!days[ev.day]) days[ev.day] = [];
@@ -938,145 +1682,783 @@
 
             let html = '';
             for (const [dayName, events] of Object.entries(days)) {
+                const done = events.filter(e => now >= e.end);
+                const rest = events.filter(e => now < e.end);
+
                 html += `
-                    <section class="mb-2">
-                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 px-1">${dayName}</h3>
-                        <div class="flex flex-col gap-4">
-                `;
-                
-                events.forEach(ev => {
+                    <section class="flex flex-col gap-3 mb-2">
+                        <div class="flex items-center justify-between px-1 min-h-[36px]">
+                            <h3 class="text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">${dayName}</h3>
+                            ${done.length ? `<button type="button" onclick="toggleDoneSchedule()" class="text-[13px] font-bold text-[#1E5FA8] dark:text-blue-300 py-2 px-1">${hideDoneSchedule ? `Mostrar fets (${done.length})` : 'Amagar fets'}</button>` : ''}
+                        </div>`;
+
+                if (done.length && !hideDoneSchedule) {
                     html += `
-                        <div class="bg-white rounded-[28px] p-5 shadow-sm shadow-slate-200/50 border border-slate-100 flex gap-5">
-                            <div class="bg-slate-50 p-3.5 rounded-[20px] h-fit shrink-0">
-                                <i data-lucide="${ev.icon}" class="w-6 h-6 text-primary"></i>
-                            </div>
-                            <div class="flex-1 pt-1">
-                                <div class="text-xs font-black tracking-wide text-primary mb-1.5 uppercase">
-                                    ${timeFmt.format(ev.start)} - ${timeFmt.format(ev.end)}
-                                </div>
-                                <h4 class="text-slate-800 font-bold text-lg leading-tight mb-1.5">${ev.title}</h4>
-                                ${ev.mapLink ? `
-                                    <a href="${ev.mapLink}" target="_blank" class="text-slate-500 hover:text-primary text-sm font-medium inline-flex items-center gap-1 transition-colors">
-                                        <i data-lucide="map-pin" class="w-3.5 h-3.5 shrink-0"></i>
-                                        <span class="underline underline-offset-2">${ev.location}</span>
-                                    </a>
-                                ` : `
-                                    <p class="text-slate-500 text-sm font-medium flex items-start gap-1">
-                                        <i data-lucide="map-pin" class="w-3.5 h-3.5 mt-0.5 shrink-0"></i>
-                                        ${ev.location}
-                                    </p>
-                                `}
-                            </div>
-                        </div>
-                    `;
+                        <div class="bg-white dark:bg-slate-900 rounded-[22px] px-4 py-1 border border-slate-200/80 dark:border-slate-800 opacity-60 divide-y divide-slate-100 dark:divide-slate-800">
+                            ${done.map(ev => `
+                                <div class="flex items-center gap-3 py-2.5">
+                                    <span class="w-11 text-[13px] font-bold text-slate-500 dark:text-slate-400 tabular-nums shrink-0">${timeFmt.format(ev.start)}</span>
+                                    <span class="flex-1 min-w-0 text-sm font-semibold text-slate-600 dark:text-slate-300 truncate">${ev.title}</span>
+                                    <i data-lucide="check" class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0"></i>
+                                </div>`).join('')}
+                        </div>`;
+                }
+
+                rest.forEach(ev => {
+                    html += scheduleCard(ev, now >= ev.start, now);
                 });
-                
-                html += `</div></section>`;
+                html += `</section>`;
             }
             container.innerHTML = html;
+            lucide.createIcons();
         }
 
+        // ---------- Programa: bloc actual, acordió i favorites ----------
+        const FAV_KEY = 'pycones26-favs';
+        let favs = new Set();
+        try { favs = new Set(JSON.parse(localStorage.getItem(FAV_KEY) || '[]')); } catch (e) { favs = new Set(); }
+        const expandedSlots = new Set();
         let currentPyconDay = 'ds';
+        let lastRenderedMinute = null;
 
-        function switchPyconDay(day) {
-            currentPyconDay = day;
-            const dsBtn = document.getElementById('day-tab-ds');
-            const dgBtn = document.getElementById('day-tab-dg');
+        function escapeAttr(s) {
+            return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
 
-            if (day === 'ds') {
-                dsBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-sm transition-all bg-white text-slate-800 shadow-sm flex items-center justify-center gap-1.5";
-                dgBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-sm transition-all text-slate-500 hover:text-slate-800 flex items-center justify-center gap-1.5";
-            } else {
-                dgBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-sm transition-all bg-white text-slate-800 shadow-sm flex items-center justify-center gap-1.5";
-                dsBtn.className = "flex-1 py-2.5 rounded-xl font-bold text-sm transition-all text-slate-500 hover:text-slate-800 flex items-center justify-center gap-1.5";
-            }
-            
+        function favId(slot, sess) {
+            return slot.dayId + '|' + (sess ? sess.title : slot.title);
+        }
+
+        function saveFavs() {
+            try { localStorage.setItem(FAV_KEY, JSON.stringify([...favs])); } catch (e) {}
+        }
+
+        function toggleFav(id) {
+            if (favs.has(id)) favs.delete(id); else favs.add(id);
+            saveFavs();
+            if (navigator.vibrate) navigator.vibrate(8);
             renderPyconProgram();
+        }
+
+        function shortRoom(room) {
+            return (room || '').split(' - ')[0];
+        }
+
+        function roomPill(room) {
+            if (!room) return '';
+            return `<span class="inline-flex items-center gap-1 text-xs font-bold text-[#1E5FA8] dark:text-blue-300 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 rounded-lg whitespace-nowrap shrink-0"><i data-lucide="map-pin" class="w-3 h-3"></i>${shortRoom(room)}</span>`;
+        }
+
+        function speakerTag(speaker) {
+            if (!speaker) return '';
+            return `<span class="inline-flex items-center gap-1 text-xs font-medium text-slate-600 dark:text-slate-400"><i data-lucide="user" class="w-3 h-3 shrink-0"></i>${speaker}</span>`;
+        }
+
+        function starBtn(id, title) {
+            const on = favs.has(id);
+            return `
+                <button type="button" data-fav="${escapeAttr(id)}" aria-pressed="${on}" aria-label="${on ? 'Treure de' : 'Afegir a'} la meva agenda: ${escapeAttr(title)}"
+                    class="w-11 h-11 rounded-[14px] flex items-center justify-center shrink-0 transition-all active:scale-90 ${on ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-500' : 'text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}">
+                    <i data-lucide="star" class="w-5 h-5 ${on ? 'fill-amber-400' : ''}"></i>
+                </button>`;
+        }
+
+        function slotState(slot, now) {
+            return { past: now >= slot.end, current: now >= slot.start && now < slot.end };
+        }
+
+        function renderSlot(slot, now) {
+            const idx = pyconProgram.indexOf(slot);
+            const { past, current } = slotState(slot, now);
+            const timeString = `${timeFmt.format(slot.start)}–${timeFmt.format(slot.end)}`;
+            const dim = past ? 'opacity-50' : '';
+            const status = current ? ARA_PILL : (past ? FET_PILL : '');
+
+            // Pauses: una sola línia
+            if (slot.type === 'break') {
+                return `
+                    <div id="slot-${idx}" class="flex items-center gap-2.5 px-4 py-3 rounded-2xl border border-dashed ${current ? 'border-primary text-[#1E5FA8] dark:text-blue-300' : 'border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400'} text-[13px] font-semibold ${dim}">
+                        <i data-lucide="${slot.icon || 'coffee'}" class="w-4 h-4 shrink-0"></i>
+                        <span class="tabular-nums">${timeString}</span><span>·</span><span class="truncate">${slot.title}</span>
+                        ${current ? `<span class="ml-auto">${ARA_PILL}</span>` : ''}
+                    </div>`;
+            }
+
+            const box = current
+                ? 'border-2 border-primary shadow-lg shadow-blue-500/15 p-[15px]'
+                : 'border border-slate-200/80 dark:border-slate-800 p-4';
+            const progress = current ? progressRow(slot.start, slot.end, now) : '';
+            const timeLine = `<div class="flex items-center gap-2"><span class="text-xs font-extrabold tracking-wide text-primary tabular-nums">${timeString}</span>${status}</div>`;
+
+            // Blocs de xerrades en paral·lel: acordió
+            if (slot.sessions && slot.sessions.length) {
+                const expanded = expandedSlots.has(idx);
+                const favSessions = slot.sessions.filter(s => favs.has(favId(slot, s)));
+                const favCount = favSessions.length ? ` · <span class="text-amber-600 dark:text-amber-400 font-bold">★ ${favSessions.length}</span>` : '';
+
+                const body = expanded
+                    ? `<div class="-mb-3">${slot.sessions.map(s => `
+                        <div class="flex items-start gap-2 py-3 border-t border-slate-100 dark:border-slate-800">
+                            <div class="flex-1 min-w-0 flex flex-col gap-1.5">
+                                <h5 class="text-sm font-semibold text-slate-800 dark:text-white leading-snug">${s.title}</h5>
+                                <div class="flex flex-wrap items-center gap-2">${speakerTag(s.speaker)}${roomPill(s.room)}</div>
+                            </div>
+                            ${starBtn(favId(slot, s), s.title)}
+                        </div>`).join('')}</div>`
+                    : favSessions.map(s => `
+                        <div class="flex items-center gap-2 bg-amber-50 dark:bg-amber-950/30 rounded-xl py-2.5 pl-3 pr-2.5">
+                            <i data-lucide="star" class="w-4 h-4 shrink-0 text-amber-500 fill-amber-400"></i>
+                            <span class="text-[13px] font-semibold text-slate-800 dark:text-white truncate flex-1 min-w-0">${s.title}</span>
+                            ${roomPill(s.room)}
+                        </div>`).join('');
+
+                return `
+                    <div id="slot-${idx}" class="bg-white dark:bg-slate-900 rounded-[22px] ${box} flex flex-col gap-3 ${dim}">
+                        <button type="button" data-toggle-slot="${idx}" aria-expanded="${expanded}" class="w-full flex items-start gap-2.5 text-left">
+                            <div class="flex-1 min-w-0 flex flex-col gap-1">
+                                ${timeLine}
+                                <h4 class="font-bold text-slate-800 dark:text-white text-base leading-snug">${slot.title}</h4>
+                                <span class="inline-flex items-center gap-1.5 text-[13px] font-medium text-slate-600 dark:text-slate-400">
+                                    <i data-lucide="users" class="w-3.5 h-3.5 shrink-0"></i><span>${slot.sessions.length} sessions en paral·lel${favCount}</span>
+                                </span>
+                            </div>
+                            <span class="w-11 h-11 rounded-[14px] bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center shrink-0">
+                                <i data-lucide="chevron-down" class="w-5 h-5 transition-transform ${expanded ? 'rotate-180' : ''}"></i>
+                            </span>
+                        </button>
+                        ${progress}
+                        ${body}
+                    </div>`;
+            }
+
+            // Actes únics (keynotes, taula rodona, obertura...)
+            const canFav = slot.type === 'keynote' || !!slot.speaker;
+            return `
+                <div id="slot-${idx}" class="bg-white dark:bg-slate-900 rounded-[22px] ${box} flex flex-col gap-3 ${dim}">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-primary flex items-center justify-center shrink-0">
+                            <i data-lucide="${slot.icon || 'presentation'}" class="w-[18px] h-[18px]"></i>
+                        </div>
+                        <div class="flex-1 min-w-0 flex flex-col gap-1">
+                            ${timeLine}
+                            <h4 class="font-bold text-slate-800 dark:text-white text-[15px] leading-snug">${slot.title}</h4>
+                            <div class="flex flex-wrap items-center gap-2">${speakerTag(slot.speaker)}${roomPill(slot.room)}</div>
+                        </div>
+                        ${canFav ? starBtn(favId(slot), slot.title) : ''}
+                    </div>
+                    ${progress}
+                </div>`;
+        }
+
+        // La meva agenda: només les favorites, per hora, avisant si dues coincideixen
+        function renderAgenda() {
+            const now = new Date();
+            const items = [];
+            pyconProgram.forEach(slot => {
+                if (slot.sessions) {
+                    slot.sessions.forEach(s => {
+                        const id = favId(slot, s);
+                        if (favs.has(id)) items.push({ slot, sess: s, id });
+                    });
+                } else if (slot.type !== 'break' && favs.has(favId(slot))) {
+                    items.push({ slot, sess: null, id: favId(slot) });
+                }
+            });
+
+            if (!items.length) {
+                const day = defaultProgramDay(now);
+                return `
+                    <div class="bg-white dark:bg-slate-900 rounded-[28px] border border-slate-200/80 dark:border-slate-800 px-6 py-10 flex flex-col items-center text-center gap-3">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-50 dark:bg-amber-950/40 text-amber-500 flex items-center justify-center">
+                            <i data-lucide="star" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 dark:text-white">Encara no has marcat cap xerrada</h3>
+                        <p class="text-sm font-medium text-slate-600 dark:text-slate-400 leading-relaxed max-w-[260px]">Toca ★ al costat d'una xerrada del programa i apareixerà aquí, ordenada per hora.</p>
+                        <button type="button" data-goto-day="${day}" class="mt-2 bg-primary text-white font-bold text-sm px-5 h-11 rounded-2xl active:scale-95 transition-transform">Veure el programa</button>
+                    </div>`;
+            }
+
+            // Agrupar per franja: dues favorites a la mateixa franja = coincidència
+            const groups = [];
+            items.forEach(it => {
+                const g = groups.find(x => x.slot === it.slot);
+                if (g) g.items.push(it); else groups.push({ slot: it.slot, items: [it] });
+            });
+            const conflicts = groups.filter(g => g.items.length > 1).length;
+
+            const card = (it, inConflict) => {
+                const { past, current } = slotState(it.slot, now);
+                const title = it.sess ? it.sess.title : it.slot.title;
+                const room = it.sess ? it.sess.room : it.slot.room;
+                const speaker = it.sess ? it.sess.speaker : it.slot.speaker;
+                const border = inConflict ? '' : (current ? 'border-2 border-primary p-[11px] pl-[13px]' : 'border border-slate-200/80 dark:border-slate-800 p-3 pl-3.5');
+                return `
+                    <div class="bg-white dark:bg-slate-900 rounded-[18px] ${inConflict ? 'p-2 pl-3' : border} flex flex-col gap-2.5 flex-1 min-w-0">
+                        <div class="flex items-start gap-2">
+                            <div class="flex-1 min-w-0 flex flex-col gap-1.5">
+                                ${current && !inConflict ? `<div>${ARA_PILL}</div>` : ''}
+                                <span class="text-sm font-semibold text-slate-800 dark:text-white leading-snug">${title}</span>
+                                <div class="flex flex-wrap items-center gap-2">${speakerTag(speaker)}${roomPill(room)}</div>
+                            </div>
+                            ${starBtn(it.id, title)}
+                        </div>
+                        ${current && !inConflict ? progressRow(it.slot.start, it.slot.end, now) : ''}
+                    </div>`;
+            };
+
+            let html = `
+                <div class="flex items-center gap-2 text-[13px] font-semibold text-slate-600 dark:text-slate-400 px-1">
+                    <i data-lucide="star" class="w-4 h-4 text-amber-500 fill-amber-400"></i>
+                    <span>${items.length} ${items.length === 1 ? 'xerrada marcada' : 'xerrades marcades'}${conflicts ? ` · ${conflicts} ${conflicts === 1 ? 'coincidència' : 'coincidències'}` : ''}</span>
+                </div>`;
+
+            ['ds', 'dg'].forEach(dayId => {
+                const dayGroups = groups.filter(g => g.slot.dayId === dayId);
+                if (!dayGroups.length) return;
+                const label = dayGroups[0].slot.dayLabel.split(' ').slice(0, 2).join(' ');
+                html += `<h3 class="text-xs font-extrabold tracking-[0.12em] uppercase text-slate-500 dark:text-slate-400 px-1 pt-2">${label}</h3>`;
+
+                dayGroups.forEach(g => {
+                    const { past } = slotState(g.slot, now);
+                    const time = timeFmt.format(g.slot.start);
+                    if (g.items.length > 1) {
+                        html += `
+                            <div class="flex gap-2.5 ${past ? 'opacity-50' : ''}">
+                                <span class="w-11 shrink-0 pt-3 text-[13px] font-extrabold text-[#C2410C] dark:text-orange-400 tabular-nums">${time}</span>
+                                <div class="flex-1 min-w-0 bg-orange-50 dark:bg-orange-950/30 border border-orange-300 dark:border-orange-800 rounded-[18px] p-2.5 flex flex-col gap-2">
+                                    <div class="flex items-center gap-1.5 text-[13px] font-bold text-[#9A3412] dark:text-orange-300 px-1 pt-0.5">
+                                        <i data-lucide="triangle-alert" class="w-4 h-4 shrink-0"></i>
+                                        <span>Coincideixen a la mateixa hora · tria'n una</span>
+                                    </div>
+                                    ${g.items.map(it => card(it, true)).join('')}
+                                </div>
+                            </div>`;
+                    } else {
+                        html += `
+                            <div class="flex gap-2.5 ${past ? 'opacity-50' : ''}">
+                                <span class="w-11 shrink-0 pt-3.5 text-[13px] font-extrabold text-primary tabular-nums">${time}</span>
+                                ${card(g.items[0], false)}
+                            </div>`;
+                    }
+                });
+            });
+            return html;
+        }
+
+        function updateDayTabs() {
+            const base = 'flex-1 min-w-0 h-10 px-1 rounded-xl font-bold text-[13px] transition-all flex items-center justify-center gap-1.5';
+            ['ds', 'dg', 'agenda'].forEach(d => {
+                const btn = document.getElementById('day-tab-' + d);
+                if (!btn) return;
+                const on = d === currentPyconDay;
+                btn.className = base + (on
+                    ? ' bg-white dark:bg-slate-800 text-slate-800 dark:text-white shadow-sm'
+                    : ' text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white');
+                btn.setAttribute('aria-selected', on ? 'true' : 'false');
+            });
+            const count = document.getElementById('agenda-count');
+            if (count) {
+                count.textContent = favs.size;
+                count.classList.toggle('hidden', favs.size === 0);
+                count.classList.toggle('inline-flex', favs.size > 0);
+                count.classList.toggle('bg-amber-500', currentPyconDay === 'agenda');
+                count.classList.toggle('bg-slate-400', currentPyconDay !== 'agenda');
+                count.classList.toggle('dark:bg-slate-600', currentPyconDay !== 'agenda');
+            }
         }
 
         function renderPyconProgram() {
             const container = document.getElementById('pycon-program-content');
             if (!container) return;
-
-            const slots = pyconProgram.filter(slot => slot.dayId === currentPyconDay);
-            let html = '';
-
-            slots.forEach(slot => {
-                const timeString = `${timeFmt.format(slot.start)} - ${timeFmt.format(slot.end)}`;
-                let innerContent = '';
-
-                if (slot.sessions && slot.sessions.length > 0) {
-                    innerContent = `<div class="mt-4 flex flex-col gap-2.5 border-t border-slate-100 pt-3">`;
-                    slot.sessions.forEach(sess => {
-                        innerContent += `
-                            <div class="bg-slate-50 hover:bg-slate-100 rounded-2xl p-4 transition-colors">
-                                <h5 class="text-sm font-bold text-slate-800 leading-snug mb-1.5">${sess.title}</h5>
-                                <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 font-medium">
-                                    ${sess.speaker ? `<span class="flex items-center gap-1"><i data-lucide="user" class="w-3.5 h-3.5"></i> ${sess.speaker}</span>` : ''}
-                                    ${sess.room ? `<span class="flex items-center gap-1 text-primary bg-blue-50 px-2.5 py-0.5 rounded-full font-semibold"><i data-lucide="map-pin" class="w-3 h-3"></i> ${sess.room}</span>` : ''}
-                                </div>
-                            </div>
-                        `;
-                    });
-                    innerContent += `</div>`;
-                } else if (slot.speaker || slot.room) {
-                    innerContent = `
-                        <div class="flex flex-wrap items-center gap-2.5 mt-2.5 text-xs text-slate-500 font-medium">
-                            ${slot.speaker ? `<span class="flex items-center gap-1"><i data-lucide="user" class="w-3.5 h-3.5"></i> ${slot.speaker}</span>` : ''}
-                            ${slot.room ? `<span class="flex items-center gap-1 text-primary bg-blue-50 px-2.5 py-0.5 rounded-full font-semibold"><i data-lucide="map-pin" class="w-3 h-3"></i> ${slot.room}</span>` : ''}
-                        </div>
-                    `;
-                }
-
-                const isBreak = slot.type === 'break';
-                const bgStyle = isBreak ? 'bg-slate-100/70 border-dashed border-slate-200' : 'bg-white shadow-sm border border-slate-100';
-                const iconColor = isBreak ? 'text-slate-400' : 'text-primary';
-
-                html += `
-                    <div class="${bgStyle} rounded-[28px] p-5">
-                        <div class="flex items-start gap-4">
-                            <div class="bg-slate-50 p-3 rounded-2xl shrink-0">
-                                <i data-lucide="${slot.icon || 'presentation'}" class="w-5 h-5 ${iconColor}"></i>
-                            </div>
-                            <div class="flex-1">
-                                <span class="text-xs font-black text-primary tracking-wide uppercase">${timeString}</span>
-                                <h4 class="font-bold text-slate-800 text-base leading-snug mt-0.5">${slot.title}</h4>
-                                ${innerContent}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
+            updateDayTabs();
+            if (currentPyconDay === 'agenda') {
+                container.innerHTML = renderAgenda();
+            } else {
+                const now = new Date();
+                container.innerHTML = pyconProgram
+                    .filter(slot => slot.dayId === currentPyconDay)
+                    .map(slot => renderSlot(slot, now))
+                    .join('');
+            }
             lucide.createIcons();
+        }
+
+        // Desplaça la vista perquè l'element quedi just sota el selector fix
+        function scrollMainTo(el, smooth) {
+            const main = document.getElementById('main-view');
+            const sel = document.getElementById('program-selector');
+            if (!main || !el) return;
+            const offset = sel ? sel.offsetHeight : 0;
+            const top = el.getBoundingClientRect().top - main.getBoundingClientRect().top + main.scrollTop - offset - 12;
+            main.scrollTo({ top: Math.max(0, top), behavior: smooth ? 'smooth' : 'auto' });
+        }
+
+        function switchPyconDay(day) {
+            currentPyconDay = day;
+            renderPyconProgram();
+            const sel = document.getElementById('program-selector');
+            const content = document.getElementById('pycon-program-content');
+            // Si l'inici de la llista ha quedat amagat sota el selector fix, tornar-hi
+            if (sel && content && content.getBoundingClientRect().top < sel.getBoundingClientRect().bottom) {
+                scrollMainTo(content, false);
+            }
+        }
+
+        function defaultProgramDay(now) {
+            const today = pyconProgram.find(s => sameDay(s.start, now));
+            if (today) return today.dayId;
+            return now > pyconProgram[pyconProgram.length - 1].end ? 'dg' : 'ds';
+        }
+
+        // En obrir la pestanya: dia d'avui i salt directe al bloc en curs
+        function openProgramAtNow() {
+            const now = new Date();
+            if (currentPyconDay !== 'agenda') currentPyconDay = defaultProgramDay(now);
+            renderPyconProgram();
+            if (currentPyconDay === 'agenda') return;
+            const daySlots = pyconProgram.filter(s => s.dayId === currentPyconDay);
+            const target = daySlots.find(s => now < s.end);
+            if (target && target !== daySlots[0]) {
+                requestAnimationFrame(() => scrollMainTo(document.getElementById('slot-' + pyconProgram.indexOf(target)), false));
+            }
+        }
+
+        // Clics dins del programa: estrella, acordió i botó de l'agenda buida
+        (function () {
+            const content = document.getElementById('pycon-program-content');
+            if (content) {
+                content.addEventListener('click', (e) => {
+                    const favBtn = e.target.closest('[data-fav]');
+                    if (favBtn) { toggleFav(favBtn.dataset.fav); return; }
+                    const toggle = e.target.closest('[data-toggle-slot]');
+                    if (toggle) {
+                        const i = Number(toggle.dataset.toggleSlot);
+                        if (expandedSlots.has(i)) expandedSlots.delete(i); else expandedSlots.add(i);
+                        renderPyconProgram();
+                        return;
+                    }
+                    const go = e.target.closest('[data-goto-day]');
+                    if (go) switchPyconDay(go.dataset.gotoDay);
+                });
+            }
+
+            // Ombra sota el selector quan queda enganxat a dalt
+            const main = document.getElementById('main-view');
+            const sel = document.getElementById('program-selector');
+            if (main && sel) {
+                main.addEventListener('scroll', () => {
+                    const stuck = main.scrollTop > 0 && sel.getBoundingClientRect().top <= main.getBoundingClientRect().top + 0.5;
+                    sel.classList.toggle('shadow-[0_12px_16px_-14px_rgba(15,23,42,0.35)]', stuck);
+                    sel.classList.toggle('border-transparent', !stuck);
+                    sel.classList.toggle('border-slate-200', stuck);
+                    sel.classList.toggle('dark:border-slate-800', stuck);
+                }, { passive: true });
+            }
+        })();
+
+        // ---------- Sistema de Fotos i Google Drive (funciona també sense connexió) ----------
+        const PHOTO_LIST_KEY = 'pycones26-photos';
+        const PHOTO_RETRY_MS = 30000;
+        let lastPhotos = null;          // última llista de Drive (de la xarxa o guardada)
+        let photosFromCache = false;    // true si la llista no s'ha pogut actualitzar
+        let pendingPhotos = [];         // fotos a la cua, encara sense pujar
+        const pendingUrls = new Map();  // id → URL local per veure la miniatura
+        let uploadingQueue = false;
+        let photoRetryTimer = null;
+
+        // Cua de pujades guardada al mòbil (IndexedDB): sobreviu si es tanca l'app
+        const photoQueue = {
+            dbPromise: null,
+            open() {
+                if (!this.dbPromise) {
+                    this.dbPromise = new Promise((resolve, reject) => {
+                        if (!('indexedDB' in window)) return reject(new Error('IndexedDB no disponible'));
+                        const req = indexedDB.open('pycones26', 1);
+                        req.onupgradeneeded = () => req.result.createObjectStore('uploads', { keyPath: 'id' });
+                        req.onsuccess = () => resolve(req.result);
+                        req.onerror = () => reject(req.error);
+                    });
+                }
+                return this.dbPromise;
+            },
+            async run(mode, fn) {
+                const db = await this.open();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction('uploads', mode);
+                    const req = fn(tx.objectStore('uploads'));
+                    tx.oncomplete = () => resolve(req ? req.result : undefined);
+                    tx.onerror = () => reject(tx.error);
+                    tx.onabort = () => reject(tx.error);
+                });
+            },
+            add(item) { return this.run('readwrite', s => s.put(item)); },
+            remove(id) { return this.run('readwrite', s => s.delete(id)); },
+            all() { return this.run('readonly', s => s.getAll()); }
+        };
+
+        function isOnline() {
+            return navigator.onLine !== false;
+        }
+
+        // Aviso a la capçalera i a Fotos
+        function updateConnectionUI() {
+            const offline = !isOnline();
+            const pill = document.getElementById('offline-pill');
+            if (pill) {
+                pill.classList.toggle('hidden', !offline);
+                pill.classList.toggle('flex', offline);
+            }
+            const banner = document.getElementById('offline-banner');
+            if (banner) {
+                banner.classList.toggle('hidden', !offline);
+                banner.classList.toggle('flex', offline);
+            }
+            lastHeroHtml = '';
+            updateApp();
+        }
+
+        const UPLOAD_STYLES = {
+            loading: { cls: 'bg-blue-50 dark:bg-blue-950/50 border-blue-200 dark:border-blue-900 text-[#1E5FA8] dark:text-blue-300', icon: 'loader-2', spin: true },
+            pending: { cls: 'bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-900 text-amber-900 dark:text-amber-200', icon: 'cloud-upload', spin: false },
+            ok: { cls: 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-900 text-emerald-800 dark:text-emerald-300', icon: 'check-circle-2', spin: false },
+            error: { cls: 'bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-900 text-red-800 dark:text-red-300', icon: 'alert-circle', spin: false }
+        };
+
+        function showUploadStatus(kind, text) {
+            const el = document.getElementById('upload-status');
+            if (!el) return;
+            const st = UPLOAD_STYLES[kind];
+            el.className = `border p-3.5 rounded-2xl text-xs font-bold flex items-center gap-2 ${st.cls}`;
+            el.innerHTML = `<i data-lucide="${st.icon}" class="w-4 h-4 shrink-0 ${st.spin ? 'animate-spin' : ''}"></i><span>${text}</span>`;
+            lucide.createIcons();
+            const fotosTab = document.getElementById('tab-fotos');
+            if (fotosTab && fotosTab.classList.contains('hidden')) showToast(kind, text);
+        }
+
+        // Avís flotant (per exemple, quan es fa la foto des de l'inici)
+        let toastTimer = null;
+        function showToast(kind, text) {
+            const el = document.getElementById('toast');
+            if (!el) return;
+            const st = UPLOAD_STYLES[kind];
+            el.className = `toast fixed left-1/2 -translate-x-1/2 z-[60] w-max max-w-[calc(100%-2rem)] border px-4 py-3 rounded-2xl shadow-xl text-[13px] font-bold flex items-center gap-2 ${st.cls}`;
+            el.innerHTML = `<i data-lucide="${st.icon}" class="w-4 h-4 shrink-0 ${st.spin ? 'animate-spin' : ''}"></i><span>${text}</span>`;
+            lucide.createIcons();
+            clearTimeout(toastTimer);
+            if (kind !== 'loading') toastTimer = setTimeout(hideToast, kind === 'ok' ? 2500 : 5000);
+        }
+
+        function hideToast() {
+            const el = document.getElementById('toast');
+            if (el) { el.className = 'hidden'; el.innerHTML = ''; }
+        }
+
+        function hideUploadStatus() {
+            const el = document.getElementById('upload-status');
+            if (el) { el.className = 'hidden'; el.innerHTML = ''; }
+            hideToast();
+        }
+
+        function pendingText(n) {
+            return n === 1 ? '1 foto pendent' : `${n} fotos pendents`;
+        }
+
+        // Miniatura local de les fotos pendents
+        function pendingUrl(item) {
+            if (!pendingUrls.has(item.id)) {
+                const bin = atob(item.base64);
+                const bytes = new Uint8Array(bin.length);
+                for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+                pendingUrls.set(item.id, URL.createObjectURL(new Blob([bytes], { type: 'image/jpeg' })));
+            }
+            return pendingUrls.get(item.id);
+        }
+
+        function openPendingPhoto(id) {
+            const item = pendingPhotos.find(p => p.id === id);
+            if (item) openPhotoModal(pendingUrl(item), null);
+        }
+
+        async function refreshPendingPhotos() {
+            try {
+                pendingPhotos = (await photoQueue.all()).sort((a, b) => a.createdAt - b.createdAt);
+            } catch (e) {
+                pendingPhotos = [];
+            }
+            // Alliberar miniatures de fotos que ja s'han pujat
+            for (const [id, url] of pendingUrls) {
+                if (!pendingPhotos.some(p => p.id === id)) { URL.revokeObjectURL(url); pendingUrls.delete(id); }
+            }
+            renderPhotoGrid();
+        }
+
+        function renderPhotoGrid() {
+            const grid = document.getElementById('photos-grid');
+            if (!grid) return;
+            const note = document.getElementById('photos-note');
+            const photos = lastPhotos || [];
+            if (note) {
+                const showNote = photosFromCache && photos.length > 0;
+                note.classList.toggle('hidden', !showNote);
+                note.classList.toggle('flex', showNote);
+            }
+
+            let html = pendingPhotos.map(item => `
+                <button type="button" onclick="openPendingPhoto('${item.id}')" class="relative aspect-square bg-slate-200 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm active:scale-95 transition-transform">
+                    <img src="${pendingUrl(item)}" alt="Foto pendent de pujar" class="w-full h-full object-cover">
+                    <span class="absolute inset-0 bg-black/30 flex items-end p-2">
+                        <span class="inline-flex items-center gap-1 bg-amber-500 text-white text-[11px] font-bold px-2 py-1 rounded-full">
+                            <i data-lucide="cloud-upload" class="w-3.5 h-3.5"></i>Pendent
+                        </span>
+                    </span>
+                </button>`).join('');
+
+            html += photos.map(photo => {
+                const fallbackUrl = 'https://drive.google.com/thumbnail?id=' + photo.id + '&sz=w800';
+                return `
+                    <div onclick="openPhotoModal('${photo.imageUrl}', '${photo.id}')" class="group relative aspect-square bg-slate-200 dark:bg-slate-800 rounded-2xl overflow-hidden cursor-pointer shadow-sm active:scale-95 transition-transform">
+                        <img src="${photo.imageUrl}" onerror="this.onerror=null;this.src='${fallbackUrl}'" alt="${photo.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
+                            <span class="text-[10px] text-white font-medium truncate">${photo.name}</span>
+                        </div>
+                    </div>`;
+            }).join('');
+
+            if (!html) {
+                if (lastPhotos === null && !photosFromCache) {
+                    html = `
+                        <div class="col-span-2 text-center py-12 flex flex-col items-center justify-center gap-2 text-slate-400 dark:text-slate-500 text-xs">
+                            <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-primary"></i>
+                            <span>Carregant fotos de l'equip...</span>
+                        </div>`;
+                } else if (photosFromCache) {
+                    const offline = !isOnline();
+                    html = `
+                        <div class="col-span-2 text-center py-10 bg-white dark:bg-slate-900 rounded-[28px] border border-slate-100 dark:border-slate-800 text-xs font-medium flex flex-col items-center justify-center gap-2.5 px-4">
+                            <i data-lucide="${offline ? 'wifi-off' : 'alert-circle'}" class="w-8 h-8 text-amber-500"></i>
+                            <span class="text-slate-700 dark:text-slate-200 font-bold text-sm">${offline ? 'Sense connexió' : "No s'han pogut carregar les fotos"}</span>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs max-w-xs">${offline ? 'Les fotos de l\'equip es carregaran quan tornis a tenir cobertura.' : 'Comprova que el desplegament de Google Apps Script estigui actiu i amb accés públic.'}</p>
+                        </div>`;
+                } else {
+                    html = `
+                        <div class="col-span-2 text-center py-12 bg-white dark:bg-slate-900 rounded-[28px] border border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-500 text-xs font-medium flex flex-col items-center justify-center gap-2">
+                            <i data-lucide="camera-off" class="w-8 h-8 text-slate-300 dark:text-slate-600"></i>
+                            <span>Encara no hi ha fotos a la carpeta.</span>
+                            <span class="text-slate-500 dark:text-slate-400 font-semibold">Prem «Fer Foto» per inaugurar l'àlbum!</span>
+                        </div>`;
+                }
+            }
+            grid.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        async function fetchPhotos() {
+            renderPhotoGrid();
+            try {
+                if (!isOnline()) throw new Error('Sense connexió');
+                const response = await fetch(GOOGLE_SCRIPT_API_URL);
+                const data = await response.json();
+                if (!data.success) throw new Error(data.error || 'Error en rebre les dades de Drive');
+                lastPhotos = data.photos || [];
+                photosFromCache = false;
+                try { localStorage.setItem(PHOTO_LIST_KEY, JSON.stringify(lastPhotos)); } catch (e) {}
+            } catch (err) {
+                // Sense xarxa: mostrar l'última llista guardada
+                if (!lastPhotos) {
+                    try { lastPhotos = JSON.parse(localStorage.getItem(PHOTO_LIST_KEY) || 'null'); } catch (e) { lastPhotos = null; }
+                }
+                photosFromCache = true;
+            }
+            renderPhotoGrid();
+        }
+
+        function compressImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onerror = () => reject(reader.error);
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onerror = () => reject(new Error("No s'ha pogut llegir la imatge"));
+                    img.onload = () => {
+                        const MAX = 1600;
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > height && width > MAX) {
+                            height *= MAX / width;
+                            width = MAX;
+                        } else if (height >= width && height > MAX) {
+                            width *= MAX / height;
+                            height = MAX;
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.82).split(',')[1]);
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function uploadItem(item) {
+            const response = await fetch(GOOGLE_SCRIPT_API_URL, {
+                method: 'POST',
+                body: JSON.stringify({
+                    clientBuild: CLIENT_BUILD_TAG,
+                    base64: item.base64,
+                    filename: item.filename,
+                    contentType: 'image/jpeg'
+                })
+            });
+            const res = await response.json();
+            if (!res.success) throw new Error(res.error || 'Error en validar la petició');
+        }
+
+        // Es pot triar més d'una foto de la galeria; totes passen per la cua
+        async function handlePhotoSelected(event) {
+            const files = Array.from(event.target.files || []);
+            event.target.value = '';
+            if (!files.length) return;
+
+            showUploadStatus('loading', files.length > 1 ? `Comprimint ${files.length} fotos...` : 'Comprimint foto...');
+            let failed = 0;
+            for (const file of files) {
+                try {
+                    const base64 = await compressImage(file);
+                    const item = {
+                        id: 'up_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+                        base64,
+                        filename: 'gisce_' + Date.now() + '_' + (file.name ? file.name.replace(/\s+/g, '_') : 'foto.jpg'),
+                        createdAt: Date.now()
+                    };
+                    try {
+                        await photoQueue.add(item);
+                    } catch (e) {
+                        // Si el mòbil no deixa guardar la cua, es puja directament com abans
+                        await uploadItem(item);
+                    }
+                } catch (e) {
+                    failed++;
+                }
+            }
+            if (failed) showUploadStatus('error', failed === 1 ? "Una foto no s'ha pogut processar. Pots pujar-la directament a Google Drive." : `${failed} fotos no s'han pogut processar.`);
+            await refreshPendingPhotos();
+            processPhotoQueue();
+        }
+
+        async function processPhotoQueue() {
+            if (uploadingQueue) return;
+            let items = [];
+            try { items = (await photoQueue.all()).sort((a, b) => a.createdAt - b.createdAt); } catch (e) { return; }
+            if (!items.length) return;
+
+            if (!isOnline()) {
+                showUploadStatus('pending', `${pendingText(items.length).charAt(0).toUpperCase() + pendingText(items.length).slice(1)} de pujar`);
+                return;
+            }
+
+            uploadingQueue = true;
+            clearTimeout(photoRetryTimer);
+            let uploaded = 0;
+            try {
+                for (const item of items) {
+                    showUploadStatus('loading', items.length > 1 ? `Pujant foto ${uploaded + 1} de ${items.length} a Google Drive...` : 'Pujant foto a Google Drive...');
+                    await uploadItem(item);
+                    await photoQueue.remove(item.id);
+                    uploaded++;
+                }
+                showUploadStatus('ok', uploaded > 1 ? `${uploaded} fotos guardades a Google Drive!` : 'Foto guardada a Google Drive!');
+                setTimeout(hideUploadStatus, 2500);
+                fetchPhotos();
+            } catch (err) {
+                const left = items.length - uploaded;
+                showUploadStatus('pending', `No s'ha pogut pujar · ${pendingText(left)}. Es tornarà a provar automàticament.`);
+                photoRetryTimer = setTimeout(processPhotoQueue, PHOTO_RETRY_MS);
+                if (uploaded) fetchPhotos();
+            } finally {
+                uploadingQueue = false;
+                refreshPendingPhotos();
+            }
+        }
+
+        // Tornar a provar quan torna la xarxa o quan es torna a obrir l'app
+        window.addEventListener('online', () => {
+            updateConnectionUI();
+            processPhotoQueue();
+            if (!document.getElementById('tab-fotos').classList.contains('hidden')) fetchPhotos();
+        });
+        window.addEventListener('offline', () => {
+            updateConnectionUI();
+            if (pendingPhotos.length) processPhotoQueue();
+        });
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) processPhotoQueue();
+        });
+
+        function openPhotoModal(imageUrl, photoId) {
+            const modal = document.getElementById('photo-viewer-modal');
+            const img = document.getElementById('photo-viewer-img');
+            if (modal && img) {
+                img.onerror = function() {
+                    if (photoId) {
+                        this.onerror = null;
+                        this.src = 'https://drive.google.com/thumbnail?id=' + photoId + '&sz=w1600';
+                    }
+                };
+                img.src = imageUrl;
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closePhotoModal() {
+            const modal = document.getElementById('photo-viewer-modal');
+            if (modal) modal.classList.add('hidden');
         }
 
         // Navegació de pestanyes
         function switchTab(tabId) {
-            ['ara', 'horari', 'programa', 'info'].forEach(id => {
+            ['ara', 'horari', 'programa', 'fotos', 'info'].forEach(id => {
                 const el = document.getElementById('tab-' + id);
                 if (el) el.classList.add('hidden');
                 
                 const btn = document.getElementById('nav-' + id);
                 if (btn) {
-                    btn.classList.remove('bg-primary', 'text-white');
+                    btn.classList.remove('text-white');
                     btn.classList.add('text-slate-400');
+                    btn.removeAttribute('aria-current');
+                    const pill = btn.querySelector('.nav-pill');
+                    if (pill) pill.classList.remove('bg-primary');
                 }
             });
             
             const targetEl = document.getElementById('tab-' + tabId);
             if (targetEl) targetEl.classList.remove('hidden');
+
+            const topHeader = document.querySelector('body > header');
+            if (topHeader) topHeader.classList.toggle('hidden', tabId === 'ara');
+            setThemeColor(tabId === 'ara' ? currentSky.top : defaultThemeColor());
             
             const activeBtn = document.getElementById('nav-' + tabId);
             if (activeBtn) {
                 activeBtn.classList.remove('text-slate-400');
-                activeBtn.classList.add('bg-primary', 'text-white');
+                activeBtn.classList.add('text-white');
+                activeBtn.setAttribute('aria-current', 'page');
+                const pill = activeBtn.querySelector('.nav-pill');
+                if (pill) pill.classList.add('bg-primary');
             }
             
+            if (tabId === 'fotos') {
+                fetchPhotos();
+            }
+
             lucide.createIcons();
             const mainView = document.getElementById('main-view');
             if (mainView) mainView.scrollTo(0, 0);
+
+            if (tabId === 'programa') openProgramAtNow();
+            if (tabId === 'horari') generateFullSchedule();
         }
 
         // Inicialització
@@ -1084,15 +2466,20 @@
         renderPyconProgram();
         updateClock();
         updateApp();
+        updateThemeUI(document.documentElement.classList.contains('dark'));
         
         setInterval(updateClock, 1000);
-        setInterval(updateApp, 30000);
+        setInterval(updateApp, 15000);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) { updateClock(); updateApp(); }
+        });
 
-        // Control de la cortina de benvinguda (es tanca sola o tocant la pantalla)
+        // Control de la cortina
         let curtainDismissed = false;
         function dismissCurtain() {
             if (curtainDismissed) return;
             curtainDismissed = true;
+            if (shouldAskName()) openNameDialog(true);
             const curtain = document.getElementById('welcome-curtain');
             if (curtain) {
                 curtain.classList.add('curtain-exit');
@@ -1101,11 +2488,86 @@
                 }, 750);
             }
         }
-
-        // Tanca la cortina automàticament després de 1.8 segons o amb un toc
         setTimeout(dismissCurtain, 1800);
+
+        // ---------- Nom de l'usuari ----------
+        const NAME_KEY = 'pycones26-name';
+        const NAME_ASKED_KEY = 'pycones26-name-asked';
+        const DEFAULT_NAME = 'Giscer';
+
+        function getUserName() {
+            try { return localStorage.getItem(NAME_KEY) || ''; } catch (e) { return ''; }
+        }
+
+        function cleanName(value) {
+            const v = (value || '').replace(/\s+/g, ' ').trim().slice(0, 20);
+            return v ? v.charAt(0).toLocaleUpperCase('ca') + v.slice(1) : '';
+        }
+
+        // Posa el nom a tots els llocs marcats amb data-user-name
+        function applyUserName() {
+            const name = getUserName() || DEFAULT_NAME;
+            document.querySelectorAll('[data-user-name]').forEach(el => { el.textContent = name; });
+        }
+
+        function updateNamePreview() {
+            const input = document.getElementById('name-input');
+            const name = cleanName(input.value);
+            document.getElementById('name-submit').disabled = !name;
+            const preview = document.getElementById('name-preview');
+            preview.textContent = name ? `Et saludarem així: «Hola, ${name}!»` : '';
+            preview.classList.toggle('hidden', !name);
+        }
+
+        function openNameDialog(firstTime) {
+            const dialog = document.getElementById('name-dialog');
+            const input = document.getElementById('name-input');
+            const skip = document.getElementById('name-skip');
+            input.value = getUserName();
+            skip.textContent = firstTime ? 'Ara no, continua com a Giscer' : 'Cancel·la';
+            updateNamePreview();
+            dialog.classList.remove('hidden');
+            const form = document.getElementById('name-form');
+            form.classList.remove('name-dialog-in');
+            void form.offsetWidth; // reinicia l'animació d'entrada
+            form.classList.add('name-dialog-in');
+            setTimeout(() => input.focus(), firstTime ? 800 : 50);
+        }
+
+        function closeNameDialog() {
+            document.getElementById('name-dialog').classList.add('hidden');
+            document.getElementById('name-input').blur();
+        }
+
+        function saveName(event) {
+            event.preventDefault();
+            const name = cleanName(document.getElementById('name-input').value);
+            if (!name) return;
+            try {
+                localStorage.setItem(NAME_KEY, name);
+                localStorage.setItem(NAME_ASKED_KEY, '1');
+            } catch (e) {}
+            applyUserName();
+            closeNameDialog();
+        }
+
+        function skipName() {
+            try { localStorage.setItem(NAME_ASKED_KEY, '1'); } catch (e) {}
+            closeNameDialog();
+        }
+
+        // Només es pregunta la primera vegada (si diu "Ara no", no s'insisteix)
+        function shouldAskName() {
+            try { return !getUserName() && !localStorage.getItem(NAME_ASKED_KEY); } catch (e) { return false; }
+        }
+
+        document.getElementById('name-input').addEventListener('input', updateNamePreview);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !document.getElementById('name-dialog').classList.contains('hidden')) skipName();
+        });
+        applyUserName();
         
-        // PWA Lògica d'Instal·lació adaptada a iOS (Safari) i Android
+        // PWA Instal·lació
         let deferredPrompt = null;
         const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
         const isAndroid = /android/.test(window.navigator.userAgent.toLowerCase());
@@ -1118,8 +2580,8 @@
 
             if (isStandalone) {
                 container.innerHTML = `
-                    <div class="bg-emerald-50 text-emerald-800 p-4 rounded-[24px] border border-emerald-200/60 flex items-center justify-center gap-2 font-bold text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i>
+                    <div class="bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 p-4 rounded-[24px] border border-emerald-200/60 dark:border-emerald-800 flex items-center justify-center gap-2 font-bold text-sm">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
                         Ja estàs fent servir l'App instal·lada
                     </div>
                 `;
@@ -1155,7 +2617,6 @@
             } else if (isIos) {
                 openIosModal();
             } else {
-                // Per a Android si està obert a Telegram o requereix manual
                 openAndroidModal();
             }
         }
@@ -1188,47 +2649,16 @@
 
         setupInstallUI();
 
-        // Icona en format PNG per a apple-touch-icon
-        try {
-            const iconCanvas = document.createElement('canvas');
-            iconCanvas.width = 192;
-            iconCanvas.height = 192;
-            const ctx = iconCanvas.getContext('2d');
-            if (ctx) {
-                ctx.fillStyle = '#2974CA';
-                ctx.beginPath();
-                ctx.roundRect(0, 0, 192, 192, 36);
-                ctx.fill();
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 76px sans-serif';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('Py', 96, 96);
-                const appleIconEl = document.getElementById('apple-touch-icon');
-                if (appleIconEl) appleIconEl.href = iconCanvas.toDataURL('image/png');
-            }
-        } catch (e) {}
+        // Fotos: estat de connexió i pujades pendents d'altres sessions
+        updateConnectionUI();
+        refreshPendingPhotos();
+        processPhotoQueue();
 
-        const manifestData = {
-            "name": "PyConES 26",
-            "short_name": "PyConES",
-            "start_url": ".",
-            "display": "standalone",
-            "background_color": "#f8fafc",
-            "theme_color": "#f8fafc",
-            "icons": [{
-                "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232974CA'/><text y='68' x='20' font-family='sans-serif' font-weight='900' font-size='42' fill='white'>Py</text></svg>",
-                "sizes": "192x192",
-                "type": "image/svg+xml"
-            }]
-        };
-        const blobManifest = new Blob([JSON.stringify(manifestData)], {type: 'application/manifest+json'});
-        document.getElementById('manifest-link').href = URL.createObjectURL(blobManifest);
-
+        // Service worker: guarda l'app al mòbil perquè obri encara que no hi hagi cobertura
         if ('serviceWorker' in navigator) {
-            const swCode = `self.addEventListener('fetch', function(e) {});`;
-            const swBlob = new Blob([swCode], {type: 'application/javascript'});
-            navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => console.warn('Service worker no registrat:', err));
+            });
         }
     </script>
 </body>
