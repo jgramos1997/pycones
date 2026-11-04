@@ -1224,6 +1224,13 @@
             return document.documentElement.classList.contains('dark') ? '#020617' : '#0f172a';
         }
 
+        // A l'iPhone (app instal·lada) iOS pinta darrere de la barra d'estat un degradat del color de fons
+        // de la pàgina. A l'inici el fons ha de ser el color de dalt del cel perquè no es vegi cap franja.
+        function setPageBackground(color) {
+            document.documentElement.style.backgroundColor = color || '';
+            document.body.style.backgroundColor = color || '';
+        }
+
         function setThemeColor(color) {
             const meta = document.querySelector('meta[name="theme-color"]');
             if (meta) meta.setAttribute('content', color);
@@ -1250,7 +1257,10 @@
                 const city = document.getElementById('home-city');
                 if (city) city.innerHTML = citySvg(P, period);
             }
-            if (homeVisible()) setThemeColor(P.top);
+            if (homeVisible()) {
+                setThemeColor(P.top);
+                setPageBackground(P.top);
+            }
             return P;
         }
 
@@ -2439,6 +2449,7 @@
             const topHeader = document.querySelector('body > header');
             if (topHeader) topHeader.classList.toggle('hidden', tabId === 'ara');
             setThemeColor(tabId === 'ara' ? currentSky.top : defaultThemeColor());
+            setPageBackground(tabId === 'ara' ? currentSky.top : null);
             
             const activeBtn = document.getElementById('nav-' + tabId);
             if (activeBtn) {
