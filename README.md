@@ -45,15 +45,14 @@ App web (PWA) per al viatge a la PyConES 2026. Funciona **sense connexió** un c
   i un `src.css` amb les línies `@font-face` del principi d'`app.css` més `@tailwind base; @tailwind components; @tailwind utilities;`.
   Després, puja `VERSION` a `sw.js`.
 
-## Fotos sense connexió
+## Fotos
 
-- Les fotos fetes sense cobertura es guarden al mòbil (IndexedDB) i es pugen soles quan torna la connexió, mentre l'app estigui oberta. Si es tanca, es pugen la propera vegada que s'obri amb xarxa.
-- La galeria mostra l'última llista carregada i les fotos que ja s'havien vist.
-- Des de "De la Galeria" ara es poden triar diverses fotos alhora.
+La pujada de fotos s'ha retirat per seguretat: el repositori és públic i la pujada no tenia autenticació real.
+La nova versió esborra dels mòbils les fotos pendents i la galeria que hi hagués guardades.
 
 ## Vista prèvia en compartir l'enllaç
 
 Perquè WhatsApp, Telegram, Slack o X mostrin la imatge en enganxar l'enllaç, les etiquetes `og:` de l'`index.html` necessiten l'adreça **completa**.
-Busca `https://EL-TEU-USUARI.github.io/EL-TEU-REPO` a l'`index.html` (surt 3 vegades) i canvia-ho per la URL real de GitHub Pages.
+Ara apunten a `https://jgramos1997.github.io/pycones`. Si la URL canvia, actualitza-la a l'`index.html` (surt 3 vegades).
 
 Les apps guarden la vista prèvia uns dies: si ja havies compartit l'enllaç abans, pot trigar a actualitzar-se.

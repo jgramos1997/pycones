@@ -35,22 +35,22 @@
     <link rel="apple-touch-startup-image" media="screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="icons/splash/splash-750x1334.png">
 
     <!-- Vista prèvia en compartir l'enllaç (WhatsApp, Telegram, Slack, X, LinkedIn...).
-         IMPORTANT: aquestes adreces han de ser absolutes. Substitueix https://EL-TEU-USUARI.github.io/EL-TEU-REPO per la URL real de GitHub Pages. -->
+         IMPORTANT: aquestes adreces han de ser absolutes. Si mai canvia la URL de GitHub Pages, actualitza-la aquí. -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="PyConES 26 · GISCE-TI">
     <meta property="og:title" content="PyConES 26 · GISCE-TI">
-    <meta property="og:description" content="Horaris, programa i fotos del viatge a Barcelona · 7 i 8 de novembre">
+    <meta property="og:description" content="Horaris i programa del viatge a Barcelona · 7 i 8 de novembre">
     <meta property="og:locale" content="ca_ES">
-    <meta property="og:url" content="https://EL-TEU-USUARI.github.io/EL-TEU-REPO/">
-    <meta property="og:image" content="https://EL-TEU-USUARI.github.io/EL-TEU-REPO/icons/og-image.png">
+    <meta property="og:url" content="https://jgramos1997.github.io/pycones/">
+    <meta property="og:image" content="https://jgramos1997.github.io/pycones/icons/og-image.png">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="PyConES 26 · GISCE-TI, amb el skyline de Barcelona">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="PyConES 26 · GISCE-TI">
-    <meta name="twitter:description" content="Horaris, programa i fotos del viatge a Barcelona · 7 i 8 de novembre">
-    <meta name="twitter:image" content="https://EL-TEU-USUARI.github.io/EL-TEU-REPO/icons/og-image.png">
+    <meta name="twitter:description" content="Horaris i programa del viatge a Barcelona · 7 i 8 de novembre">
+    <meta name="twitter:image" content="https://jgramos1997.github.io/pycones/icons/og-image.png">
 
     <!-- Estils, fonts i icones en local: l'app no depèn de cap CDN -->
     <link rel="stylesheet" href="app.css">
@@ -131,7 +131,6 @@
             .home-sky { padding-top: max(1.75rem, calc(env(safe-area-inset-top) + 0.75rem)); padding-bottom: 104px; }
             .home-gap { margin-top: 22px; }
         }
-        .toast { bottom: calc(104px + env(safe-area-inset-bottom)); }
 
         /* Entrada de la pantalla del nom */
         .name-dialog-in { animation: nameIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
@@ -291,8 +290,6 @@
                 </button>
             </section>
 
-            <!-- Càmera directa del botó de l'inici (fora de la part que es redibuixa) -->
-            <input id="home-camera-input" type="file" accept="image/*" capture="environment" class="hidden" onchange="handlePhotoSelected(event)">
         </div>
 
         <!-- PESTANYA 2: HORARI -->
@@ -328,64 +325,6 @@
             </div>
         </div>
 
-        <!-- PESTANYA 4: FOTOS I DRIVE -->
-        <div id="tab-fotos" class="hidden flex flex-col gap-5 fade-in pb-10 pt-4">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="text-3xl font-bold text-slate-800 dark:text-white">Fotos de l'Equip</h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Records compartits de la PyConES 2026</p>
-                </div>
-                <button onclick="fetchPhotos()" class="p-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:bg-slate-300 text-slate-600 dark:text-slate-300 rounded-full transition-colors" title="Actualitzar galeria">
-                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-                </button>
-            </div>
-
-            <!-- Botons d'acció per pujar fotos -->
-            <div class="grid grid-cols-2 gap-3">
-                <label class="bg-primary hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-3.5 px-4 rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-blue-500/20 text-sm">
-                    <i data-lucide="camera" class="w-4 h-4"></i>
-                    <span>Fer Foto</span>
-                    <input type="file" accept="image/*" capture="environment" class="hidden" onchange="handlePhotoSelected(event)">
-                </label>
-                <label class="bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 active:bg-slate-200 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800 font-bold py-3.5 px-4 rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer text-sm shadow-sm">
-                    <i data-lucide="image" class="w-4 h-4 text-primary"></i>
-                    <span>De la Galeria</span>
-                    <input type="file" accept="image/*" multiple class="hidden" onchange="handlePhotoSelected(event)">
-                </label>
-            </div>
-
-            <!-- Avís sense connexió -->
-            <div id="offline-banner" class="hidden bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 text-amber-900 dark:text-amber-200 p-3.5 rounded-2xl text-[13px] font-medium leading-snug flex items-start gap-2.5">
-                <i data-lucide="wifi-off" class="w-4 h-4 shrink-0 mt-0.5 text-amber-600 dark:text-amber-400"></i>
-                <span><strong class="font-bold">Sense connexió.</strong> Pots continuar fent fotos: es guarden al mòbil i es pujaran soles quan tornis a tenir cobertura.</span>
-            </div>
-
-            <!-- Estat de pujada (s'omple amb JS) -->
-            <div id="upload-status" class="hidden" role="status" aria-live="polite"></div>
-
-            <!-- Enllaç directe a la carpeta de Google Drive -->
-            <a href="https://drive.google.com/drive/folders/1KRg_rKQUD-aifzKsPWdz7r036mwz0kDt" target="_blank" rel="noopener noreferrer" class="bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 active:bg-slate-300 text-slate-700 dark:text-slate-200 border border-transparent dark:border-slate-800 py-3 px-4 rounded-2xl text-xs font-bold transition-colors flex items-center justify-between">
-                <span class="flex items-center gap-2">
-                    <i data-lucide="folder-symlink" class="w-4 h-4 text-primary"></i>
-                    Obrir carpeta a Google Drive
-                </span>
-                <i data-lucide="external-link" class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500"></i>
-            </a>
-
-            <!-- Nota quan la galeria ve de la còpia guardada -->
-            <p id="photos-note" class="hidden -mb-2 text-xs font-semibold text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
-                <i data-lucide="history" class="w-3.5 h-3.5 shrink-0"></i><span>Mostrant les últimes fotos guardades</span>
-            </p>
-
-            <!-- Graella de fotos en directe -->
-            <div id="photos-grid" class="grid grid-cols-2 gap-3 min-h-[160px]">
-                <div class="col-span-2 text-center py-12 flex flex-col items-center justify-center gap-2 text-slate-400 dark:text-slate-500 text-xs">
-                    <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-primary"></i>
-                    <span>Carregant fotos de l'equip...</span>
-                </div>
-            </div>
-        </div>
-
         <!-- PESTANYA 5: INFO I ENLLAÇOS -->
         <div id="tab-info" class="hidden flex flex-col gap-5 fade-in pb-10 pt-4">
             <h2 class="text-3xl font-bold text-slate-800 dark:text-white mb-2">Informació Útil</h2>
@@ -411,7 +350,7 @@
                     <h3 class="font-bold text-xl text-slate-800 dark:text-white">Allotjament</h3>
                 </div>
                 <p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-5">Hotel Midmost (Carrer de Pelai, 14)</p>
-                <a href="https://maps.google.com/?q=Hotel+Midmost+Carrer+de+Pelai+14+Barcelona" target="_blank" class="flex items-center justify-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:bg-slate-300 text-slate-700 dark:text-slate-200 px-4 py-4 rounded-2xl text-sm font-bold transition-colors w-full">
+                <a href="https://maps.google.com/?q=Hotel+Midmost+Carrer+de+Pelai+14+Barcelona" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:bg-slate-300 text-slate-700 dark:text-slate-200 px-4 py-4 rounded-2xl text-sm font-bold transition-colors w-full">
                     <i data-lucide="map" class="w-4 h-4"></i> Veure al Mapa
                 </a>
             </div>
@@ -425,7 +364,7 @@
                     <h3 class="font-bold text-xl text-slate-800 dark:text-white">Sopar Dissabte</h3>
                 </div>
                 <p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-5">Quesarium a les 21:00h (Trobada 20:45h)</p>
-                <a href="https://maps.google.com/?q=Quesarium+Carrer+de+Muntaner+7+Barcelona" target="_blank" class="flex items-center justify-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:bg-slate-300 text-slate-700 dark:text-slate-200 px-4 py-4 rounded-2xl text-sm font-bold transition-colors w-full">
+                <a href="https://maps.google.com/?q=Quesarium+Carrer+de+Muntaner+7+Barcelona" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:bg-slate-300 text-slate-700 dark:text-slate-200 px-4 py-4 rounded-2xl text-sm font-bold transition-colors w-full">
                     <i data-lucide="map" class="w-4 h-4"></i> Veure al Mapa
                 </a>
             </div>
@@ -464,9 +403,6 @@
 
     </main>
 
-    <!-- Avís flotant de pujada de fotos -->
-    <div id="toast" class="hidden" role="status" aria-live="polite"></div>
-
     <!-- Barra de Navegació Flotant (5 pestanyes amb etiqueta) -->
     <div class="fixed bottom-6 left-0 right-0 px-4 sm:px-6 z-50 pointer-events-none pb-safe">
         <nav aria-label="Navegació principal" class="bg-slate-900/95 backdrop-blur-md border border-transparent dark:border-slate-800 rounded-[28px] shadow-2xl shadow-slate-900/40 h-[68px] px-1.5 flex justify-between items-center max-w-[420px] mx-auto pointer-events-auto">
@@ -482,23 +418,11 @@
                 <span class="nav-pill w-12 h-[30px] rounded-full flex items-center justify-center transition-colors"><i data-lucide="mic" class="w-[19px] h-[19px]"></i></span>
                 <span class="text-[11px] font-semibold">Programa</span>
             </button>
-            <button onclick="switchTab('fotos')" id="nav-fotos" class="flex-1 h-full flex flex-col items-center justify-center gap-0.5 text-slate-400 transition-colors">
-                <span class="nav-pill w-12 h-[30px] rounded-full flex items-center justify-center transition-colors"><i data-lucide="camera" class="w-[19px] h-[19px]"></i></span>
-                <span class="text-[11px] font-semibold">Fotos</span>
-            </button>
             <button onclick="switchTab('info')" id="nav-info" class="flex-1 h-full flex flex-col items-center justify-center gap-0.5 text-slate-400 transition-colors">
                 <span class="nav-pill w-12 h-[30px] rounded-full flex items-center justify-center transition-colors"><i data-lucide="info" class="w-[19px] h-[19px]"></i></span>
                 <span class="text-[11px] font-semibold">Info</span>
             </button>
         </nav>
-    </div>
-
-    <!-- Modal Visor de Foto a pantalla completa -->
-    <div id="photo-viewer-modal" class="fixed inset-0 z-[130] bg-black/90 hidden flex flex-col items-center justify-center p-4 select-none" onclick="closePhotoModal()">
-        <button onclick="closePhotoModal()" class="absolute top-6 right-6 text-white p-2.5 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
-            <i data-lucide="x" class="w-6 h-6"></i>
-        </button>
-        <img id="photo-viewer-img" src="" alt="Foto PyConES GISCE" class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl" onclick="event.stopPropagation()">
     </div>
 
     <!-- Modal d'instruccions per a iOS / iPhone -->
@@ -584,12 +508,6 @@
     <script>
         // +01:00 assegura horari CET peninsular
         const TZ = '+01:00'; 
-
-        // Enllaç oficial de desplegament de Google Apps Script
-        const GOOGLE_SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbw7sbdPeQCfm-sGmd0AlgeHQwJnstpH7ZauRm75GWxweZRqDaRmlFuACXP9hVudBUXong/exec"; 
-        
-        // Paràmetre camuflat com a identificador de versió de l'aplicació
-        const CLIENT_BUILD_TAG = "gisce-pycon26-release";
 
         // Gestió del Mode Fosc
         function toggleDarkMode() {
@@ -1341,9 +1259,6 @@
                 </div>
                 <div class="mt-5 flex gap-2.5">
                     ${actions}
-                    <label for="home-camera-input" role="button" tabindex="0" aria-label="Fer una foto i pujar-la" class="w-[50px] h-[50px] rounded-2xl flex items-center justify-center shrink-0 cursor-pointer text-white border border-white/15 shadow-[0_8px_18px_-10px_rgba(0,0,0,0.45)] active:scale-[0.94] transition-transform" style="background: ${P.cam}">
-                        <i data-lucide="camera" class="w-5 h-5"></i>
-                    </label>
                 </div>`;
         }
 
@@ -2066,370 +1981,35 @@
             }
         })();
 
-        // ---------- Sistema de Fotos i Google Drive (funciona també sense connexió) ----------
-        const PHOTO_LIST_KEY = 'pycones26-photos';
-        const PHOTO_RETRY_MS = 30000;
-        let lastPhotos = null;          // última llista de Drive (de la xarxa o guardada)
-        let photosFromCache = false;    // true si la llista no s'ha pogut actualitzar
-        let pendingPhotos = [];         // fotos a la cua, encara sense pujar
-        const pendingUrls = new Map();  // id → URL local per veure la miniatura
-        let uploadingQueue = false;
-        let photoRetryTimer = null;
-
-        // Cua de pujades guardada al mòbil (IndexedDB): sobreviu si es tanca l'app
-        const photoQueue = {
-            dbPromise: null,
-            open() {
-                if (!this.dbPromise) {
-                    this.dbPromise = new Promise((resolve, reject) => {
-                        if (!('indexedDB' in window)) return reject(new Error('IndexedDB no disponible'));
-                        const req = indexedDB.open('pycones26', 1);
-                        req.onupgradeneeded = () => req.result.createObjectStore('uploads', { keyPath: 'id' });
-                        req.onsuccess = () => resolve(req.result);
-                        req.onerror = () => reject(req.error);
-                    });
-                }
-                return this.dbPromise;
-            },
-            async run(mode, fn) {
-                const db = await this.open();
-                return new Promise((resolve, reject) => {
-                    const tx = db.transaction('uploads', mode);
-                    const req = fn(tx.objectStore('uploads'));
-                    tx.oncomplete = () => resolve(req ? req.result : undefined);
-                    tx.onerror = () => reject(tx.error);
-                    tx.onabort = () => reject(tx.error);
-                });
-            },
-            add(item) { return this.run('readwrite', s => s.put(item)); },
-            remove(id) { return this.run('readwrite', s => s.delete(id)); },
-            all() { return this.run('readonly', s => s.getAll()); }
-        };
-
+        // ---------- Connexió ----------
         function isOnline() {
             return navigator.onLine !== false;
         }
 
-        // Aviso a la capçalera i a Fotos
+        // Avís "Sense connexió" a la capçalera de l'inici
         function updateConnectionUI() {
-            const offline = !isOnline();
             const pill = document.getElementById('offline-pill');
             if (pill) {
+                const offline = !isOnline();
                 pill.classList.toggle('hidden', !offline);
                 pill.classList.toggle('flex', offline);
-            }
-            const banner = document.getElementById('offline-banner');
-            if (banner) {
-                banner.classList.toggle('hidden', !offline);
-                banner.classList.toggle('flex', offline);
             }
             lastHeroHtml = '';
             updateApp();
         }
+        window.addEventListener('online', updateConnectionUI);
+        window.addEventListener('offline', updateConnectionUI);
 
-        const UPLOAD_STYLES = {
-            loading: { cls: 'bg-blue-50 dark:bg-blue-950/50 border-blue-200 dark:border-blue-900 text-[#1E5FA8] dark:text-blue-300', icon: 'loader-2', spin: true },
-            pending: { cls: 'bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-900 text-amber-900 dark:text-amber-200', icon: 'cloud-upload', spin: false },
-            ok: { cls: 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-900 text-emerald-800 dark:text-emerald-300', icon: 'check-circle-2', spin: false },
-            error: { cls: 'bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-900 text-red-800 dark:text-red-300', icon: 'alert-circle', spin: false }
-        };
-
-        function showUploadStatus(kind, text) {
-            const el = document.getElementById('upload-status');
-            if (!el) return;
-            const st = UPLOAD_STYLES[kind];
-            el.className = `border p-3.5 rounded-2xl text-xs font-bold flex items-center gap-2 ${st.cls}`;
-            el.innerHTML = `<i data-lucide="${st.icon}" class="w-4 h-4 shrink-0 ${st.spin ? 'animate-spin' : ''}"></i><span>${text}</span>`;
-            lucide.createIcons();
-            const fotosTab = document.getElementById('tab-fotos');
-            if (fotosTab && fotosTab.classList.contains('hidden')) showToast(kind, text);
-        }
-
-        // Avís flotant (per exemple, quan es fa la foto des de l'inici)
-        let toastTimer = null;
-        function showToast(kind, text) {
-            const el = document.getElementById('toast');
-            if (!el) return;
-            const st = UPLOAD_STYLES[kind];
-            el.className = `toast fixed left-1/2 -translate-x-1/2 z-[60] w-max max-w-[calc(100%-2rem)] border px-4 py-3 rounded-2xl shadow-xl text-[13px] font-bold flex items-center gap-2 ${st.cls}`;
-            el.innerHTML = `<i data-lucide="${st.icon}" class="w-4 h-4 shrink-0 ${st.spin ? 'animate-spin' : ''}"></i><span>${text}</span>`;
-            lucide.createIcons();
-            clearTimeout(toastTimer);
-            if (kind !== 'loading') toastTimer = setTimeout(hideToast, kind === 'ok' ? 2500 : 5000);
-        }
-
-        function hideToast() {
-            const el = document.getElementById('toast');
-            if (el) { el.className = 'hidden'; el.innerHTML = ''; }
-        }
-
-        function hideUploadStatus() {
-            const el = document.getElementById('upload-status');
-            if (el) { el.className = 'hidden'; el.innerHTML = ''; }
-            hideToast();
-        }
-
-        function pendingText(n) {
-            return n === 1 ? '1 foto pendent' : `${n} fotos pendents`;
-        }
-
-        // Miniatura local de les fotos pendents
-        function pendingUrl(item) {
-            if (!pendingUrls.has(item.id)) {
-                const bin = atob(item.base64);
-                const bytes = new Uint8Array(bin.length);
-                for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-                pendingUrls.set(item.id, URL.createObjectURL(new Blob([bytes], { type: 'image/jpeg' })));
-            }
-            return pendingUrls.get(item.id);
-        }
-
-        function openPendingPhoto(id) {
-            const item = pendingPhotos.find(p => p.id === id);
-            if (item) openPhotoModal(pendingUrl(item), null);
-        }
-
-        async function refreshPendingPhotos() {
-            try {
-                pendingPhotos = (await photoQueue.all()).sort((a, b) => a.createdAt - b.createdAt);
-            } catch (e) {
-                pendingPhotos = [];
-            }
-            // Alliberar miniatures de fotos que ja s'han pujat
-            for (const [id, url] of pendingUrls) {
-                if (!pendingPhotos.some(p => p.id === id)) { URL.revokeObjectURL(url); pendingUrls.delete(id); }
-            }
-            renderPhotoGrid();
-        }
-
-        function renderPhotoGrid() {
-            const grid = document.getElementById('photos-grid');
-            if (!grid) return;
-            const note = document.getElementById('photos-note');
-            const photos = lastPhotos || [];
-            if (note) {
-                const showNote = photosFromCache && photos.length > 0;
-                note.classList.toggle('hidden', !showNote);
-                note.classList.toggle('flex', showNote);
-            }
-
-            let html = pendingPhotos.map(item => `
-                <button type="button" onclick="openPendingPhoto('${item.id}')" class="relative aspect-square bg-slate-200 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm active:scale-95 transition-transform">
-                    <img src="${pendingUrl(item)}" alt="Foto pendent de pujar" class="w-full h-full object-cover">
-                    <span class="absolute inset-0 bg-black/30 flex items-end p-2">
-                        <span class="inline-flex items-center gap-1 bg-amber-500 text-white text-[11px] font-bold px-2 py-1 rounded-full">
-                            <i data-lucide="cloud-upload" class="w-3.5 h-3.5"></i>Pendent
-                        </span>
-                    </span>
-                </button>`).join('');
-
-            html += photos.map(photo => {
-                const fallbackUrl = 'https://drive.google.com/thumbnail?id=' + photo.id + '&sz=w800';
-                return `
-                    <div onclick="openPhotoModal('${photo.imageUrl}', '${photo.id}')" class="group relative aspect-square bg-slate-200 dark:bg-slate-800 rounded-2xl overflow-hidden cursor-pointer shadow-sm active:scale-95 transition-transform">
-                        <img src="${photo.imageUrl}" onerror="this.onerror=null;this.src='${fallbackUrl}'" alt="${photo.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2.5">
-                            <span class="text-[10px] text-white font-medium truncate">${photo.name}</span>
-                        </div>
-                    </div>`;
-            }).join('');
-
-            if (!html) {
-                if (lastPhotos === null && !photosFromCache) {
-                    html = `
-                        <div class="col-span-2 text-center py-12 flex flex-col items-center justify-center gap-2 text-slate-400 dark:text-slate-500 text-xs">
-                            <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-primary"></i>
-                            <span>Carregant fotos de l'equip...</span>
-                        </div>`;
-                } else if (photosFromCache) {
-                    const offline = !isOnline();
-                    html = `
-                        <div class="col-span-2 text-center py-10 bg-white dark:bg-slate-900 rounded-[28px] border border-slate-100 dark:border-slate-800 text-xs font-medium flex flex-col items-center justify-center gap-2.5 px-4">
-                            <i data-lucide="${offline ? 'wifi-off' : 'alert-circle'}" class="w-8 h-8 text-amber-500"></i>
-                            <span class="text-slate-700 dark:text-slate-200 font-bold text-sm">${offline ? 'Sense connexió' : "No s'han pogut carregar les fotos"}</span>
-                            <p class="text-slate-500 dark:text-slate-400 text-xs max-w-xs">${offline ? 'Les fotos de l\'equip es carregaran quan tornis a tenir cobertura.' : 'Comprova que el desplegament de Google Apps Script estigui actiu i amb accés públic.'}</p>
-                        </div>`;
-                } else {
-                    html = `
-                        <div class="col-span-2 text-center py-12 bg-white dark:bg-slate-900 rounded-[28px] border border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-500 text-xs font-medium flex flex-col items-center justify-center gap-2">
-                            <i data-lucide="camera-off" class="w-8 h-8 text-slate-300 dark:text-slate-600"></i>
-                            <span>Encara no hi ha fotos a la carpeta.</span>
-                            <span class="text-slate-500 dark:text-slate-400 font-semibold">Prem «Fer Foto» per inaugurar l'àlbum!</span>
-                        </div>`;
-                }
-            }
-            grid.innerHTML = html;
-            lucide.createIcons();
-        }
-
-        async function fetchPhotos() {
-            renderPhotoGrid();
-            try {
-                if (!isOnline()) throw new Error('Sense connexió');
-                const response = await fetch(GOOGLE_SCRIPT_API_URL);
-                const data = await response.json();
-                if (!data.success) throw new Error(data.error || 'Error en rebre les dades de Drive');
-                lastPhotos = data.photos || [];
-                photosFromCache = false;
-                try { localStorage.setItem(PHOTO_LIST_KEY, JSON.stringify(lastPhotos)); } catch (e) {}
-            } catch (err) {
-                // Sense xarxa: mostrar l'última llista guardada
-                if (!lastPhotos) {
-                    try { lastPhotos = JSON.parse(localStorage.getItem(PHOTO_LIST_KEY) || 'null'); } catch (e) { lastPhotos = null; }
-                }
-                photosFromCache = true;
-            }
-            renderPhotoGrid();
-        }
-
-        function compressImage(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onerror = () => reject(reader.error);
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.onerror = () => reject(new Error("No s'ha pogut llegir la imatge"));
-                    img.onload = () => {
-                        const MAX = 1600;
-                        let width = img.width;
-                        let height = img.height;
-                        if (width > height && width > MAX) {
-                            height *= MAX / width;
-                            width = MAX;
-                        } else if (height >= width && height > MAX) {
-                            width *= MAX / height;
-                            height = MAX;
-                        }
-                        const canvas = document.createElement('canvas');
-                        canvas.width = width;
-                        canvas.height = height;
-                        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.82).split(',')[1]);
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        async function uploadItem(item) {
-            const response = await fetch(GOOGLE_SCRIPT_API_URL, {
-                method: 'POST',
-                body: JSON.stringify({
-                    clientBuild: CLIENT_BUILD_TAG,
-                    base64: item.base64,
-                    filename: item.filename,
-                    contentType: 'image/jpeg'
-                })
-            });
-            const res = await response.json();
-            if (!res.success) throw new Error(res.error || 'Error en validar la petició');
-        }
-
-        // Es pot triar més d'una foto de la galeria; totes passen per la cua
-        async function handlePhotoSelected(event) {
-            const files = Array.from(event.target.files || []);
-            event.target.value = '';
-            if (!files.length) return;
-
-            showUploadStatus('loading', files.length > 1 ? `Comprimint ${files.length} fotos...` : 'Comprimint foto...');
-            let failed = 0;
-            for (const file of files) {
-                try {
-                    const base64 = await compressImage(file);
-                    const item = {
-                        id: 'up_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
-                        base64,
-                        filename: 'gisce_' + Date.now() + '_' + (file.name ? file.name.replace(/\s+/g, '_') : 'foto.jpg'),
-                        createdAt: Date.now()
-                    };
-                    try {
-                        await photoQueue.add(item);
-                    } catch (e) {
-                        // Si el mòbil no deixa guardar la cua, es puja directament com abans
-                        await uploadItem(item);
-                    }
-                } catch (e) {
-                    failed++;
-                }
-            }
-            if (failed) showUploadStatus('error', failed === 1 ? "Una foto no s'ha pogut processar. Pots pujar-la directament a Google Drive." : `${failed} fotos no s'han pogut processar.`);
-            await refreshPendingPhotos();
-            processPhotoQueue();
-        }
-
-        async function processPhotoQueue() {
-            if (uploadingQueue) return;
-            let items = [];
-            try { items = (await photoQueue.all()).sort((a, b) => a.createdAt - b.createdAt); } catch (e) { return; }
-            if (!items.length) return;
-
-            if (!isOnline()) {
-                showUploadStatus('pending', `${pendingText(items.length).charAt(0).toUpperCase() + pendingText(items.length).slice(1)} de pujar`);
-                return;
-            }
-
-            uploadingQueue = true;
-            clearTimeout(photoRetryTimer);
-            let uploaded = 0;
-            try {
-                for (const item of items) {
-                    showUploadStatus('loading', items.length > 1 ? `Pujant foto ${uploaded + 1} de ${items.length} a Google Drive...` : 'Pujant foto a Google Drive...');
-                    await uploadItem(item);
-                    await photoQueue.remove(item.id);
-                    uploaded++;
-                }
-                showUploadStatus('ok', uploaded > 1 ? `${uploaded} fotos guardades a Google Drive!` : 'Foto guardada a Google Drive!');
-                setTimeout(hideUploadStatus, 2500);
-                fetchPhotos();
-            } catch (err) {
-                const left = items.length - uploaded;
-                showUploadStatus('pending', `No s'ha pogut pujar · ${pendingText(left)}. Es tornarà a provar automàticament.`);
-                photoRetryTimer = setTimeout(processPhotoQueue, PHOTO_RETRY_MS);
-                if (uploaded) fetchPhotos();
-            } finally {
-                uploadingQueue = false;
-                refreshPendingPhotos();
-            }
-        }
-
-        // Tornar a provar quan torna la xarxa o quan es torna a obrir l'app
-        window.addEventListener('online', () => {
-            updateConnectionUI();
-            processPhotoQueue();
-            if (!document.getElementById('tab-fotos').classList.contains('hidden')) fetchPhotos();
-        });
-        window.addEventListener('offline', () => {
-            updateConnectionUI();
-            if (pendingPhotos.length) processPhotoQueue();
-        });
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) processPhotoQueue();
-        });
-
-        function openPhotoModal(imageUrl, photoId) {
-            const modal = document.getElementById('photo-viewer-modal');
-            const img = document.getElementById('photo-viewer-img');
-            if (modal && img) {
-                img.onerror = function() {
-                    if (photoId) {
-                        this.onerror = null;
-                        this.src = 'https://drive.google.com/thumbnail?id=' + photoId + '&sz=w1600';
-                    }
-                };
-                img.src = imageUrl;
-                modal.classList.remove('hidden');
-            }
-        }
-
-        function closePhotoModal() {
-            const modal = document.getElementById('photo-viewer-modal');
-            if (modal) modal.classList.add('hidden');
+        // Les fotos s'han retirat de l'app: s'esborra el que hagués quedat guardat al mòbil
+        function cleanupOldPhotoData() {
+            try { localStorage.removeItem('pycones26-photos'); } catch (e) {}
+            try { if ('indexedDB' in window) indexedDB.deleteDatabase('pycones26'); } catch (e) {}
+            try { if ('caches' in window) caches.delete('pycones26-photos'); } catch (e) {}
         }
 
         // Navegació de pestanyes
         function switchTab(tabId) {
-            ['ara', 'horari', 'programa', 'fotos', 'info'].forEach(id => {
+            ['ara', 'horari', 'programa', 'info'].forEach(id => {
                 const el = document.getElementById('tab-' + id);
                 if (el) el.classList.add('hidden');
                 
@@ -2460,10 +2040,6 @@
                 if (pill) pill.classList.add('bg-primary');
             }
             
-            if (tabId === 'fotos') {
-                fetchPhotos();
-            }
-
             lucide.createIcons();
             const mainView = document.getElementById('main-view');
             if (mainView) mainView.scrollTo(0, 0);
@@ -2660,10 +2236,9 @@
 
         setupInstallUI();
 
-        // Fotos: estat de connexió i pujades pendents d'altres sessions
+        // Estat de connexió i neteja de dades antigues de fotos
         updateConnectionUI();
-        refreshPendingPhotos();
-        processPhotoQueue();
+        cleanupOldPhotoData();
 
         // Service worker: guarda l'app al mòbil perquè obri encara que no hi hagi cobertura
         if ('serviceWorker' in navigator) {

@@ -5,15 +5,12 @@
  * - L'HTML es demana primer a la xarxa (així els canvis d'horari arriben sols) i, si no hi ha
  *   cobertura o tarda més de 3 s, s'obre la còpia guardada.
  * - CSS, JS, fonts i icones surten de la còpia guardada i s'actualitzen en segon pla.
- * - Les fotos de Drive que ja s'han vist es guarden per poder-les tornar a veure sense xarxa.
  *
  * IMPORTANT: quan canviïs app.css, lucide.js o qualsevol fitxer que no sigui l'HTML,
  * puja el número de VERSION perquè tothom rebi la versió nova.
  */
-const VERSION = 'v5';
+const VERSION = 'v6';
 const APP_CACHE = `pycones26-app-${VERSION}`;
-const PHOTO_CACHE = 'pycones26-photos';
-const MAX_PHOTOS = 80;
 const NETWORK_TIMEOUT_MS = 3000;
 
 const APP_FILES = [
@@ -47,7 +44,7 @@ self.addEventListener('activate', (event) => {
     caches.keys()
       .then((keys) => Promise.all(
         keys
-          .filter((key) => key.startsWith('pycones26-app-') && key !== APP_CACHE)
+          .filter((key) => (key.startsWith('pycones26-app-') && key !== APP_CACHE) || key === 'pycones26-photos')
           .map((key) => caches.delete(key))
       ))
       .then(() => self.clients.claim())
@@ -56,7 +53,7 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const request = event.request;
-  if (request.method !== 'GET') return; // les pujades de fotos (POST) van directes a la xarxa
+  if (request.method !== 'GET') return;
 
   const url = new URL(request.url);
 
@@ -72,11 +69,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 3. Fotos de Google Drive ja vistes: es guarden per veure-les sense xarxa
-  if (request.destination === 'image') {
-    event.respondWith(cachedPhoto(request));
-  }
-  // La resta (Apps Script, Maps, Telegram...) va directa a la xarxa
+  // La resta (Maps, Telegram...) va directa a la xarxa
 });
 
 async function networkFirstPage(request) {
@@ -106,29 +99,6 @@ async function staleWhileRevalidate(request, cacheName) {
   if (cached) return cached;
   const response = await network;
   return response || Response.error();
-}
-
-async function cachedPhoto(request) {
-  const cache = await caches.open(PHOTO_CACHE);
-  const cached = await cache.match(request);
-  if (cached) return cached;
-  try {
-    const response = await fetch(request);
-    // Les imatges d'un altre domini arriben "opaques" (status 0): també es poden guardar
-    if (response && (response.ok || response.type === 'opaque')) {
-      await cache.put(request, response.clone());
-      trimCache(cache, MAX_PHOTOS);
-    }
-    return response;
-  } catch (err) {
-    return Response.error();
-  }
-}
-
-async function trimCache(cache, max) {
-  const keys = await cache.keys();
-  if (keys.length <= max) return;
-  await Promise.all(keys.slice(0, keys.length - max).map((key) => cache.delete(key)));
 }
 
 function withTimeout(promise, ms) {
