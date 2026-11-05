@@ -9,7 +9,7 @@
  * IMPORTANT: quan canviïs app.css, lucide.js o qualsevol fitxer que no sigui l'HTML,
  * puja el número de VERSION perquè tothom rebi la versió nova.
  */
-const VERSION = 'v6';
+const VERSION = 'v7';
 const APP_CACHE = `pycones26-app-${VERSION}`;
 const NETWORK_TIMEOUT_MS = 3000;
 

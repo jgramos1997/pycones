@@ -132,6 +132,10 @@
             .home-gap { margin-top: 22px; }
         }
 
+        /* Fitxa de xerrada: puja des de baix */
+        .talk-sheet-panel { padding-bottom: max(1.5rem, calc(env(safe-area-inset-bottom) + 1rem)); animation: sheetUp 0.32s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes sheetUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
         /* Entrada de la pantalla del nom */
         .name-dialog-in { animation: nameIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
         @keyframes nameIn {
@@ -141,7 +145,7 @@
 
         /* Respectar "reduir moviment" del sistema */
         @media (prefers-reduced-motion: reduce) {
-            .fade-in, .animate-pulse, .name-dialog-in { animation: none !important; }
+            .fade-in, .animate-pulse, .name-dialog-in, .talk-sheet-panel { animation: none !important; }
             #welcome-curtain { transition: none !important; }
         }
 
@@ -403,6 +407,18 @@
 
     </main>
 
+    <!-- Fitxa d'una xerrada (full inferior) -->
+    <div id="talk-sheet" class="hidden fixed inset-0 z-[115] items-end justify-center" role="dialog" aria-modal="true" aria-labelledby="talk-sheet-title">
+        <div class="absolute inset-0 bg-slate-900/50" onclick="closeTalk()"></div>
+        <div class="talk-sheet-panel relative w-full max-w-[480px] max-h-[85dvh] overflow-y-auto bg-white dark:bg-slate-900 rounded-t-[28px] px-6 pt-3">
+            <div class="mx-auto mb-3 h-1.5 w-10 rounded-full bg-slate-200 dark:bg-slate-700" aria-hidden="true"></div>
+            <button type="button" onclick="closeTalk()" aria-label="Tancar" class="absolute top-3 right-3 w-11 h-11 rounded-full flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div id="talk-sheet-content" class="flex flex-col gap-4 pr-6"></div>
+        </div>
+    </div>
+
     <!-- Barra de Navegació Flotant (5 pestanyes amb etiqueta) -->
     <div class="fixed bottom-6 left-0 right-0 px-4 sm:px-6 z-50 pointer-events-none pb-safe">
         <nav aria-label="Navegació principal" class="bg-slate-900/95 backdrop-blur-md border border-transparent dark:border-slate-800 rounded-[28px] shadow-2xl shadow-slate-900/40 h-[68px] px-1.5 flex justify-between items-center max-w-[420px] mx-auto pointer-events-auto">
@@ -643,7 +659,7 @@
                     { title: 'Odyssey: De contributor a maintainer', speaker: 'Gema Parreño', room: 'Aula B5 - Nagarro' },
                     { title: 'Diseñando arquitecturas reales. Cuando tu sistema no necesita escalar a un millón de usuarios', speaker: 'Juan Rodriguez Monti', room: 'Aula B3 - Manychat' },
                     { title: '¿Qué hueso es? Clasificación zooarqueológica con Python, Machine Learning y datos sintéticos', speaker: 'Francisco Javier Luengo Gutiérrez', room: 'Aula B7 - OLX' },
-                    { title: 'Hackathon (10:50 - 17:30)', speaker: 'Comunitat', room: 'Aula IA' }
+                    { title: 'Hackathon (10:50 - 17:30)', speaker: 'Python Navarra', room: 'Aula IA' }
                 ]
             },
             {
@@ -667,7 +683,7 @@
                     { title: 'uv: organiza tus proyectos Python como si supieras lo que haces', speaker: 'Lino Figueroa', room: 'Aula Magna' },
                     { title: 'De Scripts a Autodidactas: Construyendo Agentes de IA que se Mejoran a Sí Mismos', speaker: 'Juan Carlos González-Avella', room: 'Aula B5 - Nagarro' },
                     { title: 'De caos a control: cómo guiar modelos de difusión con Python', speaker: 'Mai Giménez', room: 'Aula B3 - Manychat' },
-                    { title: 'Datanomy: Understanding the Anatomy of Arrow and Parquet', speaker: 'Raúl Cumplido Dominguez', room: 'Aula B7 - OLX' }
+                    { title: 'Datanomy: Understanding the Anatomy of Arrow and Parquet', speaker: 'Raúl Cumplido Domínguez', room: 'Aula B7 - OLX' }
                 ]
             },
             {
@@ -679,7 +695,7 @@
                 dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
                 start: new Date(`2026-11-07T14:40:00${TZ}`), end: new Date(`2026-11-07T15:25:00${TZ}`),
                 title: 'Mesa redonda: Tecnología en evolución: pasado, presente y futuro',
-                speaker: 'Gessica Paniagua, Nuria Pujol, Johanna Sánchez, Muriel Rovira-Esteva',
+                speaker: 'Gessica Paniagua, Núria Pujol Vilanova, Johanna Sánchez, Muriel Rovira-Esteva',
                 type: 'keynote', icon: 'users', room: 'Paranimf Perk'
             },
             {
@@ -690,8 +706,8 @@
                     { title: 'Prevención de incendios forestales con Python', speaker: 'Leyre Labarga, Alberto Labarga', room: 'Paranimf Perk' },
                     { title: 'Análisis forense con Python: evidencia digital explicable con agentes de IA', speaker: 'Carolina Passarello', room: 'Aula Magna' },
                     { title: 'SIGIL4Py: Harmonic Integration for Large-Scale Python Systems', speaker: 'Jara Juana Bermejo Vega', room: 'Aula B5 - Nagarro' },
-                    { title: '¿Qué viene después de Rust en el ecosistema Python?', speaker: 'Cristian Maureira-Fredes', room: 'Aula B3 - Manychat' },
-                    { title: 'PydanticAI: Building Agents That Survive Production', speaker: 'Mariano Semeiman', room: 'Aula B7 - OLX' }
+                    { title: '¿Qué viene después de Rust en el ecosistema Python?', speaker: 'Cristián Maureira-Fredes', room: 'Aula B3 - Manychat' },
+                    { title: 'PydanticAI: Building Agents That Survive Production', speaker: 'Mariano Semelman', room: 'Aula B7 - OLX' }
                 ]
             },
             {
@@ -702,7 +718,7 @@
             {
                 dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
                 start: new Date(`2026-11-07T16:45:00${TZ}`), end: new Date(`2026-11-07T17:35:00${TZ}`),
-                title: 'Keynote: Mia Bajić', speaker: 'Mia Bajić', type: 'keynote', icon: 'mic', room: 'Paranimf Perk'
+                title: 'Keynote: A gardener, the age of iron, and community in the age of AI', speaker: 'Mia Bajić', type: 'keynote', icon: 'mic', room: 'Paranimf Perk'
             },
             {
                 dayId: 'ds', dayLabel: 'Dissabte 7 de novembre',
@@ -737,8 +753,8 @@
                 start: new Date(`2026-11-08T11:20:00${TZ}`), end: new Date(`2026-11-08T12:00:00${TZ}`),
                 title: 'Bloc de Xerrades Matí 1', type: 'track', icon: 'presentation',
                 sessions: [
-                    { title: 'Medicina personalizada: cómo el 0.1% de tu ADN puede cambiarlo todo', speaker: 'Helena Gómez Pozo, Marina Maro López', room: 'Paranimf Perk' },
-                    { title: 'Diseñar para el fallo en tiempo real: qué pasa cuando tu LLM se equivoca en el peor momento', speaker: 'Almudena Zhou Ramirez, Tamara Kadyrova', room: 'Aula Magna' },
+                    { title: 'Medicina personalizada: cómo el 0.1% de tu ADN puede cambiarlo todo', speaker: 'Helena Gómez Pozo, Marina Moro López', room: 'Paranimf Perk' },
+                    { title: 'Diseñar para el fallo en tiempo real: qué pasa cuando tu LLM se equivoca en el peor momento', speaker: 'Almudena Zhou Ramírez López, Tamara Kadyear', room: 'Aula Magna' },
                     { title: 'Películas y vídeos más accesibles con Python (y un poco de IA)', speaker: 'Ramón Corominas', room: 'Aula B5 - Nagarro' },
                     { title: 'El texto no es texto: historia de las strings en Python', speaker: 'Daniel Hervás', room: 'Aula B3 - Manychat' },
                     { title: 'Securing High-Risk Django Applications: Lessons from the Payment Domain', speaker: 'Dmytro Khmelenko', room: 'Aula B7 - OLX' }
@@ -750,7 +766,7 @@
                 title: 'Bloc de Xerrades Matí 2', type: 'track', icon: 'presentation',
                 sessions: [
                     { title: 'La amenaza fantasma: De GitHub a la trinchera', speaker: 'Jimena Bermúdez', room: 'Paranimf Perk' },
-                    { title: 'Ableton, Claude y Python son Las Supernenas de la música. ¿Cuál es la sustancia X?', speaker: 'Clara de Luna, robmz', room: 'Aula Magna' },
+                    { title: 'Ableton, Claude y Python son Las Supernenas de la música. ¿Cuál es la sustancia X?', speaker: 'Clara de Luna, robmzj', room: 'Aula Magna' },
                     { title: 'Python Meets Hardware: The Missing Survival Guide', speaker: 'Carlos Pereira Atencio', room: 'Aula B5 - Nagarro' },
                     { title: 'Surviving LLM Traffic Spikes: Routing, Rate Limits, and Failover in Python', speaker: 'Sergi Porta', room: 'Aula B3 - Manychat' },
                     { title: 'Zero-Copy Data Sharing Between Python and Rust with PyO3 and Arrow', speaker: 'Allen Y', room: 'Aula B7 - OLX' }
@@ -766,10 +782,10 @@
                 start: new Date(`2026-11-08T14:20:00${TZ}`), end: new Date(`2026-11-08T15:00:00${TZ}`),
                 title: 'Bloc de Xerrades Tarda 1', type: 'track', icon: 'presentation',
                 sessions: [
-                    { title: 'Charla invitada', speaker: 'Ponente convidat', room: 'Paranimf Perk' },
+                    { title: 'Charla invitada', speaker: 'Per anunciar', room: 'Paranimf Perk' },
                     { title: 'Cómo he automatizado la preparación de mis planes operativos de vuelo', speaker: 'Marta Gomez Macias', room: 'Aula Magna' },
                     { title: 'Thinking AI is sentient is like seeing Jesus on toasts', speaker: 'Cheuk Ting Ho', room: 'Aula B5 - Nagarro' },
-                    { title: 'Cómo convertir tu aeropuerto más cercano en una app del tiempo', speaker: 'Mauricio', room: 'Aula B3 - Manychat' },
+                    { title: '¿Qué pasa realmente cuando haces "python my_app.py"? Descubriendo las entrañas del lenguaje', speaker: 'Javier Alonso', room: 'Aula B3 - Manychat' },
                     { title: 'Más allá del Global Interpreter Lock: Exprimiendo algoritmos genómicos con Numba, Cython y CUDA', speaker: 'Pablo Oca Galeano', room: 'Aula B7 - OLX' }
                 ]
             },
@@ -779,10 +795,10 @@
                 title: 'Bloc de Xerrades Tarda 2', type: 'track', icon: 'presentation',
                 sessions: [
                     { title: 'Tachyon: el profiler por muestreo de Python 3.15 es más rápido que tu código', speaker: 'Pablo Galindo Salgado', room: 'Paranimf Perk' },
-                    { title: 'Questioning the Mathematical Foundations of AI', speaker: 'Dr Ana Rojo-Echeburua', room: 'Aula Magna' },
+                    { title: 'Questioning the Mathematical Foundations of AI', speaker: 'Dr Ana Rojo-Echeburúa', room: 'Aula Magna' },
                     { title: '10 Years of Lessons Learned Maintaining Conan, a Critical Python Project', speaker: 'Diego', room: 'Aula B5 - Nagarro' },
-                    { title: '¿Qué pasa realmente cuando haces "python my_app.py"? Descubriendo las entrañas del lenguaje', speaker: 'Javier Alonso', room: 'Aula B3 - Manychat' },
-                    { title: 'Ataques Simulados, Detección Real: Python, Elastic Search y Caldera', speaker: 'Joaquin Rayado, Lucciano Sileo', room: 'Aula B7 - OLX' }
+                    { title: 'Cómo convertir tu aeropuerto más cercano en una app del tiempo', speaker: 'Joaquín Rayado, Lucciano Sileo', room: 'Aula B3 - Manychat' },
+                    { title: 'Ataques Simulados, Detección Real: Python, Elastic Search y Caldera', speaker: 'Mauricio', room: 'Aula B7 - OLX' }
                 ]
             },
             {
@@ -1296,10 +1312,10 @@
                 if (slot.end <= now) return;
                 if (slot.sessions) {
                     slot.sessions.forEach(s => {
-                        if (favs.has(favId(slot, s))) list.push({ slot, start: slot.start, title: s.title, room: s.room });
+                        if (favs.has(favId(slot, s))) list.push({ slot, start: slot.start, title: s.title, room: s.room, key: talkKey(slot, s) });
                     });
                 } else if (slot.type !== 'break' && favs.has(favId(slot))) {
-                    list.push({ slot, start: slot.start, title: slot.title, room: slot.room });
+                    list.push({ slot, start: slot.start, title: slot.title, room: slot.room, key: talkKey(slot) });
                 }
             });
             return list;
@@ -1312,7 +1328,7 @@
                 sub: `${shortRoom(f.room) || 'PyConES'} · la teva favorita`,
                 right: current ? 'Ara' : whenLabel(f.start, now),
                 rightCls: current ? 'text-emerald-700 dark:text-emerald-400' : '',
-                onclick: "switchTab('programa')"
+                onclick: `openTalk('${f.key}')`
             });
         }
 
@@ -1380,6 +1396,169 @@
                 el.setAttribute('aria-pressed', active ? 'true' : 'false');
             });
         }
+
+        // ---------- Informació de les xerrades (font: programa oficial 2026.es.pycon.org) ----------
+        // Clau = títol exacte del programa. Resums breus en català; la descripció completa és a la fitxa oficial.
+        const PRETALX = 'https://pretalx.com/pycones-2026/talk/';
+        const TALK_INFO = {
+            // DISSABTE
+            'Keynote: El bosque no estaba vacío: IA, Ciencia y los límites que no conocemos': { lang: 'ES', track: 'IA i ML', format: 'Keynote · 50 min', id: 'WDUNQL', about: "Separa el que és útil del que és soroll en la IA aplicada a la ciència, amb experiments amb models tancats i oberts per veure fins on arriben." },
+            'Lazy imports and the art of interpreter procrastination': { lang: 'EN', track: 'Python i paquets', format: 'Xerrada · 40 min', id: '73PLNR', about: "Com funcionen per dins els imports mandrosos de Python 3.15 (amb objectes intermediaris) i quines eines hi ha per adoptar-los al teu projecte." },
+            'Stop firefighting: practical observability for Python APIs, workers, and scheduled jobs': { lang: 'EN', track: 'DevOps i cloud', format: 'Xerrada · 40 min', id: 'H3G9ZM', about: "Una llista pràctica d'observabilitat, sense lligar-se a cap proveïdor, per a APIs, workers i tasques programades, i en quin ordre implantar-la." },
+            'Odyssey: De contributor a maintainer': { lang: 'ES', track: 'Comunitat', format: 'Xerrada · 40 min', id: 'BECHD3', about: "El camí de contribuir a un projecte open source a mantenir-lo: comunicació asíncrona, revisió de codi i com es prenen decisions." },
+            'Diseñando arquitecturas reales. Cuando tu sistema no necesita escalar a un millón de usuarios': { lang: 'ES', track: 'Desenvolupament web', format: 'Xerrada · 40 min', id: 'PZSXXW', about: "Diferencia entre un sistema crític i un que ha d'escalar, i per què no cal copiar l'arquitectura de les grans empreses en projectes petits. Amb exemples en Python." },
+            '¿Qué hueso es? Clasificación zooarqueológica con Python, Machine Learning y datos sintéticos': { lang: 'ES', track: 'IA i ML', format: 'Xerrada · 40 min', id: 'GPYECJ', about: "Un classificador d'ossos entrenat sobretot amb imatges sintètiques fetes amb Blender, i on falla quan s'enfronta a fotos reals." },
+            'Hackathon (10:50 - 17:30)': { lang: 'ES', track: 'Hackathon', format: 'Hackathon · tot el dia', id: 'JSLD7C', about: "Sessió pràctica de Python oberta a qualsevol nivell, acompanyada per Python Navarra, amb reptes a HackerRank. Podeu entrar i sortir quan vulgueu." },
+            '¿Puede la IA construir una integración por sí sola? Lo bueno, lo malo y lo feo': { lang: 'ES', track: 'Patrocinador', format: 'Xerrada · 40 min', id: 'YFZPTV', about: "L'experiència de Perk intentant que una IA construeixi integracions d'APIs a partir de la documentació: què funciona, què no i quanta supervisió humana cal." },
+            "What I've Learned Maintaining the MCP Python SDK": { lang: 'EN', track: 'IA i ML', format: 'Xerrada · 40 min', id: 'YDSZY9', about: "Lliçons de mantenir l'SDK de Python del Model Context Protocol (MCP): disseny d'eines, estructura dels servidors i com provar-los." },
+            'From code to consequences: Modelling for policy': { lang: 'EN', track: 'Dades', format: 'Xerrada · 40 min', id: 'X3TWLZ', about: "Com els models computacionals ajuden a prendre decisions polítiques comparant escenaris i incertesa, i quins errors cal evitar." },
+            'Tu CI está perdiendo el tiempo (y Test Impact Analysis lo sabe)': { lang: 'ES', track: 'Testing i seguretat', format: 'Xerrada · 40 min', id: 'PF37PR', about: "Executar només els tests afectats per cada canvi per retallar el temps de CI, amb els límits i compromisos que això comporta." },
+            'Desenredando la Web: Protocolos Alternativos con Python para un Internet Más Tranquilo': { lang: 'ES', track: 'Desenvolupament web', format: 'Xerrada · 40 min', id: 'PGA9YC', about: "Presenta el «Small Internet» i el protocol Gemini, amb dues eines fetes en Python: el navegador Astronomo i el framework Xitzin." },
+            'Using Python to reveal the faint side of galaxy clusters': { lang: 'EN', track: 'Altres', format: 'Xerrada · 40 min', id: '8FGVJY', about: "Ús de Python amb imatges astronòmiques i simulacions per estudiar la llum molt tènue que hi ha entre les galàxies d'un cúmul." },
+            'uv: organiza tus proyectos Python como si supieras lo que haces': { lang: 'ES', track: 'Python i paquets', format: 'Xerrada · 40 min', id: 'GG7VTB', about: "Com uv simplifica els projectes Python i els fa reproduïbles: migrar configuracions antigues i fer servir scripts amb dependències (PEP 723)." },
+            'De Scripts a Autodidactas: Construyendo Agentes de IA que se Mejoran a Sí Mismos': { lang: 'ES', track: 'Patrocinador', format: 'Xerrada · 40 min', id: 'FF3MDK', about: "Agents d'IA que milloren amb la pròpia experiència, ajustant la seva bastida i amb bucles de millora del model base." },
+            'De caos a control: cómo guiar modelos de difusión con Python': { lang: 'ES', track: 'IA i ML', format: 'Xerrada · 40 min', id: 'SDPWYR', about: "Explica la guia sense classificador (Classifier-Free Guidance) dels models de difusió i què fa realment el paràmetre guidance_scale, amb codi Python." },
+            'Datanomy: Understanding the Anatomy of Arrow and Parquet': { lang: 'ES', track: 'Dades', format: 'Xerrada · 40 min', id: '9JZRKJ', about: "Com són per dins els formats Arrow i Parquet, explorats amb PyArrow i amb l'eina datanomy per visualitzar-los." },
+            'Mesa redonda: Tecnología en evolución: pasado, presente y futuro': { lang: 'ES', track: 'Altres', format: 'Taula rodona · 45 min', id: 'YC3YXN', about: "Quatre professionals parlen de com ha canviat el sector tecnològic, els reptes actuals, l'ètica i cap on va." },
+            'Prevención de incendios forestales con Python': { lang: 'ES', track: 'Dades', format: 'Xerrada · 40 min', id: 'DNEUQT', about: "Prevenció d'incendis a partir de punts estratègics de gestió, amb un flux de treball geoespacial open source en Python." },
+            'Análisis forense con Python: evidencia digital explicable con agentes de IA': { lang: 'ES', track: 'IA i ML', format: 'Xerrada · 40 min', id: 'UCFXTA', about: "Un sistema multiagent amb RAG i models locals (Ollama) que analitza converses de mòbils de manera traçable i explicable." },
+            'SIGIL4Py: Harmonic Integration for Large-Scale Python Systems': { lang: 'ES', track: 'DevOps i cloud', format: 'Xerrada · 40 min', id: 'HBRANC', about: "Una capa lleugera per coordinar eines Python en sistemes grans, amb traces, validacions i execució reproduïble." },
+            '¿Qué viene después de Rust en el ecosistema Python?': { lang: 'ES', track: 'Python i paquets', format: 'Xerrada · 40 min', id: 'GXFMUV', about: "Compara llenguatges com Zig, Gleam, C++ modern, Circle i Carbon per escriure extensions de Python, més enllà de Rust." },
+            'PydanticAI: Building Agents That Survive Production': { lang: 'EN', track: 'Patrocinador', format: 'Xerrada · 40 min', id: 'GZYKJK', about: "Construeix en directe un agent de suport i li afegeix el que cal per a producció: memòria, aprovacions humanes i execució duradora." },
+            'Keynote: A gardener, the age of iron, and community in the age of AI': { lang: 'EN', track: 'Comunitat', format: 'Keynote · 50 min', id: 'HN3MJH', about: "A partir de la història de l'enginyeria i de dades sobre contribuïdors d'open source, una reflexió sobre el paper del programari i de la comunitat en l'era de la IA." },
+            'Charlas relámpago I': { lang: 'ES', track: 'Xerrades llampec', format: 'Xerrades llampec · 30 min', id: '3M7Z8B', about: "Xerrades molt curtes de temes variats. El contingut es decideix durant l'esdeveniment." },
+
+            // DIUMENGE
+            'Keynote: Ultreia: ¿Cuándo una idea pasa a ser Python?': { lang: 'ES', track: 'Python i paquets', format: 'Keynote · 50 min', id: '8XUK8M', about: "Com el JIT experimental de CPython observa i especialitza el codi, i què cal perquè una millora acabi formant part de Python." },
+            'Medicina personalizada: cómo el 0.1% de tu ADN puede cambiarlo todo': { lang: 'ES', track: 'Altres', format: 'Xerrada · 40 min', id: 'KYLHTH', about: "Com les petites variacions genètiques permeten preveure la resposta als fàrmacs i el risc de malalties, amb una demo en Python sobre dades d'una pacient." },
+            'Diseñar para el fallo en tiempo real: qué pasa cuando tu LLM se equivoca en el peor momento': { lang: 'ES', track: 'IA i ML', format: 'Xerrada · 40 min', id: 'FJA9UV', about: "Errors habituals dels LLM en agents conversacionals amb latència estricta i estratègies per detectar-los i gestionar-los. Amb demo en directe." },
+            'Películas y vídeos más accesibles con Python (y un poco de IA)': { lang: 'ES', track: 'Art i videojocs', format: 'Xerrada · 40 min', id: 'X3PWJV', about: "Generar audiodescripcions i extreure subtítols incrustats en vídeos amb eines d'àudio, imatge i IA, i les implicacions ètiques que té." },
+            'El texto no es texto: historia de las strings en Python': { lang: 'ES', track: 'Python i paquets', format: 'Xerrada · 40 min', id: 'EBCSSG', about: "L'evolució de les cadenes de text a Python: de la memòria en C i Unicode fins a les plantilles de text del PEP 750." },
+            'Securing High-Risk Django Applications: Lessons from the Payment Domain': { lang: 'EN', track: 'Desenvolupament web', format: 'Xerrada · 40 min', id: 'YMQXEH', about: "Lliçons de seguretat en aplicacions Django de pagaments: condicions de carrera, frau i patrons d'arquitectura per evitar-los." },
+            'La amenaza fantasma: De GitHub a la trinchera': { lang: 'ES', track: 'Educació i ètica', format: 'Xerrada · 40 min', id: 'PBSBNZ', about: "Una reflexió sobre com el programari d'ús civil acaba dins de sistemes militars i la responsabilitat de qui l'escriu." },
+            'Ableton, Claude y Python son Las Supernenas de la música. ¿Cuál es la sustancia X?': { lang: 'ES', track: 'Art i videojocs', format: 'Xerrada · 40 min', id: 'KEKWVD', about: "Un flux de producció musical que connecta Ableton amb Claude Code via OSC per automatitzar tasques repetitives i guanyar expressivitat." },
+            'Python Meets Hardware: The Missing Survival Guide': { lang: 'EN', track: 'IoT i empotrats', format: 'Xerrada · 40 min', id: 'LWTBDW', about: "Guia per passar de fer parpellejar un LED amb MicroPython a programar maquinari amb poca memòria, depuració difícil i eines de diagnòstic barates." },
+            'Surviving LLM Traffic Spikes: Routing, Rate Limits, and Failover in Python': { lang: 'EN', track: 'Patrocinador', format: 'Xerrada · 40 min', id: 'BKUJLJ', about: "Una capa d'enrutament en producció per al trànsit cap a LLMs: balanceig ponderat, límits de peticions, reintents i alternatives quan un proveïdor cau." },
+            'Zero-Copy Data Sharing Between Python and Rust with PyO3 and Arrow': { lang: 'EN', track: 'Python i paquets', format: 'Xerrada · 40 min', id: 'FQYUE8', about: "Compartir grans volums de dades entre Python i Rust sense còpies amb Apache Arrow i PyO3, i comparació de rendiment amb la serialització clàssica." },
+            'Charla invitada': { lang: 'ES', track: 'Xerrada convidada', format: 'Xerrada · 40 min', id: 'JRYFX8', about: "Xerrada convidada. El ponent i el tema encara no s'han anunciat al programa oficial." },
+            'Cómo he automatizado la preparación de mis planes operativos de vuelo': { lang: 'ES', track: 'Altres', format: 'Xerrada · 40 min', id: 'HCMSXM', about: "Com va automatitzar amb Python la preparació de plans de vol: rutes, efecte del vent i càlcul de combustible." },
+            'Thinking AI is sentient is like seeing Jesus on toasts': { lang: 'EN', track: 'Educació i ètica', format: 'Xerrada · 40 min', id: '7THLW7', about: "Defensa que atribuir consciència a la IA és una projecció dels nostres biaixos, i alerta dels riscos ètics i de la manca de regulació." },
+            '¿Qué pasa realmente cuando haces "python my_app.py"? Descubriendo las entrañas del lenguaje': { lang: 'ES', track: 'Python i paquets', format: 'Xerrada · 40 min', id: 'LXKFHB', about: "El cicle d'execució de CPython pas a pas: inicialització, AST, bytecode, la màquina virtual i el JIT." },
+            'Más allá del Global Interpreter Lock: Exprimiendo algoritmos genómicos con Numba, Cython y CUDA': { lang: 'ES', track: 'Computació científica', format: 'Xerrada · 40 min', id: 'ZD9EGF', about: "Compara el rendiment d'algorismes de biclustering genòmic optimitzats amb Numba, Cython, OpenMP i CUDA davant d'una versió seqüencial en Python." },
+            'Tachyon: el profiler por muestreo de Python 3.15 es más rápido que tu código': { lang: 'ES', track: 'Python i paquets', format: 'Xerrada · 40 min', id: 'QUHBGU', about: "Tachyon, el nou profiler per mostreig de Python 3.15: com s'ha construït i com fer-lo servir per trobar colls d'ampolla." },
+            'Questioning the Mathematical Foundations of AI': { lang: 'EN', track: 'IA i ML', format: 'Xerrada · 40 min', id: 'MHXF3P', about: "Qüestiona l'ús d'embeddings i similitud del cosinus en espais euclidians i proposa alternatives, com els espais hiperbòlics per representar jerarquies." },
+            '10 Years of Lessons Learned Maintaining Conan, a Critical Python Project': { lang: 'EN', track: 'Comunitat', format: 'Xerrada · 40 min', id: 'GHWQDM', about: "Deu anys mantenint Conan, un gestor de paquets de C/C++ escrit en Python: tipat, proves, CI i migracions." },
+            'Cómo convertir tu aeropuerto más cercano en una app del tiempo': { lang: 'ES', track: 'Dades', format: 'Xerrada · 40 min', id: 'D3QMHR', about: "Fer servir Python per interpretar els informes meteorològics dels aeroports i obtenir previsions locals més fiables." },
+            'Ataques Simulados, Detección Real: Python, Elastic Search y Caldera': { lang: 'ES', track: 'Testing i seguretat', format: 'Xerrada · 40 min', id: 'USCVEB', about: "Amb MITRE Caldera, com es generen i es detecten amb Elastic Stack els esdeveniments d'un atac simulat, amb Python des del punt de vista Red i Blue Team." },
+            'Charlas relámpago II': { lang: 'ES', track: 'Xerrades llampec', format: 'Xerrades llampec · 40 min', id: '8PH7HU', about: "Segona tanda de xerrades molt curtes de temes variats." }
+        };
+
+        function talkInfo(title) {
+            return TALK_INFO[title] || null;
+        }
+
+        // Etiqueta d'idioma petita per a les files del programa
+        function langPill(lang) {
+            if (!lang) return '';
+            return `<span class="inline-flex items-center text-[11px] font-bold tracking-wide px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300" title="${lang === 'EN' ? 'En anglès' : 'En castellà'}">${lang}</span>`;
+        }
+
+        // Retorna {slot, sess, title, speaker, room, info} a partir de la clau "índexBloc|índexSessió" (-1 = acte únic)
+        function talkFromKey(key) {
+            const [si, ss] = String(key).split('|').map(Number);
+            const slot = pyconProgram[si];
+            if (!slot) return null;
+            const sess = ss >= 0 && slot.sessions ? slot.sessions[ss] : null;
+            const title = sess ? sess.title : slot.title;
+            return { slot, sess, title, speaker: sess ? sess.speaker : slot.speaker, room: sess ? sess.room : slot.room, info: talkInfo(title), key };
+        }
+
+        function talkKey(slot, sess) {
+            const si = pyconProgram.indexOf(slot);
+            const ss = sess && slot.sessions ? slot.sessions.indexOf(sess) : -1;
+            return `${si}|${ss}`;
+        }
+
+        let openTalkKey = null;
+
+        // Fitxa de la xerrada (full inferior)
+        function openTalk(key) {
+            const t = talkFromKey(key);
+            if (!t) return;
+            openTalkKey = key;
+            const now = new Date();
+            const id = favId(t.slot, t.sess);
+            const fav = favs.has(id);
+            const canFav = !!t.sess || t.slot.type === 'keynote' || !!t.slot.speaker;
+            const day = t.slot.dayId === 'ds' ? 'Dissabte 7' : 'Diumenge 8';
+            const past = now >= t.slot.end;
+            const current = now >= t.slot.start && now < t.slot.end;
+            const info = t.info || {};
+            const langLabel = info.lang === 'EN' ? 'En anglès' : info.lang === 'ES' ? 'En castellà' : '';
+            const chips = [
+                langLabel && `<span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200"><i data-lucide="languages" class="w-3.5 h-3.5"></i>${langLabel}</span>`,
+                info.track && `<span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 text-[#1E5FA8] dark:bg-blue-500/15 dark:text-blue-300"><i data-lucide="tag" class="w-3.5 h-3.5"></i>${info.track}</span>`,
+                info.format && `<span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200"><i data-lucide="clock" class="w-3.5 h-3.5"></i>${info.format}</span>`
+            ].filter(Boolean).join('');
+            const status = current ? ARA_PILL : (past ? FET_PILL : '');
+
+            document.getElementById('talk-sheet-content').innerHTML = `
+                <div class="flex items-center flex-wrap gap-2">
+                    <span class="text-xs font-extrabold tracking-wide text-primary tabular-nums">${day} · ${timeFmt.format(t.slot.start)}–${timeFmt.format(t.slot.end)}</span>
+                    ${status}
+                </div>
+                <h2 id="talk-sheet-title" class="text-[21px] font-extrabold leading-snug text-slate-900 dark:text-white">${t.title}</h2>
+                <div class="flex flex-col gap-1.5">
+                    ${t.speaker ? `<span class="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-700 dark:text-slate-200"><i data-lucide="user" class="w-4 h-4 shrink-0"></i>${t.speaker}</span>` : ''}
+                    ${t.room ? `<span class="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-700 dark:text-slate-200"><i data-lucide="map-pin" class="w-4 h-4 shrink-0"></i>${t.room}</span>` : ''}
+                </div>
+                ${chips ? `<div class="flex flex-wrap gap-1.5">${chips}</div>` : ''}
+                ${info.about ? `
+                    <div class="flex flex-col gap-1.5">
+                        <h3 class="text-xs font-extrabold uppercase tracking-widest text-slate-500 dark:text-slate-400">De què va</h3>
+                        <p class="text-[15px] leading-relaxed text-slate-700 dark:text-slate-300">${info.about}</p>
+                    </div>` : ''}
+                <div class="flex flex-col gap-2 mt-1">
+                    ${canFav ? `
+                        <button type="button" data-sheet-fav="${escapeAttr(id)}" aria-pressed="${fav}"
+                            class="h-12 rounded-2xl text-[15px] font-bold flex items-center justify-center gap-2 transition-colors ${fav ? 'bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300' : 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-100'}">
+                            <i data-lucide="star" class="w-[18px] h-[18px] ${fav ? 'fill-current' : ''}"></i>${fav ? 'A la meva agenda' : 'Afegir a la meva agenda'}
+                        </button>` : ''}
+                    ${info.id ? `
+                        <a href="${PRETALX}${info.id}/" target="_blank" rel="noopener noreferrer" class="h-12 rounded-2xl text-[15px] font-bold flex items-center justify-center gap-2 bg-primary text-white">
+                            <i data-lucide="external-link" class="w-[18px] h-[18px]"></i>Descripció completa a la web oficial
+                        </a>` : ''}
+                </div>`;
+            const sheet = document.getElementById('talk-sheet');
+            sheet.classList.remove('hidden');
+            sheet.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeTalk() {
+            const sheet = document.getElementById('talk-sheet');
+            sheet.classList.add('hidden');
+            sheet.classList.remove('flex');
+            openTalkKey = null;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && openTalkKey !== null) closeTalk();
+        });
+
+        // Obrir la fitxa des de qualsevol lloc (programa, agenda, inici)
+        document.addEventListener('click', (e) => {
+            const favBtn = e.target.closest('[data-sheet-fav]');
+            if (favBtn) {
+                toggleFav(favBtn.dataset.sheetFav);
+                lastPlanHtml = '';
+                updateApp();
+                openTalk(openTalkKey);
+                return;
+            }
+            const el = e.target.closest('[data-talk]');
+            if (el) openTalk(el.dataset.talk);
+        });
 
         function updateApp() {
             const now = new Date();
@@ -1722,20 +1901,21 @@
                 const favCount = favSessions.length ? ` · <span class="text-amber-600 dark:text-amber-400 font-bold">★ ${favSessions.length}</span>` : '';
 
                 const body = expanded
-                    ? `<div class="-mb-3">${slot.sessions.map(s => `
+                    ? `<p class="text-xs font-medium text-slate-500 dark:text-slate-400 -mt-1">Toca una xerrada per veure'n els detalls</p>
+                       <div class="-mb-3">${slot.sessions.map(s => `
                         <div class="flex items-start gap-2 py-3 border-t border-slate-100 dark:border-slate-800">
-                            <div class="flex-1 min-w-0 flex flex-col gap-1.5">
+                            <button type="button" data-talk="${talkKey(slot, s)}" class="flex-1 min-w-0 flex flex-col gap-1.5 text-left">
                                 <h5 class="text-sm font-semibold text-slate-800 dark:text-white leading-snug">${s.title}</h5>
-                                <div class="flex flex-wrap items-center gap-2">${speakerTag(s.speaker)}${roomPill(s.room)}</div>
-                            </div>
+                                <span class="flex flex-wrap items-center gap-2">${speakerTag(s.speaker)}${roomPill(s.room)}${langPill((talkInfo(s.title) || {}).lang)}</span>
+                            </button>
                             ${starBtn(favId(slot, s), s.title)}
                         </div>`).join('')}</div>`
                     : favSessions.map(s => `
-                        <div class="flex items-center gap-2 bg-amber-50 dark:bg-amber-950/30 rounded-xl py-2.5 pl-3 pr-2.5">
+                        <button type="button" data-talk="${talkKey(slot, s)}" class="w-full text-left flex items-center gap-2 bg-amber-50 dark:bg-amber-950/30 rounded-xl py-2.5 pl-3 pr-2.5">
                             <i data-lucide="star" class="w-4 h-4 shrink-0 text-amber-500 fill-amber-400"></i>
                             <span class="text-[13px] font-semibold text-slate-800 dark:text-white truncate flex-1 min-w-0">${s.title}</span>
                             ${roomPill(s.room)}
-                        </div>`).join('');
+                        </button>`).join('');
 
                 return `
                     <div id="slot-${idx}" class="bg-white dark:bg-slate-900 rounded-[22px] ${box} flex flex-col gap-3 ${dim}">
@@ -1764,11 +1944,11 @@
                         <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-primary flex items-center justify-center shrink-0">
                             <i data-lucide="${slot.icon || 'presentation'}" class="w-[18px] h-[18px]"></i>
                         </div>
-                        <div class="flex-1 min-w-0 flex flex-col gap-1">
+                        <${talkInfo(slot.title) ? `button type="button" data-talk="${talkKey(slot)}"` : 'div'} class="flex-1 min-w-0 flex flex-col gap-1 text-left">
                             ${timeLine}
                             <h4 class="font-bold text-slate-800 dark:text-white text-[15px] leading-snug">${slot.title}</h4>
-                            <div class="flex flex-wrap items-center gap-2">${speakerTag(slot.speaker)}${roomPill(slot.room)}</div>
-                        </div>
+                            <span class="flex flex-wrap items-center gap-2">${speakerTag(slot.speaker)}${roomPill(slot.room)}${langPill((talkInfo(slot.title) || {}).lang)}</span>
+                        </${talkInfo(slot.title) ? 'button' : 'div'}>
                         ${canFav ? starBtn(favId(slot), slot.title) : ''}
                     </div>
                     ${progress}
@@ -1820,11 +2000,11 @@
                 return `
                     <div class="bg-white dark:bg-slate-900 rounded-[18px] ${inConflict ? 'p-2 pl-3' : border} flex flex-col gap-2.5 flex-1 min-w-0">
                         <div class="flex items-start gap-2">
-                            <div class="flex-1 min-w-0 flex flex-col gap-1.5">
-                                ${current && !inConflict ? `<div>${ARA_PILL}</div>` : ''}
+                            <button type="button" data-talk="${talkKey(it.slot, it.sess)}" class="flex-1 min-w-0 flex flex-col gap-1.5 text-left">
+                                ${current && !inConflict ? `<span>${ARA_PILL}</span>` : ''}
                                 <span class="text-sm font-semibold text-slate-800 dark:text-white leading-snug">${title}</span>
-                                <div class="flex flex-wrap items-center gap-2">${speakerTag(speaker)}${roomPill(room)}</div>
-                            </div>
+                                <span class="flex flex-wrap items-center gap-2">${speakerTag(speaker)}${roomPill(room)}${langPill((talkInfo(title) || {}).lang)}</span>
+                            </button>
                             ${starBtn(it.id, title)}
                         </div>
                         ${current && !inConflict ? progressRow(it.slot.start, it.slot.end, now) : ''}
